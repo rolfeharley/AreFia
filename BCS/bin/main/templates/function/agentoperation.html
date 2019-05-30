@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>代理人管理</title>
+        <div th:replace="fragment/headerTemp :: header_style"></div>
+        <script src="framework/jqueryUI/jquery-ui.js"></script>
+        <script src="script/createBlockScreen.js"></script>
+        <link rel="stylesheet" type="text/css" href="framework/jqueryUI/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="style/agent.css" />
+        
+        <script th:inline="javascript">
+            var imlist;
+            
+            $(function () {
+            	$('#resheader').css('display', 'none');
+            	$('#rescontent').css('display', 'none');
+            	$.get('getimtype', function(result){
+            		imlist = $.parseJSON(result);
+            	});
+            });
+            
+            function addnewagent() {
+            	createblock(createagentaddform);
+            }
+            
+            function createagentaddform() {
+            	var ancon = '<div id="wossnewagentform" class="newaddformcontent">';
+            	ancon += '<div class="newaddforminside"><div class="container-fluid">';
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 10px 0; text-align: center; background: #FFFF00; border: 1px solid #000; border-radius: 10px 10px 0 0;"><label style="font-size: 1.5vw; font-weight: 900; color: #000;"><i class="fas fa-user-plus"></i>新增代理人</label></div>';            	
+            	ancon += '</div>';    
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="ndagentid">帳號</label><input id="ndagentid" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="ndagentname">姓名</label><input id="ndagentname" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '</div>';      	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="ndagentgender">性別</label><select id="ndagentgender" class="form-control txb-md"><option value="1">男</option><option value="0">女</option></select>';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="ndagentpasswwd">密碼</label><input id="ndagentpasswwd" type="password" class="form-control txb-md" autocomplete="new-password" />';
+            	ancon += '</div>';
+            	ancon += '</div>';           	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="ndagentjoindate">加入日期</label><input id="ndagentjoindate" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="ndagentboss">推薦人姓名</label><select id="ndagentboss" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentbirthday">出生日期</label><input id="ndagentbirthday" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentidentity">身分證字號</label><input id="ndagentidentity" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentaddress">地址</label><input id="ndagentaddress" type="text" class="form-control txb-lg" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentemail">電子郵件</label><input id="ndagentemail" type="text" class="form-control txb-lg" autocomplete="off" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentworktype">兼職或全職</label><select id="ndagentworktype" class="form-control txb-md"><option value="0">兼職</option><option value="1">全職</option></select>';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentshop">店到店</label><input id="ndagentshop" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentapptype">通訊App</label><select id="ndagentapptype" class="form-control txb-md"/>';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentappid">App ID</label><input id="ndagentappid" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentmobile">手機號碼</label><input id="ndagentmobile" type="text" class="form-control txb-md" />';
+            	ancon += '</div>';
+            	ancon += '</div>';            	
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="border: 1px solid #000; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row;">';
+            	ancon += '<label style="color: #000; margin-top: 5px; width: 6vw; text-align: right;" for="ndagentremark">備註</label><input id="ndagentremark" type="text" class="form-control txb-lg" />';
+            	ancon += '</div>';
+            	ancon += '</div>';
+            	ancon += '<div class="row" style="padding: 0;">';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border-left: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; border-radius: 0 0 0 10px; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row; justify-content: center; background: #FFFF00;">';
+            	ancon += '<button type="button" class="btn btn-info" onclick="toaddnewagent()"><span><i class="fas fa-check"></i>確定新增</span></button>';
+            	ancon += '</div>';
+            	ancon += '<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; border-radius: 0 0 10px 0; background: #FFF; padding: 10px 5px; display: flex; flex-direction: row; justify-content: center; background: #FFFF00;">';
+            	ancon += '<button type="button" class="btn btn-danger" onclick="canceladdneagent()"><span><i class="fas fa-ban"></i>取消新增</span></button>';
+            	ancon += '</div>';
+            	ancon += '</div>';             	
+            	ancon += '</div></div>';
+            	
+            	$('body').append(ancon);
+            	
+            	$('#ndagentjoindate').datepicker({
+            		dateFormat: 'yy/mm/dd',
+            		changeMonth: true,
+                    changeYear: true,
+                    minDate: (new Date().getDate() - 365),
+                    maxDate: (new Date().getDate() + 180),
+                    defaultDate: new Date()
+            	});
+            	
+            	$('#ndagentbirthday').datepicker({
+            		dateFormat: 'yy/mm/dd',
+            		changeMonth: true,
+                    changeYear: true,
+                    yearRange: (new Date().getFullYear() - 100) + ':' + (new Date().getFullYear() - 17),
+                    defaultDate: new Date(1986, 00, 01)
+            	});
+            	
+            	for (var i = 0; i < imlist.length; i++) {
+        			$('#ndagentapptype').append('<option value="' + imlist[i].imuid + '">' + imlist[i].imtype + '</option>');
+        		}
+            	
+        		$('#ndagentboss').append('<option value="root">無推薦人</option>');
+            	
+            	$.get('getuserlist', function(result){
+            		var uslist = $.parseJSON(result);
+            		
+            		for (var u = 0; u < uslist.length; u++) {
+            			$('#ndagentboss').append('<option value="' + uslist[u].accountid + '">' + uslist[u].username + '</option>');
+            		}
+            	});
+            }
+            
+            function canceladdneagent() {
+            	$('#wossnewagentform').remove();
+            	deleteblock();
+            }
+            
+            function toaddnewagent() {
+            	if (checkFill()) {
+            		var agentobj = new Object();
+            		
+            		agentobj.accountid = $('#ndagentid').val();
+            		agentobj.passwd = $('#ndagentpasswwd').val();
+            		agentobj.username = $('#ndagentname').val();
+            		agentobj.gender = $('#ndagentgender option:selected').val();
+            		agentobj.birthday = $('#ndagentbirthday').val();
+            		agentobj.identity = $('#ndagentidentity').val();
+            		agentobj.email = $('#ndagentemail').val();
+            		agentobj.worktype = $('#ndagentworktype option:selected').val();
+            		agentobj.imtype = $('#ndagentapptype option:selected').val();
+            		agentobj.imid = $('#ndagentappid').val();
+            		agentobj.shopname = $('#ndagentshop').val();
+            		agentobj.mobile = $('#ndagentmobile').val();
+            		if ($('#ndagentboss option:selected').val() == 'root') {
+                		agentobj.referrer = 'root';
+            		} else {
+                		agentobj.referrer = $('#ndagentboss option:selected').text();
+            		}
+            		agentobj.referrerid = $('#ndagentboss option:selected').val();
+            		agentobj.joineddate = $('#ndagentjoindate').val();
+            		agentobj.address = $('#ndagentaddress').val();
+            		agentobj.remark = $('#ndagentremark').val();
+            		
+            		$.post('createnewagent', {agentstr: JSON.stringify(agentobj)}, function(result) {
+            			if (result == 1) {
+            				alert('系統發生錯誤，新增未完成!');
+            			} else {
+            				alert('新增完成!');
+            			}
+                        $('#wossnewagentform').remove();
+                        deleteblock();
+                    });
+            	}
+            }
+            
+            function checkFill() {
+            	if ($('#ndagentid').val() == '') {
+            		alert('帳號未填寫!');
+            		$('#ndagentid').focus();
+            		return false;
+            	} else {
+            		if ($('#ndagentname').val() == '') {
+                		alert('姓名未填寫!');
+                		$('#ndagentname').focus();
+                		return false;
+                	} else {
+                		if ($('#ndagentgender option:selected').val() == undefined) {
+                    		alert('性別未選擇!');
+                    		$('#ndagentgender').focus();
+                    		return false;
+                    	} else {
+                    		if ($('#ndagentpasswwd').val() == '') {
+                        		alert('密碼未填寫!');
+                        		$('#ndagentpasswwd').focus();
+                        		return false;
+                        	} else {
+                        		if ($('#ndagentjoindate').val() == '') {
+                            		alert('加入日期未選擇!');
+                            		$('#ndagentjoindate').focus();
+                            		return false;
+                            	} else {
+                            		if ($('#ndagentboss option:selected').val() == undefined) {
+                                		alert('推薦人姓名未選擇!');
+                                		$('#ndagentboss').focus();
+                                		return false;
+                                	} else {
+                                		if ($('#ndagentbirthday').val() == '') {
+                                    		alert('出生日期未選擇!');
+                                    		$('#ndagentbirthday').focus();
+                                    		return false;
+                                    	} else {
+                                    		if ($('#ndagentidentity').val() == '') {
+                                        		alert('身分證字號未填寫!');
+                                        		$('#ndagentidentity').focus();
+                                        		return false;
+                                        	} else {
+                                        		if ($('#ndagentaddress').val() == '') {
+                                            		alert('地址未填寫!');
+                                            		$('#ndagentaddress').focus();
+                                            		return false;
+                                            	} else {
+                                            		if ($('#ndagentemail').val() == '') {
+                                                		alert('電子郵件未填寫!');
+                                                		$('#ndagentemail').focus();
+                                                		return false;
+                                                	} else {
+                                                		if ($('#ndagentworktype option:selected').val() == undefined) {
+                                                    		alert('兼職或全職未選擇!');
+                                                    		$('#ndagentworktype').focus();
+                                                    		return false;
+                                                    	} else {
+                                                    		if ($('#ndagentapptype option:selected').val() == undefined) {
+                                                        		alert('通訊App未選擇!');
+                                                        		$('#ndagentapptype').focus();
+                                                        		return false;
+                                                        	} else {
+                                                        		if ($('#IDndagentappid').val() == '') {
+                                                            		alert('App ID未填寫!');
+                                                            		$('#IDndagentappid').focus();
+                                                            		return false;
+                                                            	} else {
+                                                            		if ($('#ndagentmobile').val() == '') {
+                                                                		alert('手機號碼未填寫!');
+                                                                		$('#ndagentmobile').focus();
+                                                                		return false;
+                                                                	} else {
+                                                                		return true;
+                                                                	}
+                                                            	}
+                                                        	}
+                                                    	}
+                                                	}
+                                            	}
+                                        	}
+                                    	}
+                                	}
+                            	}
+                        	}
+                    	}
+                	}
+            	}
+            }
+            
+            function getAgentList() {
+            	$.get('queryuser', {KEYWORD: $('#agentCond').val()}, function(result) {
+            		if (result == undefined || result == '') {
+            			alert('查無結果!');
+            		} else {
+            			var qryArr = $.parseJSON(result);
+                		
+                		$('#rescontent').html('');
+                		
+                		if (qryArr.length > 0) {
+                			var qryRes = '<table style="width: 100%;">';
+                			
+                			qryRes += '<tr><td style="background: #003377; height: 40px; width: 35%; text-align: center; border-left: 1px solid #FFF; border-right: 1px solid #FFF; color: #FFF;">代理人姓名</td>';
+                			qryRes += '<td style="background: #003377; width: 35%; text-align: center; border-left: 1px solid #FFF; border-right: 1px solid #FFF; color: #FFF;">推薦人姓名</td>';
+                			qryRes += '<td style="background: #003377; width: 10%; text-align: center; border-left: 1px solid #FFF; border-right: 1px solid #FFF; color: #FFF;">手機數量</td>';
+                			qryRes += '<td style="background: #003377; width: 10%; text-align: center; border-left: 1px solid #FFF; border-right: 1px solid #FFF; color: #FFF;">新增手機</td>';
+                			qryRes += '<td style="background: #003377; width: 10%; text-align: center; border-left: 1px solid #FFF; border-right: 1px solid #FFF; color: #FFF;">新增銀行</td></tr>';
+                			
+                			for (var q = 0; q < qryArr.length; q++) {
+                				qryRes += '<tr><td style="height: 40px; border: 1px solid #FFF; color: #FFF; text-align: center;">' + qryArr[q].USERNAME + '</td>';
+                				if (qryArr[q].REFERRER == 'root') {
+                         			qryRes += '<td style="border: 1px solid #FFF; color: #FFF; text-align: center;">無推薦人</td>';
+                				} else {
+                         			qryRes += '<td style="border: 1px solid #FFF; color: #FFF; text-align: center;">' + qryArr[q].REFERRER + '</td>';
+                				}
+                    			qryRes += '<td style="border: 1px solid #FFF; color: #FFF; text-align: center;">' + qryArr[q].PHONECOUNT + '</td>';
+                    			qryRes += '<td style="border: 1px solid #FFF; color: #FFF; text-align: center;"><button type="button" class="btn btn-info btn-sm" onclick="addphoneinfo(\'' + qryArr[q].ACCOUNTID + '\')"><span><i class="fas fa-mobile-alt"></i></button></span></td>';
+                    			qryRes += '<td style="border: 1px solid #FFF; color: #FFF; text-align: center;"><button type="button" class="btn btn-info btn-sm" onclick="addbankinfo(\'' + qryArr[q].ACCOUNTID + '\')"><span><i class="fas fa-dollar-sign"></i></button></span></td></tr>';
+                			}
+                			
+                			qryRes += '</table>';
+                			
+                			$('#rescontent').append(qryRes);
+                			
+                			$('#resheader').css('display', '');
+                        	$('#rescontent').css('display', '');
+                		} else {
+                			$('#resheader').css('display', 'none');
+                        	$('#rescontent').css('display', 'none');
+                        	alert('查無結果!');
+                		}
+            		}
+            	});
+            }
+            
+            function addphoneinfo(uid) {
+            	createblock(createphoneinfo(uid));
+            }
+            
+            function addbankinfo(uid) {
+            	createblock(createbankinfo(uid));
+            }
+            
+            function createphoneinfo(uid) {
+            	return function() {            		
+            		$.get('queryphones', {accountid: uid}, function(result) {
+            			var phqarr = $.parseJSON(result);
+            			var bkgcolor, fontcolor;
+            			
+                		var phcon = '<div id="wossnewphoneform" class="newaddformcontent">';
+                		phcon += '<div class="newaddforminside"><div id="newphoneopdiv" class="container-fluid">';
+                		phcon += '<div class="row" style="padding: 0;">';
+                		phcon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 10px 0; text-align: center; background: #FFFF00; border: 1px solid #000; border-radius: 10px 10px 0 0;">';            	
+                		phcon += '<label style="font-size: 1.5vw; font-weight: 900; color: #000;"><i class="fas fa-mobile-alt"></i>手機資訊</label>';
+                		phcon += '<label style="font-size: 2vw; font-weight: 900; color: #000; cursor: pointer; position: relative; top: 0; left: 33vw;" onclick="closenewphoneform()"><i class="fas fa-times"></i></label>';               	
+                		phcon += '</div></div>';
+            			
+            			if (phqarr.length > 0) {
+            				for (var p = 0; p <= phqarr.length; p++) {
+            					if (p < phqarr.length) {
+            						bkgcolor = '#000088';
+            						fontcolor = '#FFF';
+            					} else {
+            						bkgcolor = '#FFF';
+            						fontcolor = '#000';
+            					}
+            					
+            					phcon += '<div class="row" style="padding: 0;">';
+            					phcon += '<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';            					
+            					if (p < phqarr.length) {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">手機號碼</label>&nbsp;&nbsp;';
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + phqarr[p].MOBILE + '</label>';
+            					} else {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="phoneed">手機號碼</label>';
+            						phcon += '<input id="phoneed" type="text" class="form-control txb-md" />';
+            					}
+            					phcon += '</div>';
+            					phcon += '<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';            					
+            					if (p < phqarr.length) {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">店到店</label>&nbsp;&nbsp;';
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + phqarr[p].SHOPNAME + '</label>';
+            					} else {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="shopnameed">店到店</label>';
+            						phcon += '<input id="shopnameed" type="text" class="form-control txb-md" />';
+            					}
+            					phcon += '</div></div>';
+            					phcon += '<div class="row" style="padding: 0;">';
+            					phcon += '<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';
+            					if (p < phqarr.length) {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">通訊App</label>&nbsp;&nbsp;';
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;';
+            						for (var v = 0; v < imlist.length; v++) {
+                						if (imlist[v].imuid == phqarr[p].IMTYPE) {
+                							phcon += imlist[v].imtype;
+                						}
+                					}
+            						phcon += '</label>';
+            					} else {
+                					phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="imtypeed">通訊App</label>';
+                					phcon += '<select id="imtypeed" class="form-control txb-md">';
+                					for (var x = 0; x < imlist.length; x++) {
+                						phcon += '<option value="' + imlist[x].imuid + '">' + imlist[x].imtype + '</option>';
+                					}
+                					phcon += '</select>';
+            					}
+            					phcon += '</div>';
+            					phcon += '<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';            					
+            					if (p < phqarr.length) {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">App ID</label>&nbsp;&nbsp;';
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + phqarr[p].IMID + '</label>';
+            					} else {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="imided">App ID</label>';
+            						phcon += '<input id="imided" type="text" class="form-control txb-md" />';
+            					}
+            					phcon += '</div></div>';
+            					phcon += '<div class="row" style="padding: 0;">';
+            					phcon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';            					
+            					if (p < phqarr.length) {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">備註</label>&nbsp;&nbsp;';
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + phqarr[p].REMARK + '</label>';
+            					} else {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="remarked">備註</label>';
+            						phcon += '<input id="remarked" type="text" class="form-control txb-lg" />';
+            					}
+            					phcon += '</div></div>';
+            					phcon += '<div class="row" style="padding: 0;">';
+            					phcon += '<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';            					
+            					if (p < phqarr.length) {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">加入日期</label>&nbsp;&nbsp;';
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + phqarr[p].JOINEDDATE + '</label>';
+            					} else {
+            						phcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="joineddateed">加入日期</label>';
+            						phcon += '<input id="joineddateed" type="text" class="form-control txb-md phonedatepick" />';
+            					}
+            					phcon += '</div>';
+            					phcon += '<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row; justify-content: center;">';
+            					if (p == phqarr.length) {
+            						phcon += '<button type="button" class="btn btn-success" onclick="insertphoneinfo(\'' + uid + '\')"><span><i class="fas fa-check"></i>新增</span></button>';
+            					} 
+            					phcon += '</div></div>';
+            				}
+            				
+                    		phcon += '</div></div></div>';
+        					
+                    		$('body').append(phcon);
+                    		
+                    		$('.phonedatepick').datepicker({
+                                dateFormat: 'yy/mm/dd',
+                                changeMonth: true,
+                                changeYear: true,
+                                minDate: (new Date().getDate() - 365),
+                                maxDate: (new Date().getDate() + 180),
+                                defaultDate: new Date()
+                          });
+            			}
+            		});
+            	}
+            }
+            
+            function closenewphoneform() {
+            	$('#wossnewphoneform').remove();
+                deleteblock();
+            }
+            
+            function insertphoneinfo(idx) {
+            	if ($('#phoneed').val() == '') {
+                    alert('手機號碼未填!');
+                } else {
+                    if ($('#shopnameed').val() == '') {
+                        alert('店到店未填!');
+                    } else {
+                        if ($('#imided').val() == '') {
+                            alert('App ID未填!');
+                        } else {
+                            if ($('#joineddateed').val() == '') {
+                                alert('加入日期未選!');
+                            } else {
+                            	var phoneobj = new Object();;
+                            	
+                            	phoneobj.ACCOUNTID = idx;
+                            	phoneobj.MOBILE = $('#phoneed').val();
+                            	phoneobj.SHOPNAME = $('#shopnameed').val();
+                            	phoneobj.IMTYPE = $('#imtypeed option:selected').val();
+                            	phoneobj.IMID = $('#imided').val();
+                            	phoneobj.JOINEDDATE = $('#joineddateed').val();
+                            	phoneobj.REMARK = $('#remarked').val();
+                            	
+                                $.post('createnewphone', {phoneinfo: JSON.stringify(phoneobj)}, function(result) {
+                                	if (result == 1) {
+                        				alert('系統發生錯誤，新增未完成!');
+                        			} else {
+                        				alert('新增完成!');
+                        			}
+                                	closenewphoneform();
+                                	getAgentList();
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            
+            function createbankinfo(uid) {
+            	return function() {
+            		$.get('querybanks', {accountid: uid}, function(result) {
+            			var bkcnt = 0;
+                        var bkqarr;
+                        
+                        if (result != undefined && result != null && result != '') {
+                            bkqarr = $.parseJSON(result);
+                            bkcnt = bkqarr.length;
+                        }
+
+                        var bkcon = '<div id="wossnewbankform" class="newaddformcontent">';
+                        bkcon += '<div class="newaddforminside"><div id="newphoneopdiv" class="container-fluid">';
+                        bkcon += '<div class="row" style="padding: 0;">';
+                        bkcon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 10px 0; text-align: center; background: #FFFF00; border: 1px solid #000; border-radius: 10px 10px 0 0;">';                
+                        bkcon += '<label style="font-size: 1.5vw; font-weight: 900; color: #000;"><i class="fas fa-mobile-alt"></i>手機資訊</label>';
+                        bkcon += '<label style="font-size: 2vw; font-weight: 900; color: #000; cursor: pointer; position: relative; top: 0; left: 33vw;" onclick="closenewbankform()"><i class="fas fa-times"></i></label>';                   
+                        bkcon += '</div></div>';
+                        
+                        for (var p = 0; p <= bkcnt; p++) {
+                            if (p < bkcnt) {
+                                bkgcolor = '#000088';
+                                fontcolor = '#FFF';
+                            } else {
+                                bkgcolor = '#FFF';
+                                fontcolor = '#000';
+                            }
+                            
+                            bkcon += '<div class="row" style="padding: 0;">';
+                            bkcon += '<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';                                
+                            if (p < bkcnt) {
+                                bkcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">銀行代碼</label>&nbsp;&nbsp;';
+                                bkcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + bkqarr[p].BANKCODE + '</label>';
+                            } else {
+                                bkcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="bankcodefill"">銀行代碼</label>';
+                                bkcon += '<input id="bankcodefill" type="text" class="form-control txb-sm" />';
+                            }
+                            bkcon += '</div>';
+                            bkcon += '<div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';                                
+                            if (p < bkcnt) {
+                                bkcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;">銀行帳號</label>&nbsp;&nbsp;';
+                                bkcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; text-align: left;">:&nbsp;&nbsp;' + bkqarr[p].BANKACCOUNT + '</label>';
+                            } else {
+                                bkcon += '<label style="color: ' + fontcolor + '; margin-top: 5px; display: block; width: 6vw; text-align: right;" for="bankaccountfill">銀行帳號</label>';
+                                bkcon += '<input id="bankaccountfill" type="text" class="form-control txb-md" />';
+                            }
+                            bkcon += '</div>';
+                            bkcon += '<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';                                
+                            if (p < bkcnt) {
+                                if (bkqarr[p].ISENABLED == '1') {
+                                    bkcon += '<input type="checkbox" value=\'{"ACCOUNTID": "' + uid + '", "BANKCODE": "' + bkqarr[p].BANKCODE + '", "BANKACCOUNT": "' + bkqarr[p].BANKACCOUNT + '"}\' onclick="statusexistbank(this)" checked><label style="color: #FFF;">已失效</label>';
+                                } else {
+                                    bkcon += '<input type="checkbox" value=\'{"ACCOUNTID": "' + uid + '", "BANKCODE": "' + bkqarr[p].BANKCODE + '", "BANKACCOUNT": "' + bkqarr[p].BANKACCOUNT + '"}\' onclick="statusexistbank(this)"><label style="color: #FFF;">已失效</label>';
+                                }
+                            } else {
+                                bkcon += '<input type="checkbox" id="isenabledfill" value="' + uid + '" disabled><label style="color: #000;">已失效</label>';
+                            }
+                            bkcon += '</div>';
+                            bkcon += '<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row;">';                                
+                            if (p < bkcnt) {
+                                if (bkqarr[p].ISDEFAULT == '1') {
+                                    bkcon += '<input type="checkbox" class="oldbankckb" value=\'{"ACCOUNTID": "' + uid + '", "BANKCODE": "' + bkqarr[p].BANKCODE + '", "BANKACCOUNT": "' + bkqarr[p].BANKACCOUNT + '"}\' onclick="olddfbankchange(this)" checked><label style="color: #FFF;">預設</label>';
+                                } else {
+                                    bkcon += '<input type="checkbox" class="oldbankckb" value=\'{"ACCOUNTID": "' + uid + '", "BANKCODE": "' + bkqarr[p].BANKCODE + '", "BANKACCOUNT": "' + bkqarr[p].BANKACCOUNT + '"}\' onclick="olddfbankchange(this)"><label style="color: #FFF;">預設</label>';
+                                }
+                            } else {
+                                bkcon += '<input type="checkbox" id="isdefaultfill" value="' + uid + '" onclick="newdfbankchange()"><label style="color: #000;">預設</label>';
+                            }
+                            bkcon += '</div></div>';
+                            if (p == bkcnt) {
+                                bkcon += '<div class="row" style="padding: 0;">';
+                                bkcon += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="border: 1px solid #000; background: ' + bkgcolor + '; padding: 10px 5px; display: flex; flex-direction: row; justify-content: center;">';
+                                bkcon += '<button type="button" class="btn btn-success" onclick="insertbankinfo(\'' + uid + '\')"><span><i class="fas fa-check"></i>新增</span></button>';
+                                bkcon += '</div></div>';
+                            }
+                        }
+                        
+                        bkcon += '</div></div></div>';
+                        
+                        $('body').append(bkcon);
+            		});
+            	}
+            }
+            
+            function statusexistbank(ckbox) {
+            	var baksta = $.parseJSON($(ckbox).val());
+            	
+            	baksta.ISENABLED = $(ckbox).prop('checked') ? '1' : '0';
+            	
+            	$.post('updatebankenabled', {bankena: JSON.stringify(baksta)});
+            }
+            
+            function olddfbankchange(ckbox) {
+            	var bakdef = $.parseJSON($(ckbox).val());
+            	
+            	if ($(ckbox).prop('checked')) {
+            		$('.oldbankckb').prop('checked', false);
+            		$(ckbox).prop('checked', true);
+            		
+            		$.post('updatebankdefault', {bankstr: $(ckbox).val()});
+            	} else {
+            		var clsobj = new Object();
+            		
+            		clsobj.ACCOUNTID = bakdef.ACCOUNTID;
+            		clsobj.BANKCODE = 'notexeist';
+            		clsobj.BANKACCOUNT = 'notexeist';
+            		
+            		$.post('updatebankdefault', {bankstr: JSON.stringify(clsobj)});
+            	}
+            }
+            
+            function newdfbankchange() {
+            	if ($('#isdefaultfill').prop('checked')) {
+            		$('.oldbankckb').prop('checked', false);
+            		
+                    var clsobj = new Object();
+            		
+            		clsobj.ACCOUNTID = $('#isdefaultfill').val();
+            		clsobj.BANKCODE = 'notexeist';
+            		clsobj.BANKACCOUNT = 'notexeist';
+            		
+            		$.post('updatebankdefault', {bankstr: JSON.stringify(clsobj)});
+            	}
+            }
+            
+            function closenewbankform() {
+            	$('#wossnewbankform').remove();
+                deleteblock();
+            }
+            
+            function insertbankinfo(idx) {
+            	if ($('#bankcodefill').val() == '') {
+                    alert('銀行代碼未填!');
+                } else {
+                    if ($('#bankaccountfill').val() == '') {
+                        alert('銀行帳號未填!');
+                    } else {
+                    	var bankobj = new Object();;
+                    	
+                    	bankobj.ACCOUNTID = idx;
+                    	bankobj.BANKCODE = $('#bankcodefill').val();
+                    	bankobj.BANKACCOUNT = $('#bankaccountfill').val();
+                    	bankobj.ISDEFAULT = $('#isdefaultfill').prop('checked') ? '1' : '0';
+                    	bankobj.ISENABLED = $('#isenabledfill').prop('checked') ? '1' : '0';
+                    	
+                        $.post('createnewbank', {bankinfo: JSON.stringify(bankobj)}, function(result) {
+                        	if (result == 1) {
+                				alert('系統發生錯誤，新增未完成!');
+                			} else {
+                				alert('新增完成!');
+                			}
+                        	closenewbankform();
+                        });
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div th:replace="fragment/headerTemp :: headerTemp"></div>
+        <div class="bodyarea">
+            <div class="ftmaster">
+                <div class="fttitle">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 50%; text-align: left;">
+                                <label class="ftstring"><i class="fas fa-pencil-ruler fa-fw"></i>代理人查詢</label>
+                            </td>
+                            <td style="width: 50%; text-align: right; padding-right: 2.3vw;">
+                                <button type="button" class="btn btn-warning addnewagentbtn" onclick="addnewagent()">
+                                    <span><i class="fas fa-plus"></i>新增</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="container-fluid ftbody">
+                    <div class="row">
+                        <div class="col-3 col-xs-3 col-md-3 col-lg-2 col-xl-2 titlediv">
+                            <label for="agentSel">關鍵字</label>
+                        </div>
+                        <div class="col-9 col-xs-9 col-md-9 col-lg-8 col-xl-8 conddiv">
+                            <input type="text" id="agentCond" class="form-control txb-md"/>
+                        </div>
+                        <div class="col-12 col-xs-12 col-md-12 col-lg-2 col-xl-2 btndiv">
+                            <button type="button" class="btn btn-success" onclick="getAgentList()">
+                                <span><i class="fas fa-search"></i>搜尋</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid resmaster">
+                <div class="row">
+                    <div class="col-12 col-xs-12 col-md-12 col-lg-2 col-xl-2">
+                        <div id="resheader" class="restitle">
+                            <label class="ftstring"><i class="far fa-lightbulb"></i>查詢結果</label>
+                        </div>
+                        <div id="rescontent" class="resbody"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bkgdiv"></div> 
+    </body>
+</html>

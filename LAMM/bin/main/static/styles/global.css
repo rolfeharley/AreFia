@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family: iEnglishFont;
+	src: url(../fonts/engFont1.otf);
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	/*font-family: iEnglishFont, "Microsoft JhengHei";*/
+}
+
+.linebody {
+	background: #1BC249;
+}
+
+@media screen and (max-width:575.99px) {
+	.areafiamainbody {
+	    padding-top: 10vh;
+    }
+}
+
+@media screen and (min-width:576px) and (max-width:767.99px) {
+    .areafiamainbody {
+	    padding-top: 10vh;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:991.99px) {
+	.areafiamainbody {
+	    padding-top: 10vh;
+    }
+}
+
+@media screen and (min-width:992px) and (max-width:1199.99px) {
+	.areafiamainbody {
+	    padding-top: 7vh;
+    }
+}
+
+@media screen and (min-width:1200px) {
+	.areafiamainbody {
+	    padding-top: 7vh;
+    }
+}

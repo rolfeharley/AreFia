@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>獎金計算系統登入</title>
+        <script src="framework/jquery.js"></script>
+        <script src="framework/bootstrap/js/bootstrap.js"></script>
+        <script src="framework/fontawesome/js/all.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="framework/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="framework/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="style/login.css" />
+        
+        <script>
+            $(function() {
+            	$('html').animate({
+            		opacity: 1
+            	}, 800);
+            })
+        </script>
+    </head>
+    <body>
+        <div class="bkgdiv"></div>
+        <form name="f" th:action="@{/login}" method="post">
+            <div class="loginarae">
+                <div class="loginicon">
+                    <img src="media/loginlogo.png" />
+                </div>
+                <div class="logheader">
+                    <label>Work Order Schedule System</label>
+                </div>
+                <div class="loginbody">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Account" />
+                    <i class="fas fa-user fa-lg fa-fw texticon"></i>
+                </div>
+                <div class="loginbody">
+                    <i class="fas fa-key fa-lg fa-fw texticon"></i>
+                    <input type="password" id="password" name="password"  class="form-control" placeholder="Password" />
+                </div>
+                <div class="buttonarea">
+                    <button type="submit" class="btn btn-info">Login</button>
+                </div>
+                <div class="loginfooter">
+                    <label th:if="${param.error}">Invalid Account Or Password</label>
+                    <label th:if="${param.logout}">You Have Been Logged Out</label>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

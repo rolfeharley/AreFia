@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Message Center</title>
+        <div th:replace="fragment/lineApiHeader :: header_resource"></div>
+        
+        <script th:inline="javascript">
+            function testfunc() {
+            	alert('OK');
+            }
+        </script>
+    </head>
+    <body class="linebody">
+        <div th:replace="fragment/lineApiHeader :: headerTemp"></div>
+        <div class="container-fluid areafiamainbody">
+            <div class="row">
+                <div id="arefiauserlist" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <button type="button" class="btn btn-info" onclick="testfunc()">Test Button</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

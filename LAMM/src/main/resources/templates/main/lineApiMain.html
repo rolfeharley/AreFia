@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Line Message Integrated System</title>
+        <div th:replace="fragment/lineApiHeader :: header_resource"></div>
+        
+        <script th:inline="javascript">
+            $(function() {
+            	var menuList = JSON.parse([[${menuinfo}]]);
+
+                for (var m = 0; m < menuList.length; m++) {
+                	if (menuList[m].MenuID != [[${pageid}]]) {
+                		$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'' + menuList[m].MenuURL + '\')">' + menuList[m].MenuName + '</li>');
+                	} else {
+                		$('#arefiamenuul').append('<li class="linked">' + menuList[m].MenuName + '</li>');
+                	}
+                }
+                
+                $('#usernamelab').text([[${username}]]);
+            })
+            
+            function redirectPage(urlStr) {
+                window.location.href = urlStr;
+            }
+        </script>
+    </head>
+    <body class="linebody">
+        <div th:replace="fragment/lineApiHeader :: headerTemp"></div>
+    </body>
+</html>

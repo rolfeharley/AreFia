@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Message Center</title>
+        <div th:replace="fragment/lineApiHeader :: header_resource"></div>
+        
+        <script src="frameworks/stomp.js"></script>
+        <script src="frameworks/sockjs.js"></script>
+        <script src="scripts/deviceHandler.js"></script>
+        <script src="scripts/createFollowerList.js"></script>
+        <script src="scripts/createCoversationFrame.js"></script>
+        <script src="scripts/createBlockScreen.js"></script>
+        <script src="scripts/generateGUID.js"></script>
+        <script th:inline="javascript">
+            var websxUser;
+            var currentfollower;
+            var shiftsta;
+            var stadw;
+        
+            $(function() {
+            	if (xsSize.matches) {
+            		stadw = 128;
+            	} else if (smSize.matches) {
+            		stadw = 128;
+            	} else if (mdSize.matches) {
+            		stadw = 128;
+            	} else if (lgSize.matches) {
+            		stadw = 256;
+            	} else {
+            		stadw = 256;
+            	}
+            	
+            	var menuList = JSON.parse([[${menuinfo}]]);
+            	
+            	$('#arefiamsgtxtarea').bind('keydown', function() {
+            		if (event.keyCode == 16) {
+                		shiftsta = true;
+                	}
+            	});
+            	
+            	$('#arefiamsgtxtarea').bind('keyup', function() {
+            		if (event.keyCode == 16) {
+                		shiftsta = false;
+                	}
+            	});
+            	
+            	$('#arefiamsgtxtarea').bind('keypress', function() {
+                	if (event.keyCode == 13) {
+                	    if (shiftsta == undefined || !shiftsta) {
+                            stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': 'text', 'message': $('#arefiamsgtxtarea').val(), 'pusher': websxUser, 'file': null}));
+                            $('#arefiamsgtxtarea').val('');
+                            return false;
+                		}
+                	}
+            	});
+
+                for (var m = 0; m < menuList.length; m++) {
+                	if (menuList[m].MenuID != [[${pageid}]]) {
+                		$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'' + menuList[m].MenuURL + '\')">' + menuList[m].MenuName + '</li>');
+                	} else {
+                		$('#arefiamenuul').append('<li class="linked">' + menuList[m].MenuName + '</li>');
+                	}
+                }
+                
+                $('#usernamelab').text([[${username}]]);
+                
+                $.get('conversationfollowers', function(result) {
+                	if (result != null && result != '') {
+                		var fsList = JSON.parse(result);
+                    	
+                    	for (var s = 0; s < fsList.length; s++) {
+                    		var fsObj = fsList[s];
+                    		
+                    		addNewLine(fsObj, $('#arefiauserlist'), 'initial');
+                    	}
+                	}
+                });
+                
+                $('#arefiaconvtitle').css('display', 'none');
+                $('#arefiamessagetool').css('display', 'none');
+                $('#arefiamessageeditor').css('display', 'none');
+                $('#arefiamessagebody').css('justify-content', 'center');
+                $('#arefiamessagebody').css('align-items', 'center');
+                $('#arefiamessagebody').append('<img src="medias/emptymessage.png" style="width: 20%; height: 38%;"/>');
+                
+                websocketConnect();
+            })
+            
+            function redirectPage(urlStr) {
+                window.location.href = urlStr;
+            }
+            
+            function websocketConnect() {
+                var socket = new SockJS('/websocketConnect');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function (frame) {
+                	var infObj = frame.headers;
+                	websxUser = infObj['user-name'];
+
+                    stompClient.subscribe('/topic/linemessage', function (message) {
+                    	var msgInfo = JSON.parse(message.body);
+                    	
+                    	if (msgInfo.OBJTYPE == 'RECIEVE') {
+                        	var msgArr = JSON.parse(msgInfo.RECIEVEARRAY);
+                        	
+                        	var conexist = false;
+
+                        	for (var m = 0; m < msgArr.length; m++) {
+                        		var msgObj = msgArr[m];
+                        		var sourcerObj = msgObj.source;
+                        		var conObj = msgObj.message;
+                                
+                        		if ($('#arefiauserlist').children().length > 0) {
+                            		$('#arefiauserlist').children('div').each(function(index) {
+                            			var compid = $(this).attr('id');
+                            			
+                            			compid = compid.substring(0, compid.indexOf('_'));
+
+                            			if (compid == sourcerObj.userId) {
+                            				conexist = true;
+                            				return false;
+                            			}
+                            		});
+                        		}
+                        		
+                        		if (!conexist) {
+                            		$.get('getfollowerinfos', {followerid: sourcerObj.userId}, function(result) {
+                            			if (result != null && result != '') {
+                                            var ofrObj = JSON.parse(result);
+                                            
+                                            ofrObj.MESSAGEFROM = 'RECIEVE';
+                                            ofrObj.MSGTYPE = conObj.type;
+                                            
+                                            if (conObj.type == 'text') {
+                                            	var ntstr = conObj.text;
+                                    			
+                                    			if (ntstr.length > 12) {
+                                    				ntstr = ntstr.substring(0, 12) + '...';
+                                    			}
+                                            	ofrObj.MSG = ntstr;
+                                            } else {
+                                            	if (conObj.type == 'image') {
+                                                	ofrObj.MSG = 'Image';
+                                            	} else {
+                                            		if (conObj.type == 'sticker') {
+                                                    	ofrObj.MSG = 'Sticker';
+                                                	} else {
+                                                		ofrObj.MSG = 'Unsupported';
+                                                	}
+                                            	}
+                                            }
+                                            
+                                            ofrObj.UNREADCOUNT = '1';
+                                            ofrObj.LASTDATE = msgObj.recievedate;
+                                            ofrObj.LASTTIME = msgObj.recievetime;
+                                            
+                                            addNewLine(ofrObj, $('#arefiauserlist'), 'newcon');
+                                    	}
+                                    });
+                        		} else {
+                        			var nfcon = conObj.text;
+                        			
+                        			switch (conObj.type) {
+            		                    case 'text':
+            		                    	var nsopn = conObj.text;
+                                			
+                                			if (nsopn.length > 12) {
+                                				nsopn = nsopn.substring(0, 12) + '...';
+                                			}
+                                			
+                                			$('#' + sourcerObj.userId + '_lstmsg').html(nsopn);
+                                			
+                                			nfcon = nfcon.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+            		    	                break;
+            		                    case 'image':
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Image');
+            		    	                break;
+            		                    case 'sticker':
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Sticker');
+            		    	                break;
+            		                    case 'video':
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Video');
+            		    	                break;
+            		                    case 'audio':
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Audio');
+            		    	                break;
+            		                    default :
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Unsupported');
+            		    	                break;
+            		                }                    			
+                                    
+                                    if (currentfollower != null && sourcerObj.userId == currentfollower) {
+                                    	$.get('/realtimeupdate', {MSGID: conObj.id});
+                                    	                                    	
+                                    	$('#arefiamessagebody').append('<div class="arefiaSrcFrame"></div>');
+                                    	$('#arefiamessagebody').last().append(createRecieveFrame(sourcerObj.userId, conObj.type, nfcon, msgObj.recievedate + ' ' + msgObj.recievetime, conObj.id, conObj.IMAGEWIDTH, conObj.IMAGEHEIGHT, stadw));
+                                    	
+                                    	$('#arefiamessagebody').animate({scrollTop: document.getElementById("arefiamessagebody").scrollHeight + 10000}, 500);
+                                    } else {
+                                        if ($('#' + sourcerObj.userId + '_unrcnt').html() == '') {
+                                            $('#' + sourcerObj.userId + '_unrcnt').html('1');
+                                            $('#' + sourcerObj.userId + '_unrcnt').css('display', '');
+                                        } else {
+                                            if ($('#' + sourcerObj.userId + '_unrcnt').html().indexOf('+') < 0) {
+                                                var cntnum = Number($('#' + sourcerObj.userId + '_unrcnt').html()) + 1;
+                                                
+                                                if (cntnum <= 999) {
+                                                    $('#' + sourcerObj.userId + '_unrcnt').html(cntnum.toString());
+                                                } else {
+                                                    $('#' + sourcerObj.userId + '_unrcnt').html('999+');
+                                                }
+                                            }
+                                        }
+                                    }
+                        		}
+                        	 }
+                    	} else {
+                    		var pfcon = msgInfo.MSG;
+
+                			switch (msgInfo.MSGTYPE) {
+    		                    case 'text':
+    		                    	var psopn = msgInfo.MSG;
+                        			
+                        			if (psopn.length > 12) {
+                        				psopn = psopn.substring(0, 12) + '...';
+                        			}
+                        			
+                        			if ($('#' + msgInfo.SOURCERID + '_lstmsg').html() != undefined) {
+                            			$('#' + msgInfo.SOURCERID + '_lstmsg').html(psopn);
+                        			}
+
+                        			pfcon = pfcon.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+    		    	                break;
+    		                    case 'image':
+    		    	                
+    		    	                break;
+    		                    case 'sticker':
+    		    	            
+    		    	                break;
+    		                    case 'video':
+    		    	            
+    		    	                break;
+    		                    case 'audio':
+
+    		    	                break;
+    		                    default :
+    		    	            
+    		    	                break;
+    		                } 
+                			
+                			if (currentfollower != null && msgInfo.SOURCERID == currentfollower) {
+                				$('#arefiamessagebody').append(createPushFrame(msgInfo.MSGTYPE, pfcon, msgInfo.EXETIME, msgInfo.MSGID, msgInfo.IMAGEWIDTH, msgInfo.IMAGEHEIGHT, stadw));
+                        		$('#arefiamessagebody').animate({scrollTop: document.getElementById("arefiamessagebody").scrollHeight + 10000}, 500);
+                			}
+                    	}
+                    });
+                });
+            }
+
+            function disconnect() {
+                if (stompClient !== null) {
+                    stompClient.disconnect();
+                }
+            }
+            
+            function showmessagecontent(userId) {
+            	if (currentfollower == undefined || currentfollower != userId) {
+            		currentfollower = userId;
+                	
+                    $('#arefiasourcername').html('Conversation Of ' + $('#' + userId + '_udna').html());
+                    $('#arefiamessagebody').css('justify-content', 'flex-start');
+                    $('#arefiamessagebody').css('align-items', 'flex-start');
+                    $('#arefiaconvtitle').css('display', '');
+                    $('#arefiamessagetool').css('display', '');
+                    $('#arefiamessageeditor').css('display', '');
+                    $('#' + userId + '_unrcnt').html('');
+                    $('#' + userId + '_unrcnt').css('display', 'none');
+                    
+                	$('#arefiauserlist').children('div').each(function() {
+                		$(this).removeClass('arefiafollowercontainerselected');
+                		$(this).addClass('arefiafollowercontainer');
+                	});
+                	
+                	$('#' + userId + '_outcon').removeClass('arefiafollowercontainer');
+                	$('#' + userId + '_outcon').addClass('arefiafollowercontainerselected');
+                	$('#arefiamessagebody').html('');
+                	$('#arefiamessagebody').append('<img src="medias/load.gif"/>');
+                	
+                	$.get('getfollowerMsgs', {followerid: userId}, function(result) {
+            			if (result != null && result != '') {
+                            var msgArr = JSON.parse(result);
+                                                    
+                            $('#arefiamessagebody').html('');
+                            
+                            for (var m = 0; m < msgArr.length; m++) {                            	
+                            	if (msgArr[m].MSGFROM == 'RECIEVE') {
+                                	$('#arefiamessagebody').append(createRecieveFrame(userId, msgArr[m].MSGTYPE, msgArr[m].MSG, msgArr[m].EXETIME, msgArr[m].MSGID, msgArr[m].IMAGEWIDTH, msgArr[m].IMAGEHEIGHT, stadw));
+                            	} else {
+                            		$('#arefiamessagebody').append(createPushFrame(msgArr[m].MSGTYPE, msgArr[m].MSG, msgArr[m].EXETIME, msgArr[m].MSGID, msgArr[m].IMAGEWIDTH, msgArr[m].IMAGEHEIGHT, stadw));
+                            	}
+                            }
+                            
+                            $('#arefiamessagebody').animate({scrollTop: document.getElementById("arefiamessagebody").scrollHeight + 10000}, 500);
+                    	}
+                    });
+            	}
+            }
+            
+            function showstick() {
+            	var blockmodel = '<div id="arefiablockdiv" style="position: fixed; top: 101vh; left: 0; width: 100vw; height: 100vh; background: #000; opacity: 0.5; z-index: 998;"></div>';
+            	
+            	$('body').append(blockmodel);
+            	
+            	$('#arefiablockdiv').animate({
+            	    top: 0
+            	}, 500);
+            }
+            
+            function selectfile() {
+            	$('#fileselector').trigger('click');
+            }
+            
+            function uploadhandler(files) {
+            	var linefile = files[0];
+            	var filetype = linefile.type.substring(0, 5);
+    			
+            	if (filetype != 'image') {
+                	alert('System Is Not Support This Type Of File Temporarily.');
+            	} else {
+            		var pushfid = generateGuid();
+            		var pushdata = new FormData();
+            		
+            		pushdata.append("msgtype", filetype);
+            		pushdata.append("pushfid", pushfid);
+            		pushdata.append("pushfile", linefile);
+            		
+            		$.ajax({
+            		    url: '/pushfiles',
+            		    type: 'POST',
+            		    cache: false,
+            		    data: pushdata,
+            		    processData: false,
+            		    contentType: false
+            		}).done(function(res) {
+            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': 'image', 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
+            		}).fail(function(res) {});
+            	}
+            }
+            
+            function movetohistory() {
+            	var qsthist = confirm("Do You Really Want To Remove This Conversation From This Message List?");
+            	
+            	if (qsthist == true) {
+            		$('#arefiamessagebody').html('');
+            		$('#arefiaconvtitle').css('display', 'none');
+                    $('#arefiamessagetool').css('display', 'none');
+                    $('#arefiamessageeditor').css('display', 'none');
+                    $('#arefiamessagebody').css('justify-content', 'center');
+                    $('#arefiamessagebody').css('align-items', 'center');
+                    $('#arefiamessagebody').append('<img src="medias/emptymessage.png" style="width: 20%; height: 38%;"/>');
+                    
+                    $('#' + currentfollower + '_outcon').remove();
+                    
+                    $.post('movemsgtohistory', {followerid: currentfollower}, function() {
+                    	currentfollower = undefined;
+                    });
+            	} else {
+            	    alert('Cancel');
+            	}
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="styles/messagecenter.css" />
+    </head>
+    <body class="linebody">
+        <div th:replace="fragment/lineApiHeader :: headerTemp"></div>
+        <div class="container-fluid areafiamainbody">
+            <div class="row">
+                <div id="arefiauserlist" class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4"></div>
+                <div id="arefiamessagelist" class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-8">
+                    <div id="arefiaconvtitle">
+                        <label id="arefiasourcername"></label>
+                        <i id="mvhistbtn" class="far fa-trash-alt" onclick="movetohistory()"></i>
+                    </div>
+                    <div id="arefiamessagebody"></div>
+                    <div id="arefiamessagetool">
+                        <i class="far fa-smile" id="stickbtn" onclick="showstick()" style="display: none;"></i>
+                        <i class="fas fa-paperclip" id="attabtn" onclick="selectfile()"></i>
+                        <input id="fileselector" type="file" name="pushfiles" accept="image/*" style="display: none;" onchange="uploadhandler(this.files)" />
+                    </div>
+                    <div id="arefiamessageeditor">
+                        <textarea id="arefiamsgtxtarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

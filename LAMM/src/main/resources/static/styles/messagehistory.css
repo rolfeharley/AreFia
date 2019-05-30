@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+.msghistqbox {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 70vw;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #F5F5F5;
+	border-radius: 10px;
+	margin: 10px auto;
+}
+
+#arefiamessagelist {
+    overflow-x: hidden;
+	overflow-y: auto;
+	background: #FFFFFF;
+	padding: 0;
+}
+
+#arefiaconvtitle {
+	clear: both;
+    width: 100vw;
+    background: #EFF2F5;
+    border-bottom: 1px solid #DADEE1;
+}
+
+#arefiamessagebody {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.arefiaSrcFrame, .arefiaMsfFrame {
+	width: 100%;
+}
+
+.arefiaSrcFimg {
+	background-size: cover; 
+	background-repeat: no-repeat; 
+	background-position: center center;
+}
+
+.arefiaSrcMsgBox {
+	background: #E4E8EB;
+}
+
+.arefiaConTimes {
+    color: #ADB0B7;
+}
+
+.arefiaMsfMsgBox {
+	background: #BEF18C;
+}
+
+@media screen and (max-width:575.99px) {
+	
+}
+
+@media screen and (min-width:576px) and (max-width:767.99px) {
+	
+}
+
+@media screen and (min-width:768px) and (max-width:991.99px) {
+	
+}
+
+@media screen and (min-width:992px) and (max-width:1199.99px) {
+	
+}
+
+@media screen and (min-width:1200px) {
+	.histqrybtn {
+	    width: 8vw;
+    }
+    
+    .datepickerbox {
+        width: 10vw;
+    }
+    
+    .smalltextbox {
+        width: 10vw;
+    }
+    
+    .midtextbox {
+        width: 18vw;
+    }
+    
+    .largetextbox {
+        width: 23vw;
+    }
+    
+    #arefiamessagelist {
+	    height: calc(100vh - 195px);
+	    overflow: hidden;
+	}
+	
+	#arefiaconvtitle {
+        height: 6vh;
+        padding-left: 20px;
+        padding-top: 1vh;
+    }
+    
+    #arefiamessagebody {
+        height: calc(94vh - 195px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    .arefiaSrcFrame, .arefiaMsfFrame {
+        padding: 20px 10px;;
+    }
+    
+    .arefiaSrcFimg {
+        width: 3vw; 
+	    height: 3vw;
+	    border-radius: 3vw;
+    }
+    
+    .arefiaSrcMsgBox, .arefiaMsfMsgBox {
+	    padding: 10px;
+	    border-radius: 10px;
+    }
+    
+    .arefiaConTimes {
+        font-size: 0.8vw;
+    }
+}

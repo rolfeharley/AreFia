@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>History Message</title>
+        <div th:replace="fragment/lineApiHeader :: header_resource"></div>
+        <script src="frameworks/jqueryUI/jquery-ui.js"></script>
+        <script src="scripts/deviceHandler.js"></script>
+        <script src="scripts/createCoversationFrame.js"></script>
+        
+        <script th:inline="javascript">
+            var stadw;
+        
+            $(function() {
+            	$('#arefiamessagelist').css('display', 'none');
+            	
+            	if (xsSize.matches) {
+            		stadw = 128;
+            	} else if (smSize.matches) {
+            		stadw = 128;
+            	} else if (mdSize.matches) {
+            		stadw = 128;
+            	} else if (lgSize.matches) {
+            		stadw = 256;
+            	} else {
+            		stadw = 256;
+            	}
+            	
+            	var menuList = JSON.parse([[${menuinfo}]]);
+
+                for (var m = 0; m < menuList.length; m++) {
+                	if (menuList[m].MenuID != [[${pageid}]]) {
+                		$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'' + menuList[m].MenuURL + '\')">' + menuList[m].MenuName + '</li>');
+                	} else {
+                		$('#arefiamenuul').append('<li class="linked">' + menuList[m].MenuName + '</li>');
+                	}
+                }
+                
+                $.get('gethistoryfollowers', function(result) {
+                	var hfarr = $.parseJSON(result);
+                	
+                	if (hfarr.length > 0) {
+                		for (var h = 0; h < hfarr.length; h++) {
+                			$('#historyfollowers').append('<option value="' + hfarr[h].DISPLAYNAME + '" data-val="' + hfarr[h].USERID + '" />');
+                		}
+                	}
+                });
+                
+                $('#usernamelab').text([[${username}]]);
+                
+                $('#msgqrystdate').datepicker({
+            		dateFormat: 'yy/mm/dd',
+            		changeMonth: true,
+                    changeYear: true
+            	});
+                
+                $('#msgqryeddate').datepicker({
+            		dateFormat: 'yy/mm/dd',
+            		changeMonth: true,
+                    changeYear: true
+            	});
+            })
+            
+            function redirectPage(urlStr) {
+                window.location.href = urlStr;
+            }
+            
+            function clearconditions() {
+            	$('#msghistqrykwb').val('');
+            	$('#msgqrystdate').val('');
+            	$('#msgqryeddate').val('');
+            }
+            
+            function showhistoryconversation() {
+            	if ($('#msghistqrykwb').val() == '') {
+                    alert('Please Select User!!');
+                } else {
+                	var userid;
+                	
+                	$('#historyfollowers').find('option').each(function() {
+                		if ($('#msghistqrykwb').val() == $(this).val()) {
+                			userid = $(this).attr('data-val');
+                		}
+                	});
+                	
+                	if (userid == undefined) {
+                		$('#msghistqrykwb').val('');
+                		alert('Please Select User!!');
+                	} else {
+                		var datecheck = false;
+                        
+                        if ($('#msgqrystdate').val() != '' && $('#msgqryeddate').val() != '') {
+                            var bdate = new Date($('#msgqrystdate').val().replace(/\//g, '-'));
+                            var edate = new Date($('#msgqryeddate').val().replace(/\//g, '-'));
+                            
+                            if (bdate > edate) {
+                                alert('The Start Date Is Later Than End Date!');
+                                datecheck = false;
+                            } else {
+                                datecheck = true;
+                            }
+                        } else {
+                            datecheck = true;
+                        }
+
+                        if (datecheck) {
+                            var stdate, eddate;
+                            
+                            if ($('#msgqrystdate').val() == '') {
+                                stdate = '1955-01-01';
+                            } else {
+                                stdate = $('#msgqrystdate').val().replace(/\//g, '-');
+                            }
+                            
+                            if ($('#msgqryeddate').val() == '') {
+                                eddate = '2999-12-31';
+                            } else {
+                                eddate = $('#msgqryeddate').val().replace(/\//g, '-');
+                            }
+                            
+                        	$('#arefiamessagebody').html('');
+                        	
+                        	$.get('getfollowerinfos', {'followerid': userid}, function(result) {
+                        		var uinf = $.parseJSON(result);
+                        		
+                        		$('#history_hicon').data('imgurl', uinf.PICTUREURL);
+                        		
+                        		$.get('gethistoryconversation', {'followerid': userid, 'stdate': stdate, 'eddate': eddate}, function(result) {
+                                	if (result != null && result != '') {
+                                		var hcarr = $.parseJSON(result);
+                                        
+                                        if (hcarr.length > 0) {                                	
+                                        	$('#arefiasourcername').html('History Conversation Of ' + $('#msghistqrykwb').val());
+                                        	
+                                        	for (var c = 0; c < hcarr.length; c++) {                            	
+                                            	if (hcarr[c].MSGFROM == 'RECIEVE') {
+                                                	$('#arefiamessagebody').append(createRecieveFrame('history', hcarr[c].MSGTYPE, hcarr[c].MSG, hcarr[c].EXETIME, hcarr[c].MSGID, hcarr[c].IMAGEWIDTH, hcarr[c].IMAGEHEIGHT, stadw));
+                                            	} else {
+                                            		$('#arefiamessagebody').append(createPushFrame(hcarr[c].MSGTYPE, hcarr[c].MSG, hcarr[c].EXETIME, hcarr[c].MSGID, hcarr[c].IMAGEWIDTH, hcarr[c].IMAGEHEIGHT, stadw));
+                                            	}
+                                            }
+                                        	
+                                        	$('#arefiamessagelist').css('display', '');
+                                        } else {
+                                        	$('#arefiamessagelist').css('display', 'none');
+                                            alert('There Are No Any History Conversation!');
+                                        }
+                                	} else {
+                                		$('#arefiamessagelist').css('display', 'none');
+                                        alert('There Are No Any History Conversation!');
+                                	}
+                                });
+                        	});
+                        }
+                	}
+                }
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="frameworks/jqueryUI/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="styles/messagehistory.css" />
+    </head>
+    <body class="linebody">
+        <div th:replace="fragment/lineApiHeader :: headerTemp"></div>
+        <div class="container-fluid areafiamainbody">
+            <div id="msghistqrybar" class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="msghistqbox">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="text-align: right; width: 10%; height: 40px;">
+                                    <label>User</label>
+                                </td>
+                                <td style="text-align: left; width: 40%;">
+                                    <input id="msghistqrykwb" list="historyfollowers" class="form-control largetextbox" placeholder="Please Enter Name" />
+                                    <datalist id="historyfollowers"></datalist>
+                                </td>
+                                <td style="text-align: right; width: 10%;">
+                                    <label>Date Range</label>
+                                </td>
+                                <td style="text-align: left; width: 15%;">
+                                    <input type="text" id="msgqrystdate" class="form-control datepickerbox"/>
+                                </td>
+                                <td style="text-align: center; width: 10%;">
+                                    <label>~</label>
+                                </td>
+                                <td style="text-align: left; width: 15%;">
+                                    <input type="text" id="msgqryeddate" class="form-control datepickerbox"/>
+                                </td>                       
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="height: 60px; text-align: center; vertical-align: bottom;">
+                                    <button type="button" class="btn btn-info histqrybtn" onclick="showhistoryconversation()">
+                                        <span><i class="fas fa-search"></i>Query</span>
+                                    </button>
+                                    <button type="button" class="btn btn-warning histqrybtn" onclick="clearconditions()">
+                                        <span><i class="fas fa-redo-alt" onclick="clearconditions()"></i>Clear</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="msghistresbar" class="row">
+                <div id="arefiamessagelist" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div id="arefiaconvtitle">
+                        <label id="arefiasourcername"></label>
+                    </div>
+                    <div id="arefiamessagebody"></div>
+                </div>
+            </div>
+            <img id="history_hicon" style="display: none;" />
+        </div>
+    </body>
+</html>

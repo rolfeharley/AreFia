@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <div th:fragment="header_resource">
+            <script src="frameworks/jquery.js"></script>
+            <script src="frameworks/bootstrap/js/bootstrap.min.js"></script>
+            <script src="frameworks/fontawesome/js/all.min.js"></script>
+            <script src="scripts/deviceHandler.js"></script>
+            <link rel="stylesheet" type="text/css" href="styles/global.css" />
+            <link rel="stylesheet" type="text/css" href="styles/header.css" />
+            <link rel="stylesheet" type="text/css" href="frameworks/bootstrap/css/bootstrap.min.css" />
+            <link rel="stylesheet" type="text/css" href="frameworks/fontawesome/css/all.min.css" />           
+        </div>
+    </head>
+    <body>
+        <div id="arefiahorizonheader" th:fragment="headerTemp" class="container-fluid">
+            <div class="row">
+                <div id="arefiaiconwdiv" class="col-0 col-sm-0 col-md-0 col-lg-1 col-xl-1" th:switch="${pageid}">
+                    <img th:case="'3187ed6c-e808-4778-a6ae-c232acfdd75c'" class="linked" id="lineaticonw" src="medias/lineatlogo.png" />
+                    <img th:case="*" id="lineaticonw" class="unlink" src="medias/lineatlogo.png" onclick="redirectPage('/')" />
+                </div>
+                <div id="headmenuarea" class="col-3 col-sm-3 col-md-3 col-lg-9 col-xl-9">
+                    <nav id="arefianav" class="navbar navbar-expand-lg navbar-dark">
+                        <button id="arefiatogglebtn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#arefiatopmenumodel" aria-controls="arefiatopmenumodel" aria-expanded="true" aria-label="Toggle navigation">
+                            <span id="arefiatoggleicon" class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="arefiatopmenumodel">
+                            <ul id="arefiamenuul" class="navbar-nav mr-auto"></ul>
+                        </div>
+                    </nav>
+                </div>
+                <div id="arefiaiconsdiv" class="col-4 col-sm-4 col-md-4 col-lg-0 col-xl-0" th:switch="${pageid}">
+                    <img th:case="'3187ed6c-e808-4778-a6ae-c232acfdd75c'" class="linked" id="lineaticons" src="medias/lineatlogo.png" />
+                    <img th:case="*" id="lineaticons" class="unlink" src="medias/lineatlogo.png" onclick="redirectPage('/')" />
+                </div>
+                <div id="headuserarea" class="col-5 col-sm-5 col-md-5 col-lg-2 col-xl-2" th:switch="${pageid}">
+                    <label th:case="'1da26404-189b-4286-8a70-6fe8265d60a4'" id="usernamelab"></label>
+                    <label th:case="*" id="usernamelab" onclick="redirectPage('/usereditor')"></label>
+                    <form name="fout" th:action="@{/logout}" method="post">
+                        <i class="fas fa-door-open" id="logoutdoor" onclick="$('form[name=fout]').submit();"></i>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

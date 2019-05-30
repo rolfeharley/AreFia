@@ -1,0 +1,413 @@
+@charset "UTF-8";
+
+#arefiahorizonheader {
+	position: fixed;
+	z-index: 996;
+	top: 0;
+	left: 0;
+}
+
+#arefiaiconwdiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+	background: #353844;
+	margin: 0;
+	padding: 0;
+}
+
+#lineaticonw.unlink {
+	cursor: pointer;
+}
+
+#lineaticonw.linked {
+	cursor: default;
+}
+
+#arefiaiconsdiv {
+	display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+	background: #353844;
+}
+
+#lineaticons.unlink {
+	cursor: pointer;
+}
+
+#lineaticons.linked {
+	cursor: default;
+}
+
+#usernamelab {
+	color: #FFF;
+	cursor: pointer;
+}
+
+#logoutdoor {
+	color: #FFF;
+	cursor: pointer;
+}
+
+#headmenuarea {
+	padding: 0;
+	margin: 0;
+}
+
+#headuserarea {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	background: #353844;
+}
+
+#arefianav {
+	background: #353844;
+}
+
+#arefiamenuul {
+	padding: 0;
+}
+
+li.unlink {
+	color: #FFF;
+	cursor: pointer;
+}
+
+li.unlink:hover {
+	color: #FFFF00;
+	cursor: pointer;
+}
+
+li.linked {
+	color: #00BBFF;
+	cursor: default;
+}
+
+#arefiatogglebtn {
+    border-color: rgb(255, 255, 255);
+    border-width: 3px;
+}
+
+#arefiatogglebtn:focus {
+    outline: none;
+}
+
+#arefiatoggleicon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.7)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+@media screen and (max-width:575.99px) {
+	#headmenuarea {
+	    height: 10vh;
+    }
+    
+    #headuserarea {
+	    height: 10vh;
+    }
+    
+    #arefiaiconwdiv {
+        display: none;
+    }
+    
+    #arefiaiconsdiv {
+        display: '';
+    }
+    
+    #arefianav {
+	    height: 10vh;
+    }
+    
+    #arefiatopmenumodel {
+        margin-top: 2.2vh;
+        margin-left: -3.5vw;
+        background: #353844;
+    }
+    
+    #arefiamenuul {
+        width: 100vw;
+    }
+    
+    #arefiamenuul li {
+        width: 100vw;
+        padding-top: 2vh;
+        padding-left: 3.5vw;
+        height: 9vh;
+    }
+    
+    #arefiamenuul li:not(:last-child) {
+        border-bottom: 1px solid #FFF;
+    }
+
+    li {
+	    font-size: 3vh;
+    }
+    
+    #usernamelab {
+	    font-size: 3vh;
+	    margin-top: 1.2vh;
+    }
+
+    #logoutdoor {
+	    font-size: 3vh;
+	    margin-left: 3vh;
+    }
+    
+    #arefiaiconsdiv {
+        padding-left: 7vw;        
+    }
+    
+    #lineaticons {
+        height: 4vh; 
+        width: 20vw;
+    }
+}
+
+@media screen and (min-width:576px) and (max-width:767.99px) {
+    #headmenuarea {
+	    height: 10vh;
+    }
+    
+    #headuserarea {
+	    height: 10vh;
+    }
+    
+    #arefiaiconwdiv {
+        display: none;
+    }
+    
+    #arefiaiconsdiv {
+        display: '';
+    }
+    
+    #arefianav {
+	    height: 10vh;
+    }
+    
+    #arefiatopmenumodel {
+        margin-top: 2.2vh;
+        margin-left: -2vw;
+        background: #353844;
+    }
+    
+    #arefiamenuul {
+        width: 100vw;
+    }
+    
+    #arefiamenuul li {
+        width: 100vw;
+        padding-top: 2vh;
+        padding-left: 2vw;
+        height: 9vh;
+    }
+    
+    #arefiamenuul li:not(:last-child) {
+        border-bottom: 1px solid #FFF;
+    }
+
+    li {
+	    font-size: 3vh;
+    }
+    
+    #usernamelab {
+	    font-size: 3vh;
+	    margin-top: 1.2vh;
+    }
+
+    #logoutdoor {
+	    font-size: 3vh;
+	    margin-left: 3vh;
+    }
+    
+    #arefiaiconsdiv {
+        padding-left: 8vw;        
+    }
+    
+    #lineaticons {
+        height: 5vh; 
+        width: 22vw;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:991.99px) {
+	#headmenuarea {
+	    height: 10vh;
+    }
+    
+    #headuserarea {
+	    height: 10vh;
+    }
+
+    #arefiaiconwdiv {
+        display: none;
+    }
+    
+    #arefiaiconsdiv {
+        display: '';
+    }
+    
+    #arefianav {
+	    height: 10vh;
+    }
+    
+    #arefiatopmenumodel {
+        margin-top: 2.2vh;
+        margin-left: -1.8vw;
+        background: #353844;
+    }
+    
+    #arefiamenuul {
+        width: 100vw;
+    }
+    
+    #arefiamenuul li {
+        width: 100vw;
+        padding-top: 2vh;
+        padding-left: 2vw;
+        height: 9vh;
+    }
+    
+    #arefiamenuul li:not(:last-child) {
+        border-bottom: 1px solid #FFF;
+    }
+    
+    #arefiatogglebtn {
+        color: #FFF;
+    }
+    
+    li {
+	    font-size: 3vh;
+    }
+    
+    #usernamelab {
+	    font-size: 3vh;
+	    margin-top: 1.5vh;
+    }
+
+    #logoutdoor {
+	    font-size: 3vh;
+	    margin-left: 3vh;
+    }
+    
+    #arefiaiconsdiv {
+        padding-left: 8vw;   
+    }
+    
+    #lineaticons {
+        height: 5vh; 
+        width: 17vw;
+    }
+}
+
+@media screen and (min-width:992px) and (max-width:1199.99px) {
+	#headmenuarea {
+	    height: 7vh;
+    }
+
+    #headuserarea {
+	    height: 7vh;
+    }
+    
+    #arefiaiconwdiv {
+        display: '';
+    }
+    
+    #arefiaiconsdiv {
+        display: none;
+    }
+    
+    #arefianav {
+	    padding-top: 1.5vh;
+	    height: 7vh;
+    }
+        
+    li:last-child {
+        padding-left: 3vh;
+    }
+    
+    li:not(:last-child) {
+        padding-left: 3vh;
+        padding-right: 3vh;
+    }
+    
+    li {
+        border-left: 1px solid #FFFFFF;
+    }
+    
+    li {
+	    font-size: 2.5vh;
+    }
+    
+    #usernamelab {
+	    font-size: 2.5vh;
+	    margin-top: 1.5vh;
+    }
+
+    #logoutdoor {
+	    font-size: 2.5vh;
+	    margin-left: 3vh;
+    }
+    
+    #lineaticonw {
+        height: 3vh; 
+        width: 7vw;
+    }
+}
+
+@media screen and (min-width:1200px) {
+	#headmenuarea {
+	    height: 7vh;
+    }
+
+    #headuserarea {
+	    height: 7vh;
+    }
+    
+    #arefiaiconwdiv {
+        display: '';
+    }
+    
+    #arefiaiconsdiv {
+        display: none;
+    }
+    
+    #arefianav {
+	    padding-top: 1.2vh;
+	    height: 7vh;
+    }
+
+    li:last-child {
+        padding-left: 3vh;
+    }
+    
+    li:not(:last-child) {
+        padding-left: 3vh;
+        padding-right: 3vh;
+    }
+    
+    li {
+        border-left: 1px solid #FFFFFF;
+    }
+    
+    li {
+	    font-size: 3vh;
+    }
+    
+    #usernamelab {
+	    font-size: 3vh;
+	    margin-top: 1.2vh;
+    }
+
+    #logoutdoor {
+	    font-size: 3vh;
+	    margin-left: 4vh;
+    }
+    
+    #lineaticonw {
+        height: 4vh; 
+        width: 7vw;
+    }
+}

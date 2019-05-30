@@ -1,0 +1,328 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family: iEnglishFont;
+	src: url(../font/engFont1.otf);
+}
+
+html {
+	opacity: 0;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	/*font-family: iEnglishFont, "Microsoft JhengHei";*/
+}
+
+.bkgdiv {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100vw;
+	height: 100vh;
+	background: url(../media/indexback.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-filter:brightness(15%);
+    filter:brightness(15%);
+}
+
+.headerarea {
+	background: #003377;
+	border: 0 none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 900;
+	color: #FFF;
+}
+
+.headerlogo, .headeruser, .headerhome, .headerlogout {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.hraderleft {
+    justify-content: flex-start;
+}
+
+.headeruser, .headerhome, .headerlogout {
+    justify-content: flex-end;
+}
+
+.headerlogo div:nth-child(1) {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+	
+.headerlogo div:nth-child(2) {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.headeruser div:nth-child(1) {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+	
+.headeruser div:nth-child(2) {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.functionicon {
+	cursor: pointer;
+}
+
+.functionicon:hover {
+	color: #FFFF00;
+}
+
+.bodyarea {
+	width: 100vw;
+	min-height: 100vh;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.fttitle {
+	background: #003377;
+	border: 1px solid #DDD;
+	border-radius: 5px 5px 0 0;
+	color: #FFFFFF;
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.ftbody {
+	border-left: 1px solid #DDD;
+	border-right: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
+	border-radius: 0 0 5px 5px;
+}
+
+.ftclname {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.ftclval {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.ftclbtn {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+	color: #FFF;
+}
+
+@media (max-width:575px) {
+	.headerarea div {
+	    height: 8vh;
+	}
+		
+	.headerlogo {
+	    width: 6.5vh;
+	    height: 6.5vh;
+	}
+		
+	.systitle, .loginname {
+        font-size: 1em;
+    }
+    
+    .functionicon, .prefixicon {
+        font-size: 1.2em;
+    }
+    
+    .bodyarea {
+        padding-top: 10vh;
+    }
+    
+    .ftmaster {
+	    width: 95vw;
+	}
+	
+	.fttitle {
+	    width: 95vw;
+	    height: 10vh;
+	    font-size: 2em;
+	    padding: 1vh 2vw;
+	}
+}
+
+@media (min-width:576px) and (max-width:767px) {
+	.headerarea div {
+	    height: 8vh;
+	}
+		
+	.headerlogo {
+	    width: 7vh;
+	    height: 7vh;
+	}
+		
+	.systitle, .loginname {
+        font-size: 1.6em;
+    }
+    
+    .functionicon, .prefixicon {
+        font-size: 1.8em;
+    }
+    
+    .bodyarea {
+        padding-top: 10vh;
+    }
+    
+    .ftmaster {
+	    width: 95vw;
+	}
+	
+	.fttitle {
+	    width: 95vw;
+	    height: 10vh;
+	    font-size: 2em;
+	    padding: 1vh 2vw;
+	}
+}
+
+@media (min-width: 768px) and (max-width:991px) {
+    .headerarea div {
+	    height: 8vh;
+	}
+		
+	.headerlogo {
+	    width: 7vh;
+	    height: 7vh;
+	}
+		
+	.systitle, .loginname {
+        font-size: 1.8em;
+    }
+    
+    .functionicon, .prefixicon {
+        font-size: 2em;
+    }
+    
+    .bodyarea {
+        padding-top: 9vh;
+    }
+    
+    .ftmaster {
+	    width: 95vw;
+	}
+	
+	.fttitle {
+	    width: 95vw;
+	    height: 10vh;
+	    font-size: 2em;
+	    padding: 1vh 2vw;
+	}
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+	.headerarea div {
+	    height: 8vh;
+	}
+		
+	.headerlogo {
+	    width: 7vh;
+	    height: 7vh;
+	}
+		
+	.systitle, .loginname {
+        font-size: 1.8em;
+    }
+    
+    .functionicon, .prefixicon {
+        font-size: 2em;
+    }
+    
+    .bodyarea {
+        padding-top: 9vh;
+    }
+    
+    .ftmaster {
+	    width: 60vw;
+	}
+	
+	.fttitle {
+	    width: 60vw;
+	    height: 6vh;
+	    font-size: 1.8em;
+	    padding: 1vh 1vw 0 1vw;
+	}
+}
+
+@media (min-width:1200px) {
+	.headerarea div {
+	    height: 8vh;
+	}
+	
+	.headerlogo {
+	    width: 7vh;
+	    height: 7vh;
+	}
+		
+	.systitle, .loginname {
+        font-size: 1.8em;
+    }
+    
+    .functionicon, .prefixicon {
+        font-size: 2em;
+    }
+    
+    .bodyarea {
+        padding-top: 9vh;
+    }
+    
+    .ftmaster {
+	    width: 60vw;
+	}
+	
+	.fttitle {
+	    width: 60vw;
+	    height: 8vh;
+	    font-size: 1.8em;
+	}
+	
+	.ftstring {
+	    margin-top: 1vh;
+	    margin-left: 1vw;
+	}
+}

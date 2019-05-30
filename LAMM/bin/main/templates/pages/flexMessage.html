@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flex Message</title>
+        <div th:replace="fragment/lineApiHeader :: header_resource"></div>
+        <script src="frameworks/jsGrid/jsgrid.js"></script>
+        <script src="scripts/createflexmod.js"></script>
+        <script src="scripts/editflexmsgcontent.js"></script>
+        <script src="scripts/generateGUID.js"></script>
+        
+        <script th:inline="javascript">            
+            $(function() {
+            	$('#backgrounddiv').css({
+            		opacity: 0,
+            		top: $(window).height()
+            	});
+            	var menuList = JSON.parse([[${menuinfo}]]);
+
+                for (var m = 0; m < menuList.length; m++) {
+                	if (menuList[m].MenuID != [[${pageid}]]) {
+                		$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'' + menuList[m].MenuURL + '\')">' + menuList[m].MenuName + '</li>');
+                	} else {
+                		$('#arefiamenuul').append('<li class="linked">' + menuList[m].MenuName + '</li>');
+                	}
+                }
+                
+                $('#usernamelab').text([[${username}]]);
+                
+                $('#flexgridpager').css('display', 'none');
+            })
+            
+            function redirectPage(urlStr) {
+                window.location.href = urlStr;
+            }
+            
+            function showflexlist() {
+    			$("#flexresgrid").html('');
+    			$('#flexgridpager').css('display', 'none');
+    			
+            	$.get('getflexquery', {KEYWORD: $('#flexkeytext').val()}, function(result) {
+                    if (result != null && result != '') {
+                		var msgsList = JSON.parse(result);            		
+                		if (msgsList.length > 0) {
+                			$("#flexresgrid").jsGrid({
+                			    width:  "100%",
+                			    inserting:  false,
+                			    editing:  false,
+                			    sorting:  true,
+                			    paging:  true,
+                			    data: msgsList,
+                			    pagerContainer: $('#flexgridpager'),
+                			    pageSize: 5,
+                			    fields:  [
+                			        { name: "TITLE", title: "Title", type: "text", align: "center", width: 250 },
+                			        { name: "CREATEDATE", title: "Create Date", type: "text",  align: "center", width: 60 },
+                			        {
+                			            type: "control", width: 100, editButton: false, deleteButton: false,
+                			            headerTemplate: function() {
+                			            	return 'Send Message';
+                			            },
+                			            itemTemplate: function(value, item) {
+                			                var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                			                var $customEditButton = $('<button>').attr({class: 'btn btn-warning'}).click(function(e) {
+                			                	$('#backgrounddiv').animate({
+                			            		    opacity: 0.9,
+                			            		    top: 0
+                			            		  }, 500, function() {
+                			            		    $('body').append(createflexdetaileditor('1', null, item.UID));
+                			            		});
+                			                });
+
+                			                $customEditButton.append($('<span><i class="far fa-comment-alt"></i>Send</span>'));
+                			                return $('<div>').append($customEditButton);
+                			            }
+                			        }
+                			    ]
+                			});
+                		} else {
+                			alert('No Data Found!!');
+                		}
+                	} else {
+                		alert('No Data Found!!');
+                	}
+                });
+            }
+            
+            function addnewflex() {
+            	$('#backgrounddiv').animate({
+        		    opacity: 0.9,
+        		    top: 0
+        		  }, 500, function() {
+        		    $('body').append(createflexmodselect());
+        		});
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="frameworks/jqueryUI/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="frameworks/jsGrid/jsgrid.css" />
+        <link rel="stylesheet" type="text/css" href="styles/flexmessage.css" />
+    </head>
+    <body class="linebody">
+        <div th:replace="fragment/lineApiHeader :: headerTemp"></div>
+        <div class="container-fluid areafiamainbody">
+            <div id="querydiv" class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="flexquerybox">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="text-align: right; width: 15%;">
+                                    <label>Key Word</label>
+                                </td>
+                                <td style="text-align: left; width: 50%;">
+                                    <input type="text" id="flexkeytext" class="form-control largetextbox" />
+                                </td>
+                                <td style="text-align: center; width: 15%;">
+                                    <button type="button" class="btn btn-info flexqrybtn" onclick="showflexlist()">
+                                        <span><i class="fas fa-search"></i>Query</span>
+                                    </button>
+                                </td>
+                                <td style="text-align: center; width: 15%;">
+                                    <button type="button" class="btn btn-primary flexqrybtn" onclick="addnewflex()">
+                                        <span><i class="fas fa-plus"></i>New</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="flexresgrid"></div>
+            <div id="flexgridpager"></div>
+        </div>
+        <div id="backgrounddiv"></div>
+    </body>
+</html>

@@ -1,0 +1,202 @@
+@charset "UTF-8";
+
+.titlediv {
+	text-align: right;
+	padding-top: 15px;
+}
+
+.conddiv {
+	padding: 10px 0;
+}
+
+.btndiv {
+	padding: 10px;
+	text-align: center;
+}
+
+.newaddformcontent {
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 999;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-start;
+	overflow: auto;
+}
+
+.restitle {
+	text-align: center; 
+	background: #FF5511; 
+	font-weight: 900; 
+	color: #FFF; 
+	border: 1px solid #FFF;
+	border-radius: 10px 10px 0 0;
+}
+
+@media (max-width:575px) {
+	.txb-sm {
+	    width: 30vw;
+	}
+    
+	.txb-md {
+	    width: 60vw;
+    }
+    
+    .txb-lg {
+	    width: 80vw;
+    }
+    
+    .addnewagentbtn {
+	    margin-left: 65vw;
+    }
+    
+    .resmaster {
+        width: 65vw;
+        padding-top: 20px;
+    }
+    
+    .restitle {
+        width: 65vw;
+        font-size: 1.5vw;
+    }
+    
+    .resbody {
+        width: 65vw;
+    }
+}
+
+@media (min-width:576px) and (max-width:767px) {
+	.txb-sm {
+	    width: 30vw;
+	}
+	
+	.txb-md {
+	    width: 60vw;
+    }
+    
+    .txb-lg {
+	    width: 80vw;
+    }
+    
+    .addnewagentbtn {
+	    margin-left: 65vw;
+    }
+    
+    .resmaster {
+        width: 65vw;
+        padding-top: 20px;
+    }
+    
+    .restitle {
+        width: 65vw;
+        font-size: 1.5vw;
+    }
+    
+    .resbody {
+        width: 65vw;
+    }
+}
+
+@media (min-width: 768px) and (max-width:991px) {
+	.txb-sm {
+	     width: 30vw;
+	}
+	
+    .txb-md {
+	    width: 60vw;
+    }
+    
+    .txb-lg {
+	    width: 80vw;
+    }
+    
+    .newaddforminside {
+	    width: 65vw;
+    }
+    
+    .resmaster {
+        width: 65vw;
+        padding-top: 20px;
+    }
+    
+    .restitle {
+        width: 65vw;
+        font-size: 1.5vw;
+    }
+    
+    .resbody {
+        width: 65vw;
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+	.txb-sm {
+	     width: 8vw;
+	}
+	
+	.txb-md {
+	    width: 15vw;
+    }
+    
+    .txb-lg {
+	    width: 70vw;
+    }
+    
+    .newaddforminside {
+	    width: 80vw;
+    }
+    
+    .resmaster {
+        width: 80vw;
+        padding-top: 20px;
+    }
+    
+    .restitle {
+        width: 80vw;
+        font-size: 1.5vw;
+    }
+    
+    .resbody {
+        width: 80vw;
+    }
+}
+
+@media (min-width:1200px) {
+	.txb-sm {
+	     width: 8vw;
+	}
+	
+	.txb-md {
+	    width: 15vw;
+    }
+    
+    .txb-mg {
+        width: 30vw;
+    }
+    
+    .txb-lg {
+	    width: 70vw;
+    }
+    
+    .newaddforminside {
+	    width: 80vw;
+    }
+    
+    .resmaster {
+        width: 80vw;
+        padding-top: 20px;
+    }
+    
+    .restitle {
+        width: 80vw;
+        font-size: 1.5vw;
+    }
+    
+    .resbody {
+        width: 80vw;
+    }
+}

@@ -1,0 +1,258 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family: iEnglishFont;
+	src: url(../font/engFont1.otf);
+}
+
+html {
+	opacity: 0;
+}
+
+@-webkit-keyframes backcolor {
+    0% {filter: hue-rotate(0);}
+    10% {filter: hue-rotate(36deg)}
+    20% {filter: hue-rotate(72deg)}
+    30% {filter: hue-rotate(108deg)}
+    40% {filter: hue-rotate(144deg)}
+    50% {filter: hue-rotate(180deg);}
+    60% {filter: hue-rotate(216deg);}
+    70% {filter: hue-rotate(252deg);}
+    80% {filter: hue-rotate(288deg);}
+    90% {filter: hue-rotate(324deg);}
+    100% {filter: hue-rotate(360deg);}
+}
+
+@keyframes backcolor {
+    0% {filter: hue-rotate(0);}
+    10% {filter: hue-rotate(36deg)}
+    20% {filter: hue-rotate(72deg)}
+    30% {filter: hue-rotate(108deg)}
+    40% {filter: hue-rotate(144deg)}
+    50% {filter: hue-rotate(180deg);}
+    60% {filter: hue-rotate(216deg);}
+    70% {filter: hue-rotate(252deg);}
+    80% {filter: hue-rotate(288deg);}
+    90% {filter: hue-rotate(324deg);}
+    100% {filter: hue-rotate(360deg);}
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: iEnglishFont, "Microsoft JhengHei";
+}
+
+.bkgdiv {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100vw;
+	height: 100vh;
+	background: url(../media/background.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-animation: backcolor 5s infinite;
+    animation: backcolor 5s infinite;
+}
+
+form {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+form div {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginarae {
+    width: 100vw;
+	height: 100vh;
+    flex-direction: column;
+}
+
+.logheader {
+    border-radius: 8px 8px 0 0;
+    border-bottom: 1px solid #BBAADD; 
+	background: #220088;
+    color: #FFF;
+    text-shadow: 2px 2px 3px #333;
+}
+
+.loginbody {
+	background: #220088;
+    position: relative;
+}
+
+.buttonarea {
+	background: #220088;
+}
+
+.loginfooter {
+	border-radius: 0 0 8px 8px;
+	border-top: 1px solid #BBAADD; 
+	background: #220088;
+}
+
+.loginfooter label {
+	color: #FF0000;
+}
+
+.texticon {
+	position: absolute;
+	color: #AAAAAA;
+}
+
+@media (max-width:575px) {
+	.logheader {
+        font-size: 1em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 80vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 10vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 8vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 8vw;
+	    width: 76vw;
+    }
+    
+    .texticon {
+	    left: 1.8vw;
+	    top: 3vh;
+    }
+}
+
+@media (min-width:576px) and (max-width:767px) {
+	.logheader {
+        font-size: 1em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 42vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 3.3vw;
+	    width: 38vw;
+    }
+    
+    .texticon {
+	    left: 1.9vw;
+	    top: 2.5vh;
+    }
+}
+
+@media (min-width: 768px) and (max-width:991px) {
+    .logheader {
+        font-size: 1.5em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 46vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 2.8vw;
+	    width: 42vw;
+    }
+    
+    .texticon {
+	    left: 2vw;
+	    top: 2.5vh;
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+	.logheader {
+        font-size: 1.5em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 38vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 2.3vw;
+	    width: 34vw;
+    }
+    
+    .texticon {
+	    left: 2vw;
+	    top: 2.5vh;
+    }
+}
+
+@media (min-width:1200px) {
+	.logheader {
+        font-size: 1.5em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 28vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 1.6vw;
+	    width: 24vw;
+    }
+    
+    .texticon {
+	    left: 2vw;
+	    top: 2.5vh;
+    }
+}

@@ -1,0 +1,258 @@
+@charset "UTF-8";
+
+#arefiauserlist {
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #FFFFFF;
+	padding: 0;
+}
+
+#arefiamessagelist {
+    overflow-x: hidden;
+	overflow-y: auto;
+	background: #FFFFFF;
+	padding: 0;
+	border-left: 1px solid #DADEE1;
+}
+    
+#arefiaconvtitle {
+	clear: both;
+    width: 100%;
+    background: #EFF2F5;
+    border-bottom: 1px solid #DADEE1;
+}
+    
+#arefiamessagetool {
+    width: 100%;
+    border-top: 1px solid #DADEE1;
+    border-bottom: 1px solid #DADEE1;
+    background: #EFF2F5;
+    color: #8692A3;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+    
+#arefiamessagebody {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+    
+#arefiamessageeditor {
+    width: 100%;
+    padding: 2px;
+}
+    
+#arefiamsgtxtarea {
+    width: 100%;
+    border: 0px none #FFFFFF;
+}
+    
+#arefiamsgtxtarea:focus {
+    outline: none;
+}
+
+.arefiafollowercontainer {
+	display: flex;
+	flex-direction: row;
+	background: #FFFFFF; 
+	padding: 5px;
+	cursor: pointer;
+}
+
+.arefiafollowercontainer:hover {
+	background: #F9FAFC;
+}
+
+.arefiafollowercontainerselected {
+	display: flex;
+	flex-direction: row;
+	padding: 5px;
+	cursor: pointer;
+	background: #EDEFF2;
+}
+
+.arefiafollowericon, .arefiaSrcFimg {
+	background-size: cover; 
+	background-repeat: no-repeat; 
+	background-position: center center;
+}
+
+.arefiaunrmsgcount {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: #4AD138; 
+	color: #FFFFFF;
+}
+
+.arefialastmessage, .arefiamessagetime {
+    color: #BDC3CA;
+}
+
+.arefiaSrcFrame, .arefiaMsfFrame {
+	width: 100%;
+}
+
+.arefiaConTimes {
+    color: #ADB0B7;
+} 
+
+.arefiaSrcMsgBox {
+	background: #E4E8EB;
+}
+
+.arefiaMsfMsgBox {
+	background: #BEF18C;
+}
+
+#stickbtn, #attabtn {
+    cursor: pointer;
+}
+
+#mvhistbtn {
+	float: right;
+	cursor: pointer; 
+	color: #FF0000;
+}
+
+@media screen and (max-width:575.99px) {
+	#arefiauserlist {
+	    height: 90vh;
+	}
+	
+	#arefiamessagelist {
+	    height: 90vh;
+	}
+}
+
+@media screen and (min-width:576px) and (max-width:767.99px) {
+	#arefiauserlist {
+	    height: 90vh;
+	}
+	
+	#arefiamessagelist {
+	    height: 90vh;
+	}
+}
+
+@media screen and (min-width:768px) and (max-width:991.99px) {
+	#arefiauserlist {
+	    height: 90vh;
+	}
+	
+	#arefiamessagelist {
+	    height: 90vh;
+	}
+}
+
+@media screen and (min-width:992px) and (max-width:1199.99px) {
+	#arefiauserlist {
+	    height: 93vh;
+	}
+	
+	#arefiamessagelist {
+	    height: 93vh;
+	}
+}
+
+@media screen and (min-width:1200px) {
+	#arefiauserlist {
+	    height: 93vh;
+	}
+	
+	#arefiamessagelist {
+	    height: 93vh;
+	    overflow: hidden;
+	}
+	
+	#arefiaconvtitle {
+        height: 6vh;
+        padding-left: 20px;
+        padding-top: 1vh;
+    }
+    
+    #mvhistbtn {
+        margin-right: 20px;
+        font-size: 3vh;
+    }
+    
+    #arefiamessagetool {
+        height: 5vh;
+    }
+    
+    #arefiamessagebody {
+        height: 62vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    #arefiamessageeditor {
+        height: 20vh;
+    }
+    
+    #arefiamsgtxtarea {
+        height: calc(20vh - 16px);
+    }
+    
+    .arefiafollowericon {
+	    width: 4vw; 
+	    height: 4vw;
+	    border-radius: 4vw;
+    }
+    
+    .arefiaunrmsgcount {
+        margin-top: 1vw;
+	    min-width: 2vw; 
+	    height: 2vw;
+	    font-size: 1vw;
+	    border-radius: 2vw;
+    }
+    
+    .arefiamessagetime {
+        margin-top: 0.5vw;
+	    width: 7vw; 
+	    height: 2vw;
+    }
+    
+    .arefiafollowername {
+        height: 2vw;
+        width: calc(33vw - 15vw - 10px);
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .arefialastmessage {
+        height: 2vw;
+        width: calc(33vw - 15vw - 10px);
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .arefiaSrcFimg {
+        width: 3vw; 
+	    height: 3vw;
+	    border-radius: 3vw;
+    }
+    
+    .arefiaSrcMsgBox, .arefiaMsfMsgBox {
+	    padding: 10px;
+	    border-radius: 10px;
+    }
+    
+    .arefiaConTimes {
+        font-size: 0.8vw;
+    }
+    
+    .arefiaSrcFrame, .arefiaMsfFrame {
+        padding: 20px 10px;;
+    }
+    
+    #stickbtn, #attabtn {
+        font-size: 1.5vw;
+        margin: 0 2vw;
+    }
+}

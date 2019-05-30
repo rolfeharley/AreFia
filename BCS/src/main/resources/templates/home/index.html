@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>獎金計算系統</title>
+        <div th:replace="fragment/headerTemp :: header_style"></div>
+        <link rel="stylesheet" type="text/css" href="style/index.css" />
+        
+        <script th:inline="javascript">
+            $(function() {
+            	var menuContent = [[${menustring}]];
+        		
+        		$('.menuMaster').html(menuContent);
+            })
+        </script>
+    </head>
+    <body>
+        <div th:replace="fragment/headerTemp :: headerTemp"></div>
+        <div class="bodyarea">
+            <div class="container-fluid menuMaster"></div>
+        </div>
+        <div class="bkgdiv"></div> 
+    </body>
+</html>

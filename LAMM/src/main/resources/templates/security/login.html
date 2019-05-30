@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Line@ Manager Login</title>
+        <script src="frameworks/jquery.js"></script>
+        <script src="frameworks/bootstrap/js/bootstrap.js"></script>
+        <script src="frameworks/fontawesome/js/all.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="frameworks/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="frameworks/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="styles/login.css" />
+        
+        <script>
+            $(function() {
+            	$.get("envcheck", function(result) {
+            	    if (!result) {
+            	        window.location.replace('/unsupported');
+            	    } else {
+                    	$('html').animate({
+                    		opacity: 1
+                    	}, 800);
+            	    }
+            	});
+            })
+        </script>
+    </head>
+    <body>
+        <div class="bkgdiv"></div>
+        <form name="f" th:action="@{/login}" method="post">
+            <div class="loginarae">
+                <div class="loginicon">
+                    <img class="linestring" src="medias/lineLogo.png" />
+                </div>
+                <div class="logheader">
+                    <label>LINE@ MANAGER</label>
+                </div>
+                <div class="loginbody">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Account" />
+                    <i class="fas fa-user fa-lg fa-fw texticon"></i>
+                </div>
+                <div class="loginbody">
+                    <i class="fas fa-key fa-lg fa-fw texticon"></i>
+                    <input type="password" id="password" name="password"  class="form-control" placeholder="Password" />
+                </div>
+                <div class="buttonarea">
+                    <button type="submit" class="btn btn-info">Login</button>
+                </div>
+                <div class="loginfooter">
+                    <label th:if="${param.error}">Invalid Account Or Password</label>
+                    <label th:if="${param.logout}">You Have Been Logged Out</label>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

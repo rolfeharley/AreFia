@@ -1,0 +1,432 @@
+@charset "UTF-8";
+
+.flexquerybox {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #F5F5F5;
+	border-radius: 10px;
+	margin: 10px auto;
+}
+
+#backgrounddiv {
+	position: fixed;
+	left: 0;
+	z-index: 997;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	background: #000;
+}
+
+#flexmoddiv {
+	position: fixed;
+	left: 5vw;
+	top: 5vh;
+    z-index: 998; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding: 10px; 
+    background: #FFF; 
+    border-radius: 10px;
+}
+
+.flexmodselector {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.flexmodtable {
+	width: 90%; 
+	border: 1px solid #000; 
+	border-radius: 5px;
+	margin-bottom: 5px;
+}
+
+.flexmodtable table {
+	width: 100%;
+}
+
+.flexmodselector input[type="radio"] {
+	margin-bottom: 20px;
+}
+
+.templateexebtn {
+	display: flex; 
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+}
+
+.demoarea {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 998;
+	display: flex; 
+	flex-direction: column;
+	justify-content: center; 
+	align-items: center;
+	width: 50vw;
+	height: 100vh;
+}
+
+.editarea {
+	position: fixed;
+	top: 0;
+	left: 50vw;
+	z-index: 998;
+	display: flex; 
+	flex-direction: column;
+	justify-content: center; 
+	align-items: center;
+	width: 50vw;
+	height: 100vh;
+	border: 3px dashed #F5F5F5;
+	border-radius: 10px;
+}
+
+.contentviewer {
+	max-height: calc(100vh - 140px);
+	overflow: auto;
+}
+
+.flexoutter1, .flexoutter2, .flexoutter3 {	
+	min-height: 10vh;
+	border: 1px solid #F5F5F5;
+	border-radius: 1vw;
+	padding: 1vw;
+	background: #FFF;
+}
+
+.flexoutter1 {
+	display: flex;
+	flex-direction: column;
+	justify-content: center; 
+	align-items: center;
+}
+
+.flexoutter2 {
+	display: flex;
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+}
+
+.flexsuboutter {
+	display: flex;
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+}
+
+.flexblock1, .flexblock2, .flexblock4 {
+	min-height: 15vh;
+	font-size: 1.7vw;
+	word-break: break-all;
+	line-height: 1;
+	background: #DCDCDC;
+	border: 1px dashed #21BA39;
+	cursor: pointer;
+}
+
+.flexblock3 {
+	min-height: 30vh;
+	font-size: 1.7vw;
+	word-break: break-all;
+	line-height: 1;
+	background: #DCDCDC;
+	border: 1px dashed #21BA39;
+	cursor: pointer;
+}
+
+.flexblock1:hover, .flexblock2:hover, .flexblock3:hover, .flexblock4 {
+	background: #FFF;
+}
+
+.flexblock1, .flexblock3 {
+    width: calc(29.5vw + 2px);
+}
+
+.flexblock2 {
+	width: calc(14.75vw + 2px);
+}
+
+.flexblock4 {
+	width: calc(9.8vw + 2px);
+}
+
+.contenttypeselector {
+	position: fixed;
+	z-index: 999;
+	display: flex;
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+	width: 5vw;
+	height: 5vw;
+	border: 2px solid #FFF;
+	border-radius: 5vw;
+	color: #FFF;
+	font-size: 3vw;
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+.contenttypeselector:hover {
+	border-color: #21BA39;
+	color: #21BA39;
+}
+
+.textareaforflex1, .textareaforflex2, .textareaforflex3 {
+	font-size: 1.7vw;
+	line-height: 1;
+	resize: none;
+}
+
+.textareaforflex1 {
+    width: 31.5vw;
+}
+
+.textareaforflex2 {
+    width: 16.8vw;
+}
+
+.textareaforflex3 {
+    width: 10.2vw;
+}
+
+.flexbtnoutter {
+	display: flex; 
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+	margin-top: 15px;
+}
+
+.flextitleoutterdiv {
+	position: fixed;
+	top: 25px;
+	left: 9.75vw;
+	width: 30.5vw;
+	z-index: 999;
+}
+
+.flexlinkurltxt {
+	width: 46vw;
+	margin-top: 15px;
+}
+
+.imgforflex1, .imgforflex2, .imgforflex3 {
+	min-height: 30vh;
+	background: #FFF;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+	padding: 1vw;
+}
+
+.imgforflex1 {
+    width: 30.5vw;
+}
+
+.imgforflex2 {
+    width: 15.25vw;
+}
+
+.imgforflex3 {
+    width: 10.2vw;
+}
+
+.fleximgstyle, .demoimgstyle {
+	max-width:100%;
+    max-height:100%;
+}
+
+.operationflexmsg {
+	position: fixed;
+	z-index: 999;
+	display: flex;
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+	border: 2px solid #FFF;
+	border-radius: 5px;
+	width: 120px;
+	height: 30px;
+	font-weight: 900;
+	color: #FFF;
+	cursor: pointer;
+	opacity: 0.7;
+}
+
+.operationflexmsg:hover {
+	color: #21BA39;
+	border-color: #21BA39;
+}
+
+.blockselector {
+	position: fixed;
+	z-index: 999;
+	display: flex;
+	flex-direction: cloumn;
+	justify-content: center; 
+	align-items: center;
+	border: 2px solid #FFF;
+	border-radius: 5px;
+	width: 3vw;
+	height: 3vw;
+	font-weight: 900;
+	color: #FFF;
+	cursor: pointer;
+	opacity: 0.7;
+}
+
+.jsgrid-grid-header, .jsgrid-grid-body {
+    overflow: hidden;
+}
+
+.jsgrid-header-row > .jsgrid-header-cell {
+    background-color: #696969;
+    color: #FFF;
+    font-size: 1.2em;
+    font-weight: 900;
+    border: 1px solid #A9A9A9;
+}
+
+.jsgrid-row {
+	background-color: #FFF;
+	cursor: default;
+}
+
+.jsgrid-alt-row {
+	background-color: #DCDCDC;
+	cursor: default;
+}
+
+.jsgrid-row > .jsgrid-cell {
+    border: 1px solid #A9A9A9;
+    cursor: default;
+}
+
+.jsgrid-alt-row > .jsgrid-cell {
+    border: 1px solid #A9A9A9;
+    cursor: default;
+}
+
+.jsgrid-row:hover, .jsgrid-alt-row:hover {
+	background-color: #87CEFA;
+}
+
+#flexgridpager {
+	border: 1px solid #A9A9A9;
+	background-color: #FFF;
+	padding: 0 5px 0 5px;
+}
+
+#recflsdiv, #qryflsdiv {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start; 
+	align-items: flex-start;
+	padding: 5px;
+	width: 40vw;
+	height: 70vh;
+	border: 2px solid #F5F5F5;
+	border-radius: 1vw;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.flssearchdiv {
+	display: flex;
+	width: 40vw;
+	flex-direction: cloumn;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0 0 10px 0;
+}
+
+.flsopediv {
+	display: flex;
+	width: 40vw;
+	flex-direction: cloumn;
+	justify-content: center; 
+	align-items: center;
+	padding: 10px 0 0 0;
+}
+
+.flsopediv > button {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#flskeytxt {
+	width: 32vw;
+}
+
+.contactsinfoblock {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: calc(40vw - 14px);
+	height: calc(calc(70vh - 14px) / 10);
+	border-bottom: 1px solid #F5F5F5;
+	color: #FFF;
+}
+
+@media screen and (max-width:575.99px) {
+	
+}
+
+@media screen and (min-width:576px) and (max-width:767.99px) {
+	
+}
+
+@media screen and (min-width:768px) and (max-width:991.99px) {
+	
+}
+
+@media screen and (min-width:992px) and (max-width:1199.99px) {
+	
+}
+
+@media screen and (min-width:1200px) {
+	.smalltextbox {
+        width: 10vw;
+    }
+    
+    .midtextbox {
+        width: 18vw;
+    }
+    
+    .largetextbox {
+        width: 23vw;
+    }
+    
+    .flexquerybox {
+	    width: 50vw;
+    }
+    
+    .flexqrybtn {
+        width: 8vw;
+    }
+    
+    .templateexebtn, #flexmoddiv {
+        width: 90vw;
+    }
+}

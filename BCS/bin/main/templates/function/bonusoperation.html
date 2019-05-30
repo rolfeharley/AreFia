@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>獎金計算</title>
+        <div th:replace="fragment/headerTemp :: header_style"></div>
+        <link rel="stylesheet" type="text/css" href="style/bonus.css" />
+        
+        <script th:inline="javascript">
+            $(function () {
+            	$('.bonuscell').css('display', 'none');
+            	
+            	if ([[${userslist}]] != null) {
+                    var usersList = JSON.parse([[${userslist}]]);
+                    
+                    for (var u = 0; u < usersList.length; u++) {
+                    	$('#agentSel').append('<option value="' + usersList[u].ACCOUNTID + '">' + usersList[u].USERNAME + '</option>');
+                    }
+                }
+                
+                var dateList = JSON.parse([[${datelist}]]);
+                
+                for (var d = 0; d < dateList.length; d++) {
+                	$('#ymSel').append('<option value="' + dateList[d].DATESTR + '">' + dateList[d].DATESTR + '</option>');
+                }
+            });
+            
+            function getBonusDate() {
+            	$.get('bonusdatedata', {accountid: $("#agentSel").val()}, function(result) {
+                	if (result != undefined && result != '') {
+                		var dateList = JSON.parse(result);
+                    	
+                    	$('#ymSel').html('');
+                		
+                    	for (var d = 0; d < dateList.length; d++) {
+                    		$('#ymSel').append('<option value="' + dateList[d].DATESTR + '">' + dateList[d].DATESTR + '</option>');
+                    	}
+                	}
+                });
+            }
+            
+            function getCaculationResult() {
+        		$('#lvonebns').html('');
+        		
+        		if ($('#ymSel').val() != null && $('#ymSel').val() != undefined && $('#ymSel').val() != '') {
+                	if ([[${isadmin}]] == 1) {
+                    	$.get('calbonus', {datestr: $('#ymSel').val(), accountid: $('#agentSel').val()}, function(result) {
+                    		createBonusForm(result);
+                        });
+                	} else {
+                    	$.get('calbonus', {datestr: $('#ymSel').val()}, function(result) {
+                    		createBonusForm(result);
+                        });
+                	}
+        		} else {
+        			$('#bonussumheader').css('display', 'none');        			
+        			$('#bonussumfooter').css('display', 'none');
+        			$('#bonusagent').text('');
+        			$('#bonusheaderdate').text('');
+        			$('#bonussummary').text('');
+        			$('#lvonebns').append('<span style="color: #FF0000; font-size: 4vw; font-weight: 900;">查無資訊</span>');
+                    $('.bonuscell').css('display', '');
+        		}
+            }
+            
+            function createBonusForm(bst) {        		
+        		if (bst == undefined || bst == '') {
+        			$('#bonussumheader').css('display', 'none');
+        			$('#bonussumfooter').css('display', 'none');
+        			$('#bonusagent').text('');
+        			$('#bonusheaderdate').text('');
+        			$('#bonussummary').text('');
+            		$('#lvonebns').append('<span style="color: #FF0000; font-size: 8vw; font-weight: 900;">查無資訊</span>');
+                    $('.bonuscell').css('display', '');
+            	} else {
+                	var bnsArr = JSON.parse(bst);
+                	var tab1Str = '';
+                	var tab2Str = '';
+                	var sum1 = 0, sum2 = 0, cnt1 = 0, cnt2 = 0;
+                	var tbStr = '<tr><td style="width: 30%; height: 40px; text-align: center; background: #003377; font-weight: 900; color: #FFF; border: 1px solid #FFF;">代理人</td>';
+                	
+                	tbStr += '<td style="width: 20%; text-align: center; background: #003377; font-weight: 900; color: #FFF; border: 1px solid #FFF;">類別</td>';
+                	tbStr += '<td style="width: 20%; text-align: center; background: #003377; font-weight: 900; color: #FFF; border: 1px solid #FFF;">數量</td>';
+                	tbStr += '<td style="width: 30%; text-align: center; background: #003377; font-weight: 900; color: #FFF; border: 1px solid #FFF;">獎金</td></tr>';
+                	
+                	for (var b = 0; b < bnsArr.length; b++) {
+                		if (bnsArr[b].CUSTLEVEL == '1') {
+                			var usrnone = bnsArr[b].USERNAME;
+                			
+                			if (usrnone.length > 1) {                				
+                				if (usrnone.length > 2) {
+                    				var tmpone = usrnone[0];
+                    				
+                    				for (var n = 1; n < usrnone.length - 1; n++) {
+                    					tmpone += 'X';
+                    				}
+                    				
+                    				usrnone = tmpone + usrnone[usrnone.length - 1];
+                    			} else {
+                    				usrnone = usrnone[0] + 'X';
+                    			}
+                			}
+                			
+                			tab1Str += '<tr>';
+                			tab1Str += '<td style="text-align: center; height: 40px; border: 1px solid #FFF; color: #FFF;">' + usrnone + '</td>';
+                        	tab1Str += '<td style="text-align: center; border: 1px solid #FFF; border: 1px solid #FFF; color: #FFF;">' + bnsArr[b].IMTYPE + '</td>';
+                        	tab1Str += '<td style="text-align: center; border: 1px solid #FFF; border: 1px solid #FFF; color: #FFF;">' + bnsArr[b].NUMS + '</td>';
+                        	tab1Str += '<td style="text-align: center; border: 1px solid #FFF; border: 1px solid #FFF; color: #FFF;">' + bnsArr[b].BONUS + '</td></tr>';
+                        	
+                        	sum1 += bnsArr[b].BONUS;
+                        	cnt1 += bnsArr[b].NUMS;
+                		} else {
+                            var usrntwo = bnsArr[b].USERNAME;
+                			
+                			if (usrntwo.length > 1) {                				
+                				if (usrntwo.length > 2) {
+                    				var tmptwo = usrntwo[0];
+                    				
+                    				for (var m = 1; m < usrntwo.length - 1; m++) {
+                    					tmptwo += 'X';
+                    				}
+                    				
+                    				usrntwo = tmptwo + usrntwo[usrntwo.length - 1];
+                    			} else {
+                    				usrntwo = usrntwo[0] + 'X';
+                    			}
+                			}
+                			
+                			tab2Str += '<tr>';
+                			tab2Str += '<td style="text-align: center; height: 40px; border: 1px solid #FFF; color: #FFF;">' + usrntwo + '</td>';
+                        	tab2Str += '<td style="text-align: center; border: 1px solid #FFF; color: #FFF;">' + bnsArr[b].IMTYPE + '</td>';
+                        	tab2Str += '<td style="text-align: center; border: 1px solid #FFF; color: #FFF;">' + bnsArr[b].NUMS + '</td>';
+                        	tab2Str += '<td style="text-align: center; border: 1px solid #FFF; color: #FFF;">' + bnsArr[b].BONUS + '</td></tr>';
+                        	
+                        	sum2 += bnsArr[b].BONUS;
+                        	cnt2 += bnsArr[b].NUMS;
+                		}
+            		}
+                	
+                	var ymstring = $('#ymSel').val();
+                    
+                	if ([[${isadmin}]] == 1) {
+                		$('#bonusagent').text($("#agentSel option:selected").text());
+                	}
+                	
+                	$('#bonusheaderdate').text(ymstring.substring(0, 4) + '年' + ymstring.substring(5, 7) + '月獎金列表');
+                	$('#bonussummary').text(ymstring.substring(0, 4) + '年' + ymstring.substring(5, 7) + '月獎金總計 : ' + (sum1 + sum2));
+                	
+                	if (tab1Str != '') {
+                		tab1Str = '<div style="text-align: center; background: #FF5511; font-weight: 900; height: 40px; color: #FFF; border-left: 1px solid #FFF; border-right: 1px solid #FFF;">第一代獎金</div><table style="width: 100%; border: 1px solid #FFF;">' + tbStr + tab1Str + '</table>';
+                	    tab1Str += '<div style="text-align: center; height: 40px; background: #FF5511; border-left: 1px solid #FFF; border-right: 1px solid #FFF; border-bottom: 1px solid #FFF; color: #FFF;">總計：&nbsp;&nbsp;&nbsp;&nbsp;筆數-' + cnt1 + '&nbsp;&nbsp;&nbsp;&nbsp;金額-' + sum1 + '</div>';
+                	
+                	    $('#lvonebns').append(tab1Str);
+                	}
+                	
+                    if (tab2Str != '') {
+                		tab2Str = '<div style="text-align: center; background: #008800; font-weight: 900; height: 40px; color: #FFF; border-left: 1px solid #FFF; border-right: 1px solid #FFF;">第二代獎金</div><table style="width: 100%; border: 1px solid #FFF;">' + tbStr + tab2Str + '</table>';
+                		tab2Str += '<div style="text-align: center; height: 40px; background: #008800; border-left: 1px solid #FFF; border-right: 1px solid #FFF; color: #FFF;">總計：&nbsp;&nbsp;&nbsp;&nbsp;筆數-' + cnt2 + '&nbsp;&nbsp;&nbsp;&nbsp;金額-' + sum2 + '</div>';
+                		
+                		$('#lvtwobns').append(tab2Str);
+                	}
+                    
+                    $('#bonussumheader').css('display', '');
+        			$('#bonussumfooter').css('display', '');
+                    $('.bonuscell').css('display', '');
+            	}
+            }
+        </script>
+    </head>
+    <body>
+        <div th:replace="fragment/headerTemp :: headerTemp"></div>
+        <div class="bodyarea">
+            <div class="ftmaster">
+                <div class="fttitle">
+                    <label class="ftstring"><i class="fas fa-hand-holding-usd"></i>獎金查詢</label>
+                </div>
+                <div class="container-fluid ftbody" th:switch="${isadmin}">
+                    <div class="row" th:case="1">
+                        <div class="col-3 col-xs-3 col-md-3 col-lg-2 col-xl-2 titlediv">
+                            <label for="agentSel">代理人</label>
+                        </div>
+                        <div class="col-9 col-xs-9 col-md-9 col-lg-10 col-xl-10 conddiv">
+                            <select id="agentSel" class="form-control txb-md" onchange="getBonusDate()"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 col-xs-3 col-md-3 col-lg-2 col-xl-2 titlediv">
+                            <label for="stadate">年月分</label>
+                        </div>
+                        <div class="col-9 col-xs-9 col-md-9 col-lg-8 col-xl-8 conddiv">
+                            <select id="ymSel" class="form-control txb-md"></select>
+                        </div>
+                        <div class="col-12 col-xs-12 col-md-12 col-lg-2 col-xl-2 btndiv">
+                            <button type="button" class="btn btn-success" onclick="getCaculationResult()">
+                                <span><i class="fas fa-search"></i>搜尋</span>                              
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid bonuscell">
+                <div class="row">
+                    <div id="bonussumheader" class="col-12 col-xs-12 col-md-12 col-lg-12 col-xl-12" th:switch="${isadmin}">
+                        <label id="bonusagent" th:text="${username}" class="bonussumstring" th:case="0"></label>
+                        <label id="bonusagent" class="bonussumstring" th:case="1"></label>
+                        &nbsp;&nbsp;
+                        <label id="bonusheaderdate" class="bonussumstring"></label>
+                    </div>
+                    <div id="lvonebns" class="col-12 col-xs-12 col-md-12 col-lg-12 col-xl-12"></div>
+                    <div id="lvtwobns" class="col-12 col-xs-12 col-md-12 col-lg-12 col-xl-12"></div>
+                    <div id="bonussumfooter" class="col-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label id="bonussummary" class="bonussumstring"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bkgdiv"></div> 
+    </body>
+</html>

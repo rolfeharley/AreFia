@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <div th:fragment="header_style">
+            <script src="framework/jquery.js"></script>
+            <script src="framework/bootstrap/js/bootstrap.js"></script>
+            <script src="framework/fontawesome/js/all.min.js"></script>
+            <script src="script/deviceHandler.js"></script>
+            <link rel="stylesheet" type="text/css" href="style/global.css" />
+            <link rel="stylesheet" type="text/css" href="framework/bootstrap/css/bootstrap.css" />
+            <link rel="stylesheet" type="text/css" href="framework/fontawesome/css/all.min.css" />
+            
+            <script>
+                function menuTitle() {
+                    if (xsSize.matches) {
+                  	    $('.systitle').html('');
+                    }
+                    if(smSize.matches) {
+                	    $('.systitle').html('');
+                    }
+                    if(mdSize.matches) {
+                	    $('.systitle').html('獎金計算系統');
+                    }
+                    if(lgSize.matches) {
+                	    $('.systitle').html('獎金計算系統');
+                    }
+                    if(xlSize.matches) {
+                	    $('.systitle').html('獎金計算系統');
+                    }
+                    
+                    $('html').animate({
+                		opacity: 1
+                	}, 800);
+                }
+                
+                $(document).ready(menuTitle);
+                $(window).resize(menuTitle);
+                
+                function redirectPage(urlStr) {
+                	$('html').animate({
+                		opacity: 0
+                	}, 800, function() {
+                    	window.location.href = urlStr;
+                	});
+                }
+            </script>
+        </div>
+    </head>
+    <body>
+        <div th:fragment="headerTemp" class="container-fluid headerarea">
+            <div class="row headerrow">
+                <div class="col-3 col-sm-3 col-md-4 col-lg-4 col-xl-5 headerlogo" th:switch="${pageid}">
+                    <div th:case="'1baf92e9-0a42-493e-8b62-afc5bae27014'">
+                        <img id="logoimg" src="media/logo.png" class="headerlogo" />
+                        <label for="logoimg" class="systitle"></label>
+                    </div>
+                    <div th:case="*">
+                        <img id="logoimg" src="media/logo.png" class="headerlogo" onclick="redirectPage('/')" style="cursor: pointer;" />
+                        <label for="logoimg" class="systitle" onclick="redirectPage('/')" style="cursor: pointer;"></label>
+                    </div>
+                </div>
+                <div class="col-5 col-sm-5 col-md-4 col-lg-4 col-xl-5 headeruser">
+                    <div>
+                        <i class="fas fa-user fa-fw prefixicon"></i>
+                    </div>
+                    <div>
+                        <label th:text="${username}" class="loginname"></label>
+                    </div>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-1 headerhome">
+                    <i th:if="${runout}" class="fas fa-home fa-fw functionicon" onclick="redirectPage('/')"></i>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-1 headerlogout">
+                    <form name="fout" th:action="@{/logout}" method="post">
+                        <i class="fas fa-sign-out-alt fa-fw functionicon" onclick="$('form[name=fout]').submit();"></i>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

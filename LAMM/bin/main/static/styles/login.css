@@ -1,0 +1,230 @@
+@font-face {
+	font-family: iEnglishFont;
+	src: url(../font/engFont1.otf);
+}
+
+html {
+	opacity: 0;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+form div {
+	display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginarae {
+    width: 100vw;
+	height: 100vh;
+    flex-direction: column;
+    background: #1BC249;
+}
+
+.logheader {
+    border-radius: 8px 8px 0 0;
+    border-bottom: 1px solid #1BC249;
+    background: #353844;
+    color: #FFF;
+    text-shadow: 2px 2px 3px #333;
+}
+
+.loginbody {
+	position: relative;
+	background: #353844;
+}
+
+.buttonarea {
+	background: #353844;
+}
+
+.loginfooter {
+	background: #353844;
+	border-radius: 0 0 8px 8px;
+	border-top: 1px solid #1BC249;
+}
+
+.loginfooter label {
+	color: #FF0000;
+}
+
+.texticon {
+	position: absolute;
+	color: #AAAAAA;
+}
+
+@media (max-width:575px) {
+	.logheader {
+        font-size: 1em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 80vw;
+    }
+    
+    .linestring {
+        width: 80vw;
+        height: 27vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 10vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 8vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 8vw;
+	    width: 76vw;
+    }
+    
+    .texticon {
+	    left: 1.8vw;
+	    top: 3vh;
+    }
+}
+
+@media (min-width:576px) and (max-width:767px) {
+	.logheader {
+        font-size: 1em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 42vw;
+    }
+    
+    .linestring {
+        width: 42vw;
+        height: 14vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 3.3vw;
+	    width: 38vw;
+    }
+    
+    .texticon {
+	    left: 1.9vw;
+	    top: 2.5vh;
+    }
+}
+
+@media (min-width: 768px) and (max-width:991px) {
+    .logheader {
+        font-size: 1.5em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 46vw;
+    }
+    
+    .linestring {
+        width: 46vw;
+        height: 16vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 2.8vw;
+	    width: 42vw;
+    }
+    
+    .texticon {
+	    left: 2vw;
+	    top: 2.5vh;
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+	.logheader {
+        font-size: 1.5em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 38vw;
+    }
+    
+    .linestring {
+        width: 38vw;
+        height: 13vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 2.3vw;
+	    width: 34vw;
+    }
+    
+    .texticon {
+	    left: 2vw;
+	    top: 2.5vh;
+    }
+}
+
+@media (min-width:1200px) {
+	.logheader {
+        font-size: 1.5em;
+        padding-top: 1vh;
+    }
+    
+    .loginicon , .logheader, .loginbody, .buttonarea, .loginfooter {
+	    width: 28vw;
+    }
+    
+    .linestring {
+        width: 28vw;
+        height: 9vw;
+    }
+    
+    .loginbody, .buttonarea {
+        height: 8vh;
+    }
+    
+    .logheader, .loginfooter {
+        height: 6vh;
+    }
+    
+    input[type=text], input[type=password] {
+	    padding-left: 1.6vw;
+	    width: 24vw;
+    }
+    
+    .texticon {
+	    left: 2vw;
+	    top: 2.5vh;
+    }
+}
