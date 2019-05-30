@@ -21,6 +21,8 @@ public class webCommunication {
 	public InputStream gpsIns;
 	public HttpsURLConnection urlCon;
 	public String postIns;
+	public String delIns;
+	public String updIns;
 	
 	public void comWithGet (webCommunicationModel gwco) {
 		try {
@@ -28,6 +30,8 @@ public class webCommunication {
 			urlCon = (HttpsURLConnection) getUrl.openConnection();
 			
 			urlCon.setRequestMethod("GET");
+			
+			urlCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (gwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> ghi = gwco.getHeaders().entrySet().iterator();
@@ -41,13 +45,14 @@ public class webCommunication {
 			
 			urlCon.connect();
 			
-			if (urlCon.getResponseCode() == 200) {
+			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
 				getIns = urlCon.getInputStream();
 			} else {
 				getIns = null;
 			}
 		} catch(Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
+			getIns = null;
 		}
 	}
 	
@@ -57,6 +62,8 @@ public class webCommunication {
 			urlCon = (HttpsURLConnection) postUrl.openConnection();
 			
 			urlCon.setRequestMethod("POST");		
+			
+			urlCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (pwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> phi = pwco.getHeaders().entrySet().iterator();
@@ -84,7 +91,7 @@ public class webCommunication {
 			
 		    urlCon.connect();
 			
-			if (urlCon.getResponseCode() == 200) {
+			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
 				postIns = "OK";
 			} else {
 				postIns= "NG";
@@ -101,6 +108,8 @@ public class webCommunication {
 			urlCon = (HttpsURLConnection) gpsUrl.openConnection();
 			
 			urlCon.setRequestMethod("POST");		
+			
+			urlCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (swco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> shi = swco.getHeaders().entrySet().iterator();
@@ -128,7 +137,7 @@ public class webCommunication {
 			
 		    urlCon.connect();
 			
-			if (urlCon.getResponseCode() == 200) {
+			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
 				gpsIns = urlCon.getInputStream();
 			} else {
 				gpsIns = null;
@@ -136,6 +145,73 @@ public class webCommunication {
 		} catch(Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			gpsIns = null;
+		}
+	}
+    
+    public void comWithDel (webCommunicationModel dwco) {
+		try {
+			URL delUrl = new URL(dwco.getConnURL());
+			urlCon = (HttpsURLConnection) delUrl.openConnection();
+			
+			urlCon.setRequestMethod("DELETE");
+			
+			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			
+			if (dwco.getHeaders() != null) {
+				Iterator<Map.Entry<String, String>> dhi = dwco.getHeaders().entrySet().iterator();
+				
+				while (dhi.hasNext()) {
+					Map.Entry<String, String> delhead = dhi.next();
+					
+					urlCon.setRequestProperty(delhead.getKey(), delhead.getValue());
+				}
+			}
+			
+			urlCon.connect();
+			
+			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
+				delIns = "OK";
+			} else {
+				delIns = "NG";
+			}
+		} catch(Exception ex) {
+			log.error(ex.getLocalizedMessage(), ex);
+			delIns = "NG";
+		}
+	}
+    
+    public void comWithUpd (webCommunicationModel uwco) {
+		try {
+			URL updUrl = new URL(uwco.getConnURL());
+			urlCon = (HttpsURLConnection) updUrl.openConnection();
+			
+			urlCon.setDoOutput(true);
+			urlCon.setDoInput(true);
+			urlCon.setRequestMethod("PUT");			
+
+			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			urlCon.setRequestProperty("Connection", "keep-alive");
+			
+			if (uwco.getHeaders() != null) {
+				Iterator<Map.Entry<String, String>> uhi = uwco.getHeaders().entrySet().iterator();
+				
+				while (uhi.hasNext()) {
+					Map.Entry<String, String> updhead = uhi.next();
+					
+					urlCon.setRequestProperty(updhead.getKey(), updhead.getValue());
+				}
+			}
+			
+			urlCon.connect();
+			
+			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
+				updIns = "OK";
+			} else {
+				updIns = "NG";
+			}
+		} catch(Exception ex) {
+			log.error(ex.getLocalizedMessage(), ex);
+			updIns = "NG";
 		}
 	}
     

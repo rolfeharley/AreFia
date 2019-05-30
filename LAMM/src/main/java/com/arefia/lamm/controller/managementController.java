@@ -1,9 +1,12 @@
 package com.arefia.lamm.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +30,20 @@ public class managementController {
 
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
 	public String createMainPage(Model model, HttpSession session) {
-		String tt = zohodh.getAllRecord("Contacts");
-		log.info(tt);
+		JSONObject dataobj = new JSONObject();
+		JSONArray detsarr = new JSONArray();
+		
+		JSONObject itemobj = new JSONObject();
+		
+		itemobj.put("field9", "S");
+		
+		detsarr.put(itemobj);
+		
+		dataobj.put("data", detsarr);
+		
+		String tt = zohodh.updateRecord("Contacts", "3410123000001387008", dataobj);
+		
+        log.info("----------------------------------------------------------------" + tt);
 		
         JSONObject hiobj = hinf.getinformation(session);
 		
