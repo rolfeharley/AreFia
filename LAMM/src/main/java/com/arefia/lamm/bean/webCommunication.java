@@ -185,12 +185,9 @@ public class webCommunication {
 			URL updUrl = new URL(uwco.getConnURL());
 			urlCon = (HttpsURLConnection) updUrl.openConnection();
 			
-			urlCon.setDoOutput(true);
-			urlCon.setDoInput(true);
 			urlCon.setRequestMethod("PUT");			
 
 			urlCon.setRequestProperty("Accept-Charset", "utf-8");
-			urlCon.setRequestProperty("Connection", "keep-alive");
 			
 			if (uwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> uhi = uwco.getHeaders().entrySet().iterator();
@@ -201,6 +198,20 @@ public class webCommunication {
 					urlCon.setRequestProperty(updhead.getKey(), updhead.getValue());
 				}
 			}
+			
+			urlCon.setDoInput(true);
+			urlCon.setDoOutput(true);
+	    	DataOutputStream reqWr = new DataOutputStream(urlCon.getOutputStream());
+	    	
+	    	if (uwco.getBodys() != null) {
+		        reqWr.write(uwco.getBodys().toString().getBytes("UTF-8"));
+	    	}
+	    	
+	    	if (uwco.getUrlparms() != null) {
+	    		reqWr.write(uwco.getUrlparms().getBytes("UTF-8"));
+	    	}
+	    	
+		    reqWr.close();
 			
 			urlCon.connect();
 			

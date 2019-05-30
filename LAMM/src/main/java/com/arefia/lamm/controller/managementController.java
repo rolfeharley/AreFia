@@ -30,22 +30,7 @@ public class managementController {
 
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
 	public String createMainPage(Model model, HttpSession session) {
-		JSONObject dataobj = new JSONObject();
-		JSONArray detsarr = new JSONArray();
-		
-		JSONObject itemobj = new JSONObject();
-		
-		itemobj.put("field9", "S");
-		
-		detsarr.put(itemobj);
-		
-		dataobj.put("data", detsarr);
-		
-		String tt = zohodh.updateRecord("Contacts", "3410123000001387008", dataobj);
-		
-        log.info("----------------------------------------------------------------" + tt);
-		
-        JSONObject hiobj = hinf.getinformation(session);
+		JSONObject hiobj = hinf.getinformation(session);
 		
 		if (hiobj.getJSONArray("menulist").length() > 0) {
 			model.addAttribute("menuinfo", hiobj.getJSONArray("menulist").toString());

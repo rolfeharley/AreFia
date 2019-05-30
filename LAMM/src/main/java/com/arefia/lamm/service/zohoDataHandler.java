@@ -3,6 +3,7 @@ package com.arefia.lamm.service;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class zohoDataHandler {
     	}
     }
     
-    public String getSpecRecord(String scope, HashMap<String, String> parms) {
+    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields) {
     	try {
     		String acctoken = auts.getIniAuthCode();
         	webCommunicationModel zohomod = new webCommunicationModel();
@@ -82,6 +83,18 @@ public class zohoDataHandler {
 			}
         	
 			parbd.append(")");
+			
+			if (fields != null && fields.size() > 0) {
+				parbd.append("&fields=");
+				
+				for (int f = 0; f < fields.size(); f++) {
+					if (f > 0) {
+						parbd.append(",");
+					}
+					
+					parbd.append(fields.get(f));
+				}
+			}
 			
         	zohomod.setConnURL(parbd.toString());
         	zohomod.setHeaders(zohohead);
