@@ -344,7 +344,7 @@
 	align-items: flex-start;
 	padding: 5px;
 	width: 40vw;
-	height: 70vh;
+	height: 60vh;
 	border: 2px solid #F5F5F5;
 	border-radius: 1vw;
 	overflow-x: hidden;
@@ -364,7 +364,7 @@
 	display: flex;
 	width: 40vw;
 	flex-direction: cloumn;
-	justify-content: center; 
+	justify-content: flex-start; 
 	align-items: center;
 	padding: 10px 0 0 0;
 }
@@ -375,7 +375,11 @@
 }
 
 #flskeytxt {
-	width: 32vw;
+	width: 22vw;
+}
+
+.flsconsel {
+	width: 10vw;
 }
 
 .contactsinfoblock {

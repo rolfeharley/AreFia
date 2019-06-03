@@ -34,9 +34,11 @@ import com.arefia.lamm.dao.flexDetailDao;
 import com.arefia.lamm.dao.flexFollowersDao;
 import com.arefia.lamm.dao.flexMainDao;
 import com.arefia.lamm.dao.sysinfoDao;
+import com.arefia.lamm.dao.zohocondsDao;
 import com.arefia.lamm.entity.flexdetailEntity;
 import com.arefia.lamm.entity.flexfollowersEntity;
 import com.arefia.lamm.entity.flexmainEntity;
+import com.arefia.lamm.entity.zohocondsEntity;
 import com.arefia.lamm.model.webCommunicationModel;
 
 @Controller
@@ -64,6 +66,9 @@ public class flexOperationsController {
 	
 	@Autowired
 	webCommunication wcc;
+	
+	@Autowired
+	zohocondsDao zcdd;
 	
 	@RequestMapping(value = "/saveflexmessage", method = RequestMethod.POST)
 	@ResponseBody
@@ -506,6 +511,24 @@ public class flexOperationsController {
 				
 				contactsArr.put(contactsObj);
 			}
+		}
+		
+		return contactsArr.toString();
+	}
+	
+	@RequestMapping(value = "/getzohocontactconds", method = RequestMethod.GET)
+	@ResponseBody
+	public String getZohoContactsConditions() {
+		JSONArray contactsArr = new JSONArray();
+		List<zohocondsEntity> allconds = zcdd.findAllByOrderByOrderAsc();
+		
+		for (zohocondsEntity cond: allconds) {
+			JSONObject contactsObj = new JSONObject();
+			
+			contactsObj.put("DISPLAY", cond.getDisplay_name());
+			contactsObj.put("VALUE", cond.getValue());
+			
+			contactsArr.put(contactsObj);
 		}
 		
 		return contactsArr.toString();

@@ -1066,17 +1066,44 @@ function createSendFollowers(ftype) {
 }
 
 function createlinecontactssel() {
-    var flsstr = '<div id="fwlseloutterdiv" style="width: 0; opacity: 0;"><div class="flssearchdiv"><input type="text" ';
+    var flsstr = '<div id="fwlseloutterdiv" style="width: 0; opacity: 0;">';
 	
-	flsstr += 'id="flskeytxt"class="form-control" placeholder="Please Enter The Keyword Of Your Query" />';
+    flsstr += '<div class="flssearchdiv">';
+    flsstr += '<select id="flsconsel1" class="form-control flsconsel"></select>';
+	flsstr += '<input type="text" id="flskeytxt1" class="form-control" placeholder="Please Enter The Keyword" />';
+	flsstr += '</div >';
+	flsstr += '<div class="flssearchdiv">';
+    flsstr += '<select id="flsconsel2" class="form-control flsconsel"></select>';
+	flsstr += '<input type="text" id="flskeytxt2" class="form-control" placeholder="Please Enter The Keyword" />';
+	flsstr += '</div >';
+	flsstr += '<div class="flssearchdiv">';
+    flsstr += '<select id="flsconsel3" class="form-control flsconsel"></select>';
+	flsstr += '<input type="text" id="flskeytxt3" class="form-control" placeholder="Please Enter The Keyword" />';
+	flsstr += '</div >';
+	flsstr += '<div class="flsopediv">';
 	flsstr += '<button id="recflsbtn"class="btn btn-info flexqrybtn" onclick="querylinecontacts()">';
-	flsstr += '<span><i class="fas fa-search"></i>Query</span></button></button></div><div id="qryflsdiv"></div>';
-	flsstr += '<div class="flsopediv"><button id="sendflsbtn" class="btn btn-success flexqrybtn" onclick="addlinecontacts()"><span>';
+	flsstr += '<span><i class="fas fa-search"></i>Query</span></button></button>';
+	flsstr += '<button id="sendflsbtn" class="btn btn-success flexqrybtn" onclick="addlinecontacts()"><span>';
 	flsstr += '<i class="fas fa-check"></i>Confirm</span></button>';
 	flsstr += '<button id="canflsbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel()">';
-	flsstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div></div>';
+	flsstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div>';
+	flsstr += '<div id="qryflsdiv"></div></div>';
 		
 	$('.editarea').append(flsstr);
+	
+	$.get('getzohocontactconds', function(result) {
+        if (result != null && result != '') {
+        	var resArr = JSON.parse(result);
+        	
+        	if (resArr.length > 0) {
+            	for (var d = 0; d < resArr.length; d++) {
+            		$('#flsconsel1').append('<option value="' + resArr[d].VALUE + '">' + resArr[d].DISPLAY + '</option>');
+            		$('#flsconsel2').append('<option value="' + resArr[d].VALUE + '">' + resArr[d].DISPLAY + '</option>');
+            		$('#flsconsel3').append('<option value="' + resArr[d].VALUE + '">' + resArr[d].DISPLAY + '</option>');
+            	}
+        	}
+        }
+    });
 }
 
 function showslsselector() {
