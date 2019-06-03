@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,9 @@ import com.arefia.lamm.model.webCommunicationModel;
 public class flexOperationsController {
 	private static final Logger log = LogManager.getLogger(flexOperationsController.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
+	
+	@Value("${web_cust_data.intzoho}")
+    private String zohointe;
 	
 	@Autowired
 	flexMainDao flexmdao;
@@ -486,18 +490,22 @@ public class flexOperationsController {
 	@RequestMapping(value = "/getlunecontacts", method = RequestMethod.GET)
 	@ResponseBody
 	public String getLineContactsList(@RequestParam("KEYWORD") String keyword) {
-		List<Object[]> contactsList = cotdao.getAllLineContacts(keyword);
-		
 		JSONArray contactsArr = new JSONArray();
 		
-		for (Object[] contact: contactsList) {
-			JSONObject contactsObj = new JSONObject();
+		if (zohointe.equals("1")) {
 			
-			contactsObj.put("COMPANY", contact[0].toString());
-			contactsObj.put("CONTACT_NAME", contact[1].toString());
-			contactsObj.put("LINE_UID", contact[2].toString());
+		} else {
+			List<Object[]> contactsList = cotdao.getAllLineContacts(keyword);
 			
-			contactsArr.put(contactsObj);
+			for (Object[] contact: contactsList) {
+				JSONObject contactsObj = new JSONObject();
+				
+				contactsObj.put("COMPANY", contact[0].toString());
+				contactsObj.put("CONTACT_NAME", contact[1].toString());
+				contactsObj.put("LINE_UID", contact[2].toString());
+				
+				contactsArr.put(contactsObj);
+			}
 		}
 		
 		return contactsArr.toString();
