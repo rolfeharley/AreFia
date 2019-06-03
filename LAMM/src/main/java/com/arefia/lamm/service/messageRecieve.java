@@ -2,7 +2,9 @@ package com.arefia.lamm.service;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +35,9 @@ public class messageRecieve {
 	private SimpleDateFormat sdd = new SimpleDateFormat("yyyy/MM/dd");
 	private SimpleDateFormat stt = new SimpleDateFormat("a hh:mm");
 	
+	@Value("${web_cust_data.intzoho}")
+    private String zohointe;
+	
     @Autowired
     msgrecDao redo;
     
@@ -49,6 +55,9 @@ public class messageRecieve {
     
     @Autowired
     contactsDao contdao;
+    
+    @Autowired
+    zohoDataHandler zdhn;
     
     @Resource
     private SimpMessagingTemplate lineTemplate;
@@ -85,26 +94,51 @@ public class messageRecieve {
             			contdao.saveAndFlush(contEnt);
             		}
             		
-            		List<Object[]> chkSourcer = fsdao.checkFollowerIsExist(sObj.getString("userId"));
-            		
-            		if (chkSourcer.get(0)[0].toString().equals("0")) {
-            			JSONObject rtObj = gfi.getFollowerInfo(sObj.getString("userId"));
+            		if (zohointe.equals("0")) {
+            			List<Object[]> chkSourcer = fsdao.checkFollowerIsExist(sObj.getString("userId"));
+                		
+                		if (chkSourcer.get(0)[0].toString().equals("0")) {
+                			JSONObject rtObj = gfi.getFollowerInfo(sObj.getString("userId"));
+                			
+                			followersEntity nfe = new followersEntity();
+                			
+                			nfe.setUserid(sObj.getString("userId"));
+                			nfe.setDisplayname(rtObj.getString("displayName"));
+                			nfe.setPictureurl(rtObj.getString("pictureUrl"));
+                			
+                			if (rtObj.has("statusMessage")) {
+                				nfe.setStatusmessage(rtObj.getString("statusMessage"));
+                			} else {
+                				nfe.setStatusmessage("");
+                			}
+                			
+                			fsdao.saveAndFlush(nfe);
+                			
+                			mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
+                		}
+            		} else {
+            			HashMap<String, String> parmap = new HashMap<String, String>();
+            			ArrayList<String> fidarr = new ArrayList<String>();
             			
-            			followersEntity nfe = new followersEntity();
+            			parmap.put("Line_UID", sObj.getString("userId"));
+            			fidarr.add("id");
             			
-            			nfe.setUserid(sObj.getString("userId"));
-            			nfe.setDisplayname(rtObj.getString("displayName"));
-            			nfe.setPictureurl(rtObj.getString("pictureUrl"));
+            			String lineinzoho = zdhn.getSpecRecord("Contacts", parmap, fidarr);
             			
-            			if (rtObj.has("statusMessage")) {
-            				nfe.setStatusmessage(rtObj.getString("statusMessage"));
-            			} else {
-            				nfe.setStatusmessage("");
+            			if (lineinzoho == null || lineinzoho.equals("")) {
+            				JSONObject isnline = new JSONObject();
+            				JSONArray isndarr = new JSONArray();
+            				JSONObject isndobj = new JSONObject();
+            				
+            				isndobj.put("Last_Name", "Undefined");
+            				isndobj.put("Line_UID", sObj.getString("userId"));
+            				isndarr.put(isndobj);
+            				isnline.put("data", isndarr);
+            				
+            				zdhn.addRecord("Contacts", isnline);
+            				
+            				mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
             			}
-            			
-            			fsdao.saveAndFlush(nfe);
-            			
-            			mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
             		}
             		
             		msgrecieveEntity recm = new msgrecieveEntity();

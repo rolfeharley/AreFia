@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,9 @@ public class managementController {
 	
 	@Autowired
 	zohoDataHandler zohodh;
+	
+	@Value("${web_cust_data.intzoho}")
+    private String zohointe;
 
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
 	public String createMainPage(Model model, HttpSession session) {
