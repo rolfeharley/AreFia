@@ -360,18 +360,14 @@
 	padding: 0 0 10px 0;
 }
 
-.flsopediv {
-	display: flex;
+.flsopeupdiv {
 	width: 40vw;
-	flex-direction: cloumn;
-	justify-content: flex-start; 
-	align-items: center;
-	padding: 10px 0 0 0;
+	padding: 0 0 10px 0;
 }
 
-.flsopediv > button {
-	margin-left: 5px;
-	margin-right: 5px;
+.flsopedndiv {
+	width: 40vw;
+	padding: 10px 0 0 0;
 }
 
 #flskeytxt {

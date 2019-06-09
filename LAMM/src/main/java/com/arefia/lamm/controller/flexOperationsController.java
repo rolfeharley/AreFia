@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,12 +35,13 @@ import com.arefia.lamm.dao.flexDetailDao;
 import com.arefia.lamm.dao.flexFollowersDao;
 import com.arefia.lamm.dao.flexMainDao;
 import com.arefia.lamm.dao.sysinfoDao;
-import com.arefia.lamm.dao.zohocondsDao;
+import com.arefia.lamm.dao.contactscondsDao;
 import com.arefia.lamm.entity.flexdetailEntity;
 import com.arefia.lamm.entity.flexfollowersEntity;
 import com.arefia.lamm.entity.flexmainEntity;
-import com.arefia.lamm.entity.zohocondsEntity;
+import com.arefia.lamm.entity.contactscondsEntity;
 import com.arefia.lamm.model.webCommunicationModel;
+import com.arefia.lamm.service.zohoDataHandler;
 
 @Controller
 public class flexOperationsController {
@@ -68,7 +70,10 @@ public class flexOperationsController {
 	webCommunication wcc;
 	
 	@Autowired
-	zohocondsDao zcdd;
+	contactscondsDao ccdd;
+	
+	@Autowired
+	zohoDataHandler zdhr;
 	
 	@RequestMapping(value = "/saveflexmessage", method = RequestMethod.POST)
 	@ResponseBody
@@ -498,9 +503,56 @@ public class flexOperationsController {
 		JSONArray contactsArr = new JSONArray();
 		
 		if (zohointe.equals("1")) {
+			HashMap<String, String> parmmap = new HashMap<String, String>();
+			ArrayList<String> fieldarr = new ArrayList<String>();
 			
+			fieldarr.add("Full_Name");
+			
+			JSONArray zohoArr = new JSONArray(keyword);
+			
+			if (zohoArr.length() > 0) {
+				for (int z = 0; z < zohoArr.length(); z++) {
+				    JSONObject zohoObj = zohoArr.getJSONObject(z);
+				    
+				    parmmap.put(zohoObj.getString("column"), zohoObj.getString("value"));
+				}
+			}
+			
+			String retstr = zdhr.getSpecRecord("Contacts", parmmap, fieldarr);
+			
+			if (retstr != null && !retstr.equals("")) {
+				JSONArray contsres = new JSONArray(retstr);
+				
+				for (int r = 0; r < contsres.length(); r++) {
+					JSONObject zohoconsObj = new JSONObject();
+					
+//					zohoconsObj.put("COMPANY", contact[0].toString());
+//					zohoconsObj.put("CONTACT_NAME", contact[1].toString());
+//					zohoconsObj.put("LINE_UID", contact[2].toString());
+					
+					contactsArr.put(zohoconsObj);
+				}
+			}		
 		} else {
-			List<Object[]> contactsList = cotdao.getAllLineContacts(keyword);
+			StringBuilder localstr = new StringBuilder();
+			
+			if (keyword == null || keyword.equals("")) {
+				keyword = "1 = 1";
+			} else {
+				JSONArray condsArr = new JSONArray(keyword);
+				
+				for (int c = 0; c < condsArr.length(); c++) {
+					JSONObject condsobj = condsArr.getJSONObject(c);
+					
+					localstr.append("AND ");
+					localstr.append(condsobj.getString(""));
+					localstr.append(" LIKE '%");
+					localstr.append(condsobj.getString(""));
+					localstr.append("%' ");
+				}
+			}
+			
+			List<Object[]> contactsList = cotdao.getAllLineContacts(localstr.toString());
 			
 			for (Object[] contact: contactsList) {
 				JSONObject contactsObj = new JSONObject();
@@ -516,19 +568,25 @@ public class flexOperationsController {
 		return contactsArr.toString();
 	}
 	
-	@RequestMapping(value = "/getzohocontactconds", method = RequestMethod.GET)
+	@RequestMapping(value = "/getcontactsconds", method = RequestMethod.GET)
 	@ResponseBody
-	public String getZohoContactsConditions() {
+	public String getContactsConditions() {
 		JSONArray contactsArr = new JSONArray();
-		List<zohocondsEntity> allconds = zcdd.findAllByOrderByOrderAsc();
+		List<contactscondsEntity> contactsconds = null;
 		
-		for (zohocondsEntity cond: allconds) {
-			JSONObject contactsObj = new JSONObject();
+		if (zohointe.equals("1")) {
+			contactsconds = ccdd.getConditionList("zoho");
+		} else {
+			contactsconds = ccdd.getConditionList("local");
+		}
+		
+		for (contactscondsEntity cond: contactsconds) {
+			JSONObject contsObj = new JSONObject();
 			
-			contactsObj.put("DISPLAY", cond.getDisplay_name());
-			contactsObj.put("VALUE", cond.getValue());
+			contsObj.put("DISPLAY", cond.getDisplay_name());
+			contsObj.put("VALUE", cond.getValue());
 			
-			contactsArr.put(contactsObj);
+			contactsArr.put(contsObj);
 		}
 		
 		return contactsArr.toString();

@@ -64,28 +64,36 @@ public class zohoDataHandler {
         	
         	parbd.append("https://www.zohoapis.com/crm/v2/");
         	parbd.append(scope);
-        	parbd.append("/search?criteria=(");
+        	parbd.append("/search?");
         	
-        	Iterator<Map.Entry<String, String>> parpint = parms.entrySet().iterator();
-			
-			while (parpint.hasNext()) {
-				Map.Entry<String, String> parmdata = parpint.next();
-				
-				parbd.append("(");
-				parbd.append(parmdata.getKey());
-				parbd.append(":starts_with:*");
-				parbd.append(parmdata.getValue());
-				parbd.append(")");
-				
-				if (parpint.hasNext()) {
-					parbd.append("and");
-				}
-			}
+        	if (parms != null && parms.size() > 0) {
+        		parbd.append("criteria=(");
+            	
+            	Iterator<Map.Entry<String, String>> parpint = parms.entrySet().iterator();
+    			
+    			while (parpint.hasNext()) {
+    				Map.Entry<String, String> parmdata = parpint.next();
+    				
+    				parbd.append("(");
+    				parbd.append(parmdata.getKey());
+    				parbd.append(":starts_with:*");
+    				parbd.append(parmdata.getValue());
+    				parbd.append(")");
+    				
+    				if (parpint.hasNext()) {
+    					parbd.append("and");
+    				}
+    			}
+            	
+    			parbd.append(")");
+        	}
         	
-			parbd.append(")");
-			
 			if (fields != null && fields.size() > 0) {
-				parbd.append("&fields=");
+				if (parms != null && parms.size() > 0) {
+					parbd.append("&");
+				}
+				
+				parbd.append("fields=");
 				
 				for (int f = 0; f < fields.size(); f++) {
 					if (f > 0) {

@@ -10,8 +10,7 @@ import com.arefia.lamm.entity.contactsEntity;
 
 public interface contactsDao extends JpaRepository<contactsEntity, Long> {
 	@Query(value = "SELECT COMPANY, CONTACT_NAME, LINE_UID FROM CONTACTS " + 
-			       "WHERE LINE_UID IS NOT NULL AND LINE_UID <> '' AND COMPANY LIKE %:KEYWORD% " + 
-			       "AND CONTACT_NAME LIKE %:KEYWORD%", nativeQuery = true)
+			       "WHERE LINE_UID IS NOT NULL :KEYWORD", nativeQuery = true)
     public List<Object[]> getAllLineContacts(@Param("KEYWORD") String keyword);
     
     @Query(value = "SELECT COUNT(*) FROM CONTACTS WHERE LINE_UID = :LINE_UID", nativeQuery = true)

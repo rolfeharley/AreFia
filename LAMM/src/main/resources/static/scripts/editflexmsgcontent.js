@@ -2,6 +2,7 @@ var tmpselectnum;
 var flexinfo;
 var sendlist = [];
 var flexuid;
+var condslist;
 
 function createflexdetaileditor(createtype, empindex, senduid) {
 	if (createtype == '0') {
@@ -1055,7 +1056,7 @@ function createSendFollowers(ftype) {
 	var sflstr = '<div id="sendopeoutterdiv"><div class="flssearchdiv"><button id="recflsbtn" class="btn btn-info" onclick="showslsselector()">';
 	
 	sflstr += '<span><i class="far fa-user-circle"></i>Search Follower</span></button></button></div><div id="recflsdiv"></div>';
-	sflstr += '<div class="flsopediv"><button id="sendflsbtn" class="btn btn-success flexqrybtn" onclick="sendflexmessage()"><span>';
+	sflstr += '<div class="btn-group flsopedndiv"><button id="sendflsbtn" class="btn btn-success flexqrybtn leftbuttongrp" onclick="sendflexmessage()"><span>';
 	sflstr += '<i class="far fa-paper-plane"></i>Send</span></button>';
 	sflstr += '<button id="deleteflsbtn" class="btn btn-danger flexqrybtn" onclick="deletecontactinlist()"><span>';
 	sflstr += '<i class="fas fa-trash-alt"></i>Delete</span></button>';
@@ -1080,8 +1081,8 @@ function createlinecontactssel() {
     flsstr += '<select id="flsconsel3" class="form-control flsconsel"></select>';
 	flsstr += '<input type="text" id="flskeytxt3" class="form-control" placeholder="Please Enter The Keyword" />';
 	flsstr += '</div >';
-	flsstr += '<div class="flsopediv">';
-	flsstr += '<button id="recflsbtn"class="btn btn-info flexqrybtn" onclick="querylinecontacts()">';
+	flsstr += '<div class="btn-group  flsopeupdiv">';
+	flsstr += '<button id="recflsbtn"class="btn btn-info flexqrybtn" style="margin-left: -1px;" onclick="querylinecontacts()">';
 	flsstr += '<span><i class="fas fa-search"></i>Query</span></button></button>';
 	flsstr += '<button id="sendflsbtn" class="btn btn-success flexqrybtn" onclick="addlinecontacts()"><span>';
 	flsstr += '<i class="fas fa-check"></i>Confirm</span></button>';
@@ -1091,15 +1092,112 @@ function createlinecontactssel() {
 		
 	$('.editarea').append(flsstr);
 	
-	$.get('getzohocontactconds', function(result) {
+	$('#flsconsel1').change(function() {
+		var orival = $('#flsconsel1').attr('data-orivalue');
+		var oritxt = $('#flsconsel1').attr('data-oritext');
+		var newval = $('#flsconsel1').find(':selected').val();
+		var newtxt = $('#flsconsel1').find(':selected').text();
+
+		$('#flsconsel2').find('option').each(function() {
+	    	if (this.value == newval) {
+	    		$(this).remove();
+	    		return false;
+	    	}
+	    });
+	    $('#flsconsel3').find('option').each(function() {
+	    	if (this.value == newval) {
+	    		$(this).remove();
+	    		return false;
+	    	}
+	    });
+	    $('#flsconsel2').append($('<option></option>').attr('value', orival).text(oritxt));
+	    $('#flsconsel3').append($('<option></option>').attr('value', orival).text(oritxt));
+	    
+	    $('#flsconsel1').attr('orivalue', newval);
+	    $('#flsconsel1').attr('oritext', newtxt);
+	});
+	
+    $('#flsconsel2').change(function() {
+    	var orival = $('#flsconsel2').attr('data-orivalue');
+		var oritxt = $('#flsconsel2').attr('data-oritext');
+		var newval = $('#flsconsel2').find(':selected').val();
+		var newtxt = $('#flsconsel2').find(':selected').text();
+		
+		$('#flsconsel1').find('option').each(function() {
+	    	if (this.value == newval) {
+	    		$(this).remove();
+	    		return false;
+	    	}
+	    });
+	    $('#flsconsel3').find('option').each(function() {
+	    	if (this.value == newval) {
+	    		$(this).remove();
+	    		return false;
+	    	}
+	    });
+	    $('#flsconsel1').append($('<option></option>').attr('value', orival).text(oritxt));
+	    $('#flsconsel3').append($('<option></option>').attr('value', orival).text(oritxt));
+	    
+	    $('#flsconsel2').attr('orivalue', newval);
+	    $('#flsconsel2').attr('oritext', newtxt);
+	});
+    
+    $('#flsconsel3').change(function() {
+    	var orival = $('#flsconsel3').attr('data-orivalue');
+		var oritxt = $('#flsconsel3').attr('data-oritext');
+		var newval = $('#flsconsel3').find(':selected').val();
+		var newtxt = $('#flsconsel3').find(':selected').text();
+		
+		$('#flsconsel1').find('option').each(function() {
+	    	if (this.value == newval) {
+	    		$(this).remove();
+	    		return false;
+	    	}
+	    });
+	    $('#flsconsel2').find('option').each(function() {
+	    	if (this.value == newval) {
+	    		$(this).remove();
+	    		return false;
+	    	}
+	    });
+	    $('#flsconsel1').append($('<option></option>').attr('value', orival).text(oritxt));
+	    $('#flsconsel2').append($('<option></option>').attr('value', orival).text(oritxt));
+	    
+	    $('#flsconsel3').attr('orivalue', newval);
+	    $('#flsconsel3').attr('oritext', newtxt);
+	});
+	
+	$.get('getcontactsconds', function(result) {
         if (result != null && result != '') {
-        	var resArr = JSON.parse(result);
+        	if (condslist === undefined || condslist.length == 0) {
+            	condslist = JSON.parse(result);
+        	}
         	
-        	if (resArr.length > 0) {
-            	for (var d = 0; d < resArr.length; d++) {
-            		$('#flsconsel1').append('<option value="' + resArr[d].VALUE + '">' + resArr[d].DISPLAY + '</option>');
-            		$('#flsconsel2').append('<option value="' + resArr[d].VALUE + '">' + resArr[d].DISPLAY + '</option>');
-            		$('#flsconsel3').append('<option value="' + resArr[d].VALUE + '">' + resArr[d].DISPLAY + '</option>');
+        	if (condslist.length > 0) {
+            	for (var d = 0; d < condslist.length; d++) {
+            		if (d != 1 && d != 2) {
+            			$('#flsconsel1').append('<option value="' + condslist[d].VALUE + '">' + condslist[d].DISPLAY + '</option>');
+            			if (d == 0) {
+            				$('#flsconsel1').attr('data-oritext', condslist[d].DISPLAY);
+            				$('#flsconsel1').attr('data-orivalue', condslist[d].VALUE);
+            			}
+            		}
+            		
+            		if (d != 0 && d != 2) {
+            			$('#flsconsel2').append('<option value="' + condslist[d].VALUE + '">' + condslist[d].DISPLAY + '</option>');
+            			if (d == 1) {
+            				$('#flsconsel2').attr('data-oritext', condslist[d].DISPLAY);
+            				$('#flsconsel2').attr('data-orivalue', condslist[d].VALUE);
+            			}
+            		}
+            		
+                    if (d != 0 && d != 1) {
+                    	$('#flsconsel3').append('<option value="' + condslist[d].VALUE + '">' + condslist[d].DISPLAY + '</option>');
+                    	if (d == 2) {
+                    		$('#flsconsel3').attr('data-oritext', condslist[d].DISPLAY);
+            				$('#flsconsel3').attr('data-orivalue', condslist[d].VALUE);
+            			}
+            		}
             	}
         	}
         }
@@ -1220,8 +1318,35 @@ function sendflexmessage() {
 }
 
 function querylinecontacts() {
+	var pararr = new Array();
+	
+	if ($('#flskeytxt1').val() != '') {
+		var parobj1 = new Object();
+		parobj1.column = $('#flsconsel1').find(':selected').val();
+		parobj1.value = $('#flskeytxt1').val();
+		
+		pararr.push(parobj1);
+	}
+	
+	if ($('#flskeytxt2').val() != '') {
+		var parobj2 = new Object();
+		parobj2.column = $('#flsconsel2').find(':selected').val();
+		parobj2.value = $('#flskeytxt2').val();
+		
+		pararr.push(parobj2);
+	}
+	
+	if ($('#flskeytxt3').val() != '') {
+		var parobj3 = new Object();
+		parobj3.column = $('#flsconsel3').find(':selected').val();
+		parobj3.value = $('#flskeytxt3').val();
+		
+		pararr.push(parobj3);
+	}
+	
 	$('#qryflsdiv').html('');
-	$.get('getlunecontacts', {KEYWORD: $('#flskeytxt').val()}, function(result) {
+	
+	$.get('getlunecontacts', {KEYWORD: JSON.stringify(pararr)}, function(result) {
         if (result != null && result != '') {
         	var resArr = JSON.parse(result);
         	
