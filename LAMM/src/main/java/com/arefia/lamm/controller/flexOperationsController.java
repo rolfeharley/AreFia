@@ -35,11 +35,13 @@ import com.arefia.lamm.dao.flexDetailDao;
 import com.arefia.lamm.dao.flexFollowersDao;
 import com.arefia.lamm.dao.flexMainDao;
 import com.arefia.lamm.dao.sysinfoDao;
+import com.arefia.lamm.dao.spec.contactsSpecification;
 import com.arefia.lamm.dao.contactscondsDao;
 import com.arefia.lamm.entity.flexdetailEntity;
 import com.arefia.lamm.entity.flexfollowersEntity;
 import com.arefia.lamm.entity.flexmainEntity;
 import com.arefia.lamm.entity.contactscondsEntity;
+import com.arefia.lamm.model.queryCriteriaModel;
 import com.arefia.lamm.model.webCommunicationModel;
 import com.arefia.lamm.service.zohoDataHandler;
 
@@ -536,18 +538,24 @@ public class flexOperationsController {
 		} else {
 			StringBuilder localstr = new StringBuilder();
 			
-			if (keyword == null || keyword.equals("")) {
-				keyword = "1 = 1";
-			} else {
-				JSONArray condsArr = new JSONArray(keyword);
+			queryCriteriaModel lineuidnn = new queryCriteriaModel();
+			
+			lineuidnn.setKey("LINE_UID");
+			lineuidnn.setOperation("@");
+			lineuidnn.setValue("");
+			
+			contactsSpecification lineuidspec = new contactsSpecification(lineuidnn);
+			
+			if (keyword != null && !keyword.equals("")) {
+                JSONArray condsArr = new JSONArray(keyword);
 				
 				for (int c = 0; c < condsArr.length(); c++) {
 					JSONObject condsobj = condsArr.getJSONObject(c);
 					
-					localstr.append("AND ");
-					localstr.append(condsobj.getString(""));
-					localstr.append(" LIKE '%");
-					localstr.append(condsobj.getString(""));
+					localstr.append("AND UPPER(");
+					localstr.append(condsobj.getString("column"));
+					localstr.append(") LIKE '%");
+					localstr.append(condsobj.getString("value").toUpperCase());
 					localstr.append("%' ");
 				}
 			}
