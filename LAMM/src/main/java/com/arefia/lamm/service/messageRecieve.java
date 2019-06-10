@@ -123,7 +123,7 @@ public class messageRecieve {
             			parmap.put("Line_UID", sObj.getString("userId"));
             			fidarr.add("id");
             			
-            			String lineinzoho = zdhn.getSpecRecord("Contacts", parmap, fidarr);
+            			String lineinzoho = zdhn.getSpecRecord("Contacts", parmap, fidarr, "1");
             			
             			if (lineinzoho == null || lineinzoho.equals("")) {
             				JSONObject isnline = new JSONObject();

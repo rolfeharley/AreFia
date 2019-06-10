@@ -29,14 +29,14 @@ public class zohoDataHandler {
     @Autowired
 	webCommunication wcc;
     
-    public String getAllRecord(String scope) {
+    public String getAllRecord(String scope, String page) {
     	try {
     		String acctoken = auts.getIniAuthCode();
         	webCommunicationModel zohomod = new webCommunicationModel();
         	HashMap<String, String> zohohead = new HashMap<String, String>();
         	zohohead.put("Authorization", "Zoho-oauthtoken  " + acctoken);
         	
-        	zohomod.setConnURL("https://www.zohoapis.com/crm/v2/" + scope);
+        	zohomod.setConnURL("https://www.zohoapis.com/crm/v2/" + scope + "?page=" + page);
         	zohomod.setHeaders(zohohead);
         	
         	wcc.comWithGet(zohomod);
@@ -54,20 +54,20 @@ public class zohoDataHandler {
     	}
     }
     
-    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields) {
+    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields, String page) {
     	try {
-    		String acctoken = auts.getIniAuthCode();
-        	webCommunicationModel zohomod = new webCommunicationModel();
-        	HashMap<String, String> zohohead = new HashMap<String, String>();
-        	zohohead.put("Authorization", "Zoho-oauthtoken  " + acctoken);
-        	StringBuilder parbd = new StringBuilder();
-        	
-        	parbd.append("https://www.zohoapis.com/crm/v2/");
-        	parbd.append(scope);
-        	parbd.append("/search?");
-        	
-        	if (parms != null && parms.size() > 0) {
-        		parbd.append("criteria=(");
+    		if (parms != null && parms.size() > 0) {
+    			String acctoken = auts.getIniAuthCode();
+            	webCommunicationModel zohomod = new webCommunicationModel();
+            	HashMap<String, String> zohohead = new HashMap<String, String>();
+            	zohohead.put("Authorization", "Zoho-oauthtoken  " + acctoken);
+            	StringBuilder parbd = new StringBuilder();
+            	
+            	parbd.append("https://www.zohoapis.com/crm/v2/");
+            	parbd.append(scope);
+            	parbd.append("/search?");
+            	
+            	parbd.append("criteria=(");
             	
             	Iterator<Map.Entry<String, String>> parpint = parms.entrySet().iterator();
     			
@@ -86,36 +86,41 @@ public class zohoDataHandler {
     			}
             	
     			parbd.append(")");
-        	}
-        	
-			if (fields != null && fields.size() > 0) {
-				if (parms != null && parms.size() > 0) {
-					parbd.append("&");
-				}
-				
-				parbd.append("fields=");
-				
-				for (int f = 0; f < fields.size(); f++) {
-					if (f > 0) {
-						parbd.append(",");
-					}
-					
-					parbd.append(fields.get(f));
-				}
-			}
-			
-        	zohomod.setConnURL(parbd.toString());
-        	zohomod.setHeaders(zohohead);
-        	
-        	wcc.comWithGet(zohomod);
-        	
-            InputStream recsres = wcc.getIns;
-    	    
-    	    String datastr = new BufferedReader(new InputStreamReader(recsres, "UTF-8")).lines().collect(Collectors.joining(System.lineSeparator()));
-    	    
-    	    wcc.disconnectMethod();
-    	    
-        	return datastr;
+            	
+    			if (fields != null && fields.size() > 0) {
+    				if (parms != null && parms.size() > 0) {
+    					parbd.append("&");
+    				}
+    				
+    				parbd.append("fields=");
+    				
+    				for (int f = 0; f < fields.size(); f++) {
+    					if (f > 0) {
+    						parbd.append(",");
+    					}
+    					
+    					parbd.append(fields.get(f));
+    				}
+    			}
+    			
+    			parbd.append("&page=");
+    			parbd.append(page);
+    			
+            	zohomod.setConnURL(parbd.toString());
+            	zohomod.setHeaders(zohohead);
+            	
+            	wcc.comWithGet(zohomod);
+            	
+                InputStream recsres = wcc.getIns;
+        	    
+        	    String datastr = new BufferedReader(new InputStreamReader(recsres, "UTF-8")).lines().collect(Collectors.joining(System.lineSeparator()));
+        	    
+        	    wcc.disconnectMethod();
+        	    
+            	return datastr;
+    		} else {
+    		    return null;
+    		}
     	} catch(Exception e) {
     		log.error(e.getLocalizedMessage(), e);
     		return null;

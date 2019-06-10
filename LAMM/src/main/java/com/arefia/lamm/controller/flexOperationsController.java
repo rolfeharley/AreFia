@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ import com.arefia.lamm.dao.contactscondsDao;
 import com.arefia.lamm.entity.flexdetailEntity;
 import com.arefia.lamm.entity.flexfollowersEntity;
 import com.arefia.lamm.entity.flexmainEntity;
+import com.arefia.lamm.entity.contactsEntity;
 import com.arefia.lamm.entity.contactscondsEntity;
 import com.arefia.lamm.model.queryCriteriaModel;
 import com.arefia.lamm.model.webCommunicationModel;
@@ -520,27 +522,41 @@ public class flexOperationsController {
 				}
 			}
 			
-			String retstr = zdhr.getSpecRecord("Contacts", parmmap, fieldarr);
+			int pagecnt = 1;
+			Boolean morepage = true;
 			
-			if (retstr != null && !retstr.equals("")) {
-				JSONArray contsres = new JSONArray(retstr);
+			while (morepage) {
+				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt));
 				
-				for (int r = 0; r < contsres.length(); r++) {
-					JSONObject zohoconsObj = new JSONObject();
+				if (zohores != null && !zohores.equals("")) {
+					JSONObject masterobj = new JSONObject(zohores);
+					JSONArray zohoarr = masterobj.getJSONArray("data");
+					JSONObject infoobj = masterobj.getJSONObject("info");
+					morepage = infoobj.getBoolean("more_records");
 					
-//					zohoconsObj.put("COMPANY", contact[0].toString());
-//					zohoconsObj.put("CONTACT_NAME", contact[1].toString());
-//					zohoconsObj.put("LINE_UID", contact[2].toString());
-					
-					contactsArr.put(zohoconsObj);
+					if (zohoarr.length() > 0) {
+						for (int r = 0; r < zohoarr.length(); r++) {
+							JSONObject zohoobj = zohoarr.getJSONObject(r);
+							JSONObject companyobj = zohoobj.getJSONObject("Account_Name");
+							JSONObject zohocontobj = new JSONObject();
+							
+							zohocontobj.put("COMPANY", companyobj.getString("name"));
+							zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name") + " " + zohoobj.getString("Last_Name"));
+							zohocontobj.put("LINE_UID", zohoobj.getString("Line_UID"));
+							
+							contactsArr.put(zohocontobj);
+						}
+					}
 				}
-			}		
+				
+				pagecnt++;
+			}	
 		} else {
-			StringBuilder localstr = new StringBuilder();
+			List<contactsEntity> contactsList = null;
 			
 			queryCriteriaModel lineuidnn = new queryCriteriaModel();
 			
-			lineuidnn.setKey("LINE_UID");
+			lineuidnn.setKey("line_uid");
 			lineuidnn.setOperation("@");
 			lineuidnn.setValue("");
 			
@@ -549,27 +565,68 @@ public class flexOperationsController {
 			if (keyword != null && !keyword.equals("")) {
                 JSONArray condsArr = new JSONArray(keyword);
 				
-				for (int c = 0; c < condsArr.length(); c++) {
-					JSONObject condsobj = condsArr.getJSONObject(c);
-					
-					localstr.append("AND UPPER(");
-					localstr.append(condsobj.getString("column"));
-					localstr.append(") LIKE '%");
-					localstr.append(condsobj.getString("value").toUpperCase());
-					localstr.append("%' ");
+				switch (condsArr.length()) {
+				    case 1:
+				    	queryCriteriaModel qryconds1 = new queryCriteriaModel();
+						
+						qryconds1.setKey(condsArr.getJSONObject(0).getString("column"));
+						qryconds1.setOperation("*");
+						qryconds1.setValue(condsArr.getJSONObject(0).getString("value"));
+				    	
+				    	contactsList = cotdao.findAll(Specification.where(lineuidspec).and(new contactsSpecification(qryconds1)));
+					    break;
+				    case 2:
+                        queryCriteriaModel qryconds2_1 = new queryCriteriaModel();
+						
+                        qryconds2_1.setKey(condsArr.getJSONObject(0).getString("column"));
+                        qryconds2_1.setOperation("*");
+                        qryconds2_1.setValue(condsArr.getJSONObject(0).getString("value"));
+                        
+                        queryCriteriaModel qryconds2_2 = new queryCriteriaModel();
+						
+                        qryconds2_2.setKey(condsArr.getJSONObject(1).getString("column"));
+                        qryconds2_2.setOperation("*");
+                        qryconds2_2.setValue(condsArr.getJSONObject(1).getString("value"));
+				    	
+				    	contactsList = cotdao.findAll(Specification.where(lineuidspec).and(new contactsSpecification(qryconds2_1)).and(new contactsSpecification(qryconds2_2)));
+				    	break;
+				    default:
+                        queryCriteriaModel qryconds3_1 = new queryCriteriaModel();
+						
+                        qryconds3_1.setKey(condsArr.getJSONObject(0).getString("column"));
+                        qryconds3_1.setOperation("*");
+                        qryconds3_1.setValue(condsArr.getJSONObject(0).getString("value"));
+                        
+                        queryCriteriaModel qryconds3_2 = new queryCriteriaModel();
+						
+                        qryconds3_2.setKey(condsArr.getJSONObject(1).getString("column"));
+                        qryconds3_2.setOperation("*");
+                        qryconds3_2.setValue(condsArr.getJSONObject(1).getString("value"));
+                        
+                        queryCriteriaModel qryconds3_3 = new queryCriteriaModel();
+						
+                        qryconds3_3.setKey(condsArr.getJSONObject(2).getString("column"));
+                        qryconds3_3.setOperation("*");
+                        qryconds3_3.setValue(condsArr.getJSONObject(2).getString("value"));
+				    	
+				    	contactsList = cotdao.findAll(Specification.where(lineuidspec).and(new contactsSpecification(qryconds3_1)).and(new contactsSpecification(qryconds3_2)).and(new contactsSpecification(qryconds3_3)));
+				    	break;
 				}
+				
+			} else {
+				contactsList = cotdao.findAll(Specification.where(lineuidspec));
 			}
 			
-			List<Object[]> contactsList = cotdao.getAllLineContacts(localstr.toString());
-			
-			for (Object[] contact: contactsList) {
-				JSONObject contactsObj = new JSONObject();
-				
-				contactsObj.put("COMPANY", contact[0].toString());
-				contactsObj.put("CONTACT_NAME", contact[1].toString());
-				contactsObj.put("LINE_UID", contact[2].toString());
-				
-				contactsArr.put(contactsObj);
+			if (contactsList != null) {
+				for (contactsEntity contact: contactsList) {
+					JSONObject contactsObj = new JSONObject();
+					
+					contactsObj.put("COMPANY", contact.getCompany());
+					contactsObj.put("CONTACT_NAME", contact.getContact_name());
+					contactsObj.put("LINE_UID", contact.getLine_uid());
+					
+					contactsArr.put(contactsObj);
+				}
 			}
 		}
 		
