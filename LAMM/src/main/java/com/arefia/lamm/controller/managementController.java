@@ -1,12 +1,7 @@
 package com.arefia.lamm.controller;
 
-import java.util.HashMap;
-
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,14 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.arefia.lamm.service.zohoAuthService;
 import com.arefia.lamm.service.zohoDataHandler;
 import com.arefia.lamm.utility.getHeaderInformation;
 
 @Controller
 public class managementController {
-	private static final Logger log = LogManager.getLogger(managementController.class);
-	
 	@Autowired
 	getHeaderInformation hinf;
 	

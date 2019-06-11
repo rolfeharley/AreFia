@@ -45,6 +45,7 @@ import com.arefia.lamm.entity.contactsEntity;
 import com.arefia.lamm.entity.contactscondsEntity;
 import com.arefia.lamm.model.queryCriteriaModel;
 import com.arefia.lamm.model.webCommunicationModel;
+import com.arefia.lamm.service.zohoAuthService;
 import com.arefia.lamm.service.zohoDataHandler;
 
 @Controller
@@ -78,6 +79,9 @@ public class flexOperationsController {
 	
 	@Autowired
 	zohoDataHandler zdhr;
+	
+    @Autowired
+    zohoAuthService auts;
 	
 	@RequestMapping(value = "/saveflexmessage", method = RequestMethod.POST)
 	@ResponseBody
@@ -510,7 +514,10 @@ public class flexOperationsController {
 			HashMap<String, String> parmmap = new HashMap<String, String>();
 			ArrayList<String> fieldarr = new ArrayList<String>();
 			
-			fieldarr.add("Full_Name");
+			fieldarr.add("Account_Name");
+			fieldarr.add("First_Name");
+			fieldarr.add("Last_Name");
+			fieldarr.add("Line_UID");
 			
 			JSONArray zohoArr = new JSONArray(keyword);
 			
@@ -524,9 +531,10 @@ public class flexOperationsController {
 			
 			int pagecnt = 1;
 			Boolean morepage = true;
+			String acctoken = auts.getIniAuthCode();
 			
 			while (morepage) {
-				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt));
+				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken);
 				
 				if (zohores != null && !zohores.equals("")) {
 					JSONObject masterobj = new JSONObject(zohores);
@@ -537,16 +545,42 @@ public class flexOperationsController {
 					if (zohoarr.length() > 0) {
 						for (int r = 0; r < zohoarr.length(); r++) {
 							JSONObject zohoobj = zohoarr.getJSONObject(r);
-							JSONObject companyobj = zohoobj.getJSONObject("Account_Name");
-							JSONObject zohocontobj = new JSONObject();
+							JSONObject companyobj = new JSONObject();
+							if (zohoobj.get("Account_Name") instanceof JSONObject) {
+								companyobj = zohoobj.getJSONObject("Account_Name");
+							}
 							
-							zohocontobj.put("COMPANY", companyobj.getString("name"));
-							zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name") + " " + zohoobj.getString("Last_Name"));
-							zohocontobj.put("LINE_UID", zohoobj.getString("Line_UID"));
+							if (zohoobj.get("Line_UID") instanceof String && !zohoobj.getString("Line_UID").equals("")) {
+							    JSONObject zohocontobj = new JSONObject();
 							
-							contactsArr.put(zohocontobj);
+							    if (companyobj.get("name") instanceof String && !companyobj.getString("name").equals("")) {
+							        zohocontobj.put("COMPANY", companyobj.getString("name"));
+							    } else {
+							    	zohocontobj.put("COMPANY", "Unknow Company");
+							    }
+							    
+							    if (zohoobj.get("First_Name") instanceof String && !zohoobj.getString("First_Name").equals("")) {
+							    	if (zohoobj.get("Last_Name") instanceof String && !zohoobj.getString("Last_Name").equals("")) {
+							    		zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name") + " " + zohoobj.getString("Last_Name"));
+							    	} else {
+							    		zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name"));
+							    	}
+							    } else {
+                                    if (zohoobj.get("Last_Name") instanceof String && !zohoobj.getString("Last_Name").equals("")) {
+                                    	zohocontobj.put("CONTACT_NAME", zohoobj.getString("Last_Name"));
+							    	} else {
+							    		zohocontobj.put("CONTACT_NAME", "No Name");
+							    	}
+							    }
+							    
+							    zohocontobj.put("LINE_UID", zohoobj.getString("Line_UID"));
+							
+							    contactsArr.put(zohocontobj);
+							}
 						}
 					}
+				} else {
+					morepage = false;
 				}
 				
 				pagecnt++;

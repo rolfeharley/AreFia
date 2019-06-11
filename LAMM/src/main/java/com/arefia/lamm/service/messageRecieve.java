@@ -59,6 +59,9 @@ public class messageRecieve {
     @Autowired
     zohoDataHandler zdhn;
     
+    @Autowired
+    zohoAuthService auts;
+    
     @Resource
     private SimpMessagingTemplate lineTemplate;
     
@@ -117,13 +120,14 @@ public class messageRecieve {
                 			mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
                 		}
             		} else {
+            			String acctoken = auts.getIniAuthCode();
             			HashMap<String, String> parmap = new HashMap<String, String>();
             			ArrayList<String> fidarr = new ArrayList<String>();
             			
             			parmap.put("Line_UID", sObj.getString("userId"));
             			fidarr.add("id");
             			
-            			String lineinzoho = zdhn.getSpecRecord("Contacts", parmap, fidarr, "1");
+            			String lineinzoho = zdhn.getSpecRecord("Contacts", parmap, fidarr, "1", acctoken);
             			
             			if (lineinzoho == null || lineinzoho.equals("")) {
             				JSONObject isnline = new JSONObject();
@@ -135,7 +139,7 @@ public class messageRecieve {
             				isndarr.put(isndobj);
             				isnline.put("data", isndarr);
             				
-            				zdhn.addRecord("Contacts", isnline);
+            				zdhn.addRecord("Contacts", isnline, acctoken);
             				
             				mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
             			}

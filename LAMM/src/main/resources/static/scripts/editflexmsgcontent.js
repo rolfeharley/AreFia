@@ -1089,6 +1089,7 @@ function createlinecontactssel() {
 	flsstr += '<button id="canflsbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel()">';
 	flsstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div>';
 	flsstr += '<div id="qryflsdiv"></div></div>';
+	flsstr += '<img src="medias/load.gif" width="300px" height="300px" id="contactsqryloadimg" style="display: none; opacity: 0;"/>';
 		
 	$('.editarea').append(flsstr);
 	
@@ -1317,83 +1318,102 @@ function sendflexmessage() {
 	}
 }
 
-function querylinecontacts() {
-	var pararr = new Array();
-	
-	if ($('#flskeytxt1').val() != '') {
-		var parobj1 = new Object();
-		parobj1.column = $('#flsconsel1').find(':selected').val();
-		parobj1.value = $('#flskeytxt1').val();
-		
-		pararr.push(parobj1);
-	}
-	
-	if ($('#flskeytxt2').val() != '') {
-		var parobj2 = new Object();
-		parobj2.column = $('#flsconsel2').find(':selected').val();
-		parobj2.value = $('#flskeytxt2').val();
-		
-		pararr.push(parobj2);
-	}
-	
-	if ($('#flskeytxt3').val() != '') {
-		var parobj3 = new Object();
-		parobj3.column = $('#flsconsel3').find(':selected').val();
-		parobj3.value = $('#flskeytxt3').val();
-		
-		pararr.push(parobj3);
-	}
-	
-	$('#qryflsdiv').html('');
-	
-	$.get('getlunecontacts', {KEYWORD: JSON.stringify(pararr)}, function(result) {
-        if (result != null && result != '') {
-        	var resArr = JSON.parse(result);
-        	
-        	if (resArr.length > 0) {
-            	var contactsList = [];
-            	
-            	if (sendlist.length > 0) {
-            		for (var r = 0; r < resArr.length; r++) {
-            			var reapcnt = 0;
-            			
-                		for (var e = 0; e < sendlist.length; e++) {
-                			if (sendlist[e] == resArr[r].LINE_UID) {
-                				reapcnt = 1;
-                				break;
-                			}
-                		}
-                		
-                		if (reapcnt == 0) {
-                			contactsList.push(resArr[r]);
-                		}
-                	}
-            	} else {
-            		contactsList = resArr;
-            	}           	
+function querylinecontacts() {	
+	$('#fwlseloutterdiv').animate({
+		opacity: 0
+	}, 500, function() {
+		$('#fwlseloutterdiv').css('display', 'none');
+		$('#contactsqryloadimg').css('display', '');
+		$('#contactsqryloadimg').animate({
+			opacity: 1
+		}, 500, function() {
+			var pararr = new Array();
+			
+			if ($('#flskeytxt1').val() != '') {
+				var parobj1 = new Object();
+				parobj1.column = $('#flsconsel1').find(':selected').val();
+				parobj1.value = $('#flskeytxt1').val();
+				
+				pararr.push(parobj1);
+			}
+			
+			if ($('#flskeytxt2').val() != '') {
+				var parobj2 = new Object();
+				parobj2.column = $('#flsconsel2').find(':selected').val();
+				parobj2.value = $('#flskeytxt2').val();
+				
+				pararr.push(parobj2);
+			}
+			
+			if ($('#flskeytxt3').val() != '') {
+				var parobj3 = new Object();
+				parobj3.column = $('#flsconsel3').find(':selected').val();
+				parobj3.value = $('#flskeytxt3').val();
+				
+				pararr.push(parobj3);
+			}
+			
+			$('#qryflsdiv').html('');
+			
+			$.get('getlunecontacts', {KEYWORD: JSON.stringify(pararr)}, function(result) {
+		        if (result != null && result != '') {
+		        	var resArr = JSON.parse(result);
+		        	
+		        	if (resArr.length > 0) {
+		            	var contactsList = [];
+		            	
+		            	if (sendlist.length > 0) {
+		            		for (var r = 0; r < resArr.length; r++) {
+		            			var reapcnt = 0;
+		            			
+		                		for (var e = 0; e < sendlist.length; e++) {
+		                			if (sendlist[e] == resArr[r].LINE_UID) {
+		                				reapcnt = 1;
+		                				break;
+		                			}
+		                		}
+		                		
+		                		if (reapcnt == 0) {
+		                			contactsList.push(resArr[r]);
+		                		}
+		                	}
+		            	} else {
+		            		contactsList = resArr;
+		            	}           	
 
-            	if (contactsList.length > 0) {
-                	if (contactsList.length > 1) {
-                        $('#qryflsdiv').append('<div class="contactsinfoblock"><input type="checkbox" value="ALL" onchange="contsallchange(this)">ALL');
-                	}
-                	
-                	for (var c = 0; c < contactsList.length; c++) {
-                		var cinfd = '<div class="contactsinfoblock"><input type="checkbox" value="' + contactsList[c].LINE_UID + '">';
-                		
-                		cinfd += contactsList[c].COMPANY + '-' + contactsList[c].CONTACT_NAME;
-                		
-                		$('#qryflsdiv').append(cinfd);
-                	}
-            	} else {
-            		alert('No Contact Found!!');
-            	}
-        	} else {
-        		alert('No Contact Found!!');
-        	}
-        } else {
-        	alert('No Contact Found!!');
-        }	
-    });
+		            	if (contactsList.length > 0) {
+		                	if (contactsList.length > 1) {
+		                        $('#qryflsdiv').append('<div class="contactsinfoblock"><input type="checkbox" value="ALL" onchange="contsallchange(this)">ALL');
+		                	}
+		                	
+		                	for (var c = 0; c < contactsList.length; c++) {
+		                		var cinfd = '<div class="contactsinfoblock"><input type="checkbox" value="' + contactsList[c].LINE_UID + '">';
+		                		
+		                		cinfd += contactsList[c].COMPANY + '-' + contactsList[c].CONTACT_NAME;
+		                		
+		                		$('#qryflsdiv').append(cinfd);
+		                	}
+		            	} else {
+		            		alert('No Contact Found!!');
+		            	}
+		        	} else {
+		        		alert('No Contact Found!!');
+		        	}
+		        } else {
+		        	alert('No Contact Found!!');
+		        }
+		        $('#fwlseloutterdiv').css('display', '');
+		        $('#contactsqryloadimg').animate({
+		        	opacity: 0
+		        }, 500, function() {
+		        	$('#contactsqryloadimg').css('display', 'none');
+		        	$('#fwlseloutterdiv').animate({
+		        		opacity: 1
+		        	}, 500);
+		        });
+		    });
+		});
+	});
 }
 
 function contsallchange(allcheck) {
