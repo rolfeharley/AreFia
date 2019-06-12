@@ -22,7 +22,7 @@ import com.arefia.lamm.model.webCommunicationModel;
 
 @Service
 public class mediaCatcher {
-private static final Logger log = LogManager.getLogger(mediaCatcher.class);
+    private static final Logger log = LogManager.getLogger(mediaCatcher.class);
 	
     @Autowired
     sysinfoDao sido;
