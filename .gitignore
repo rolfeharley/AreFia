@@ -3,3 +3,4 @@
 #Config Files
 *.yml
 /.recommenders/
+.gitignore
