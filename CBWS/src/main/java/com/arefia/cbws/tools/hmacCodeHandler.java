@@ -8,10 +8,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+@Service
 public class hmacCodeHandler {
 	private static final Logger log = LogManager.getLogger(hmacCodeHandler.class);
 	
-    public static String hmacEncoder(String secret, String oristr) {
+    public String hmacEncoder(String secret, String oristr) {
     	return "OK";
 //    	try {
 //    		log.info("ORI:---------------------------------------------\n" + oristr);

@@ -7,8 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CbwsApplication {	
 	public static void main(String[] args) {
 		SpringApplication.run(CbwsApplication.class, args);
-		
-		cbwsCheckInPoint cbip = new cbwsCheckInPoint();
-		cbip.testGetOrder();
 	}
 }
