@@ -15,11 +15,12 @@ public class hmacCodeHandler {
     public String hmacEncoder(String secret, String oristr) {
     	try {
         	byte[] secsb = secret.getBytes("UTF-8");
-        	byte[] orisb = oristr.getBytes("UTF-8");
     		Mac hmac = Mac.getInstance("HmacSHA256");
         	SecretKeySpec hskey = new SecretKeySpec(secsb, "HmacSHA256");
             hmac.init(hskey);
-            String hencstr = Base64.encodeBase64String(hmac.doFinal(orisb));
+        	byte[] orisb = oristr.getBytes("UTF-8");
+        	byte[] oriHmac = hmac.doFinal(orisb);
+        	String hencstr = javax.xml.bind.DatatypeConverter.printBase64Binary(oriHmac);
         	return hencstr;
     	} catch(Exception e) {
     		log.error(e.getLocalizedMessage(), e);

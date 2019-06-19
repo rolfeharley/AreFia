@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class gmtDateTimeGenerator {
 	public String getGMTString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss zzz");
+        SimpleDateFormat sdf = new SimpleDateFormat("EE, dd MMM yyyy HH:mm:ss zzz");
 	 
 	    Date date = new Date();
 	 
