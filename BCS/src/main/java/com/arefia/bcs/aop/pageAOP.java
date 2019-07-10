@@ -36,7 +36,7 @@ private static final Logger log = LogManager.getLogger(pageAOP.class);
 	@Autowired
 	detectIsAdmin isadmin;
 	
-	@Pointcut("execution(* com.arefia.WOSS.controller.*.*(..))")
+	@Pointcut("execution(* com.arefia.bcs.controller.*.*(..))")
     public void pageLog() {}
 	
 	@Before("pageLog()")
