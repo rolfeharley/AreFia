@@ -1220,14 +1220,73 @@ function createlistselector() {
 		
 	$('.editarea').append(lssstr);
 	
-	$('#lssogrptpsel').append('<option value="none">All Type</option>');
+	$('#lssogrptpsel').append('<option value="NONE">Please Select List Type</option>');
+	$('#lssogrptpsel').append('<option value="ALL">All Type</option>');
 		
 	$('#lssogrptpsel').change(function() {
-		
+		if ($('#lssogrptpsel').val() === 'NONE') {
+			$('#lssogrpnasel').empty();
+			$('#lssoflsdiv').html('');
+		} else {
+			$('#lssoroutterdiv').animate({
+				'opacity': '0',
+				'width': '0'
+			}, 300, function() {
+				$('#lssoroutterdiv').css('display', 'none');
+				$('#lssoqryloadimg').css('display', '');
+				
+				$('#lssoqryloadimg').animate({
+			    	'opacity': '1'
+			    }, 300, function() {
+			    	var typesel;
+			    	
+			    	if ($('#lssogrptpsel').val() === undefined) {
+			    		alert('You Didn\'t Select Any List Type!!');
+			    	} else {
+			    		if ($('#lssogrptpsel').val() === 'ALL') {
+		    				typesel = '';
+		    			} else {
+		    				typesel = $('#lssogrptpsel').val();
+		    			}
+		    			
+		    			$.get('getpostlist', {TYPE: typesel}, function(result) {
+							
+					        if (result != null && result != '') {
+					        	var listlist = JSON.parse(result);
+					        	
+					        	if (listlist.length > 0) {
+					        		$('#lssogrpnasel').append('<option value="none">Please Select List</option>');
+					        		
+					            	for (var t = 0; t < listlist.length; t++) {
+					            		$('#lssogrpnasel').append('<option value="' + listlist[t].ID + '">' + listlist[t].NAME + '</option>');
+					            	}
+					        	}
+					        }
+					        
+					        $('#lssoqryloadimg').animate({
+					        	'opacity': '0'
+					        }, 300, function() {
+					        	$('#lssoqryloadimg').css('display', 'none');
+					        	$('#lssoroutterdiv').css('display', '');
+					        	
+							    $('#lssoroutterdiv').animate({
+									'opacity': '1',
+									'width': '40vw'
+								}, 300);
+					        });
+					    });
+			    	}
+			    });
+			});
+		}
 	});
 	
     $('#lssogrpnasel').change(function() {
-    	
+    	if ($('#lssogrpnasel').val() === 'NONE') {
+			$('#lssoflsdiv').html('');
+		} else {
+			
+		}
 	});
 }
 
@@ -1250,7 +1309,7 @@ function showgrouplist() {
 	$('#sendopeoutterdiv').animate({
 		'opacity': '0',
 		'width': '0'
-	}, 500, function() {
+	}, 300, function() {
 		$('#sendopeoutterdiv').css('display', 'none');
 	    createlistselector();
 	    
@@ -1259,7 +1318,7 @@ function showgrouplist() {
 	    
 	    $('#lssoqryloadimg').animate({
 	    	'opacity': '1'
-	    }, 500, function() {
+	    }, 300, function() {
 	    	$.get('getpostlisttype', function(result) {
 				
 		        if (result != null && result != '') {
@@ -1274,14 +1333,14 @@ function showgrouplist() {
 		        
 		        $('#lssoqryloadimg').animate({
 		        	'opacity': '0'
-		        }, 500, function() {
+		        }, 300, function() {
 		        	$('#lssoqryloadimg').css('display', 'none');
 		        	$('#lssoroutterdiv').css('display', '');
 		        	
 				    $('#lssoroutterdiv').animate({
 						'opacity': '1',
 						'width': '40vw'
-					}, 500);
+					}, 300);
 		        });
 		    });
 	    });

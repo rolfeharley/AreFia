@@ -534,7 +534,7 @@ public class flexOperationsController {
 			String acctoken = auts.getIniAuthCode();
 			
 			while (morepage) {
-				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken, "First_Name");
+				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken, "First_Name", "AND");
 				
 				if (zohores != null && !zohores.equals("")) {
 					JSONObject masterobj = new JSONObject(zohores);
@@ -739,8 +739,8 @@ public class flexOperationsController {
 	@RequestMapping(value = "/getpostlisttype", method = RequestMethod.GET)
 	@ResponseBody
 	public String getAllListType() {
-		JSONArray contactsArr = new JSONArray();
-		ArrayList<String> typearr = new ArrayList<String>();
+		JSONArray typeArr = new JSONArray();
+		ArrayList<String> typecomp = new ArrayList<String>();
 		
 		int pagecnt = 1;
 		Boolean morepage = true;
@@ -761,13 +761,13 @@ public class flexOperationsController {
 						
 						if (zohoobj.get("group_type") != null && !zohoobj.get("group_type").toString().equals("null") && 
 							!zohoobj.get("group_type").toString().equals("")) {
-							if (!typearr.contains(zohoobj.getString("group_type"))) {
+							if (!typecomp.contains(zohoobj.getString("group_type"))) {
 							    JSONObject typeobj = new JSONObject();
 
 							    typeobj.put("TYPE", zohoobj.getString("group_type"));
 							    
-							    contactsArr.put(typeobj);
-							    typearr.add(zohoobj.getString("group_type"));
+							    typeArr.put(typeobj);
+							    typecomp.add(zohoobj.getString("group_type"));
 							}
 						}
 					}
@@ -779,6 +779,111 @@ public class flexOperationsController {
 			pagecnt++;
 		}
 				
-		return contactsArr.toString();
+		return typeArr.toString();
+	}
+	
+	@RequestMapping(value = "/getpostlist", method = RequestMethod.GET)
+	@ResponseBody
+	public String getListInType(@RequestParam("TYPE") String type) {
+		JSONArray listArr = new JSONArray();
+		HashMap<String, String> parms = new HashMap<String, String>();
+		ArrayList<String> fields = new ArrayList<String>();
+		
+		parms.put("group_type", type);
+		
+		fields.add("ID1");
+		fields.add("Name");
+		
+		int pagecnt = 1;
+		Boolean morepage = true;
+		String acctoken = auts.getIniAuthCode();
+					
+		while (morepage) {
+		    String zohores = zdhr.getSpecRecord("PostGroup", parms, fields, String.valueOf(pagecnt), acctoken, "", "OR");
+						
+		    if (zohores != null && !zohores.equals("")) {
+			    JSONObject masterobj = new JSONObject(zohores);
+			    JSONArray zohoarr = masterobj.getJSONArray("data");
+				JSONObject infoobj = masterobj.getJSONObject("info");
+				morepage = infoobj.getBoolean("more_records");
+							
+				if (zohoarr.length() > 0) {
+					for (int r = 0; r < zohoarr.length(); r++) {
+						JSONObject zohoobj = zohoarr.getJSONObject(r);
+						
+						if (zohoobj.get("ID1") != null && !zohoobj.get("ID1").toString().equals("null") && 
+							!zohoobj.get("ID1").toString().equals("")) {
+							JSONObject listobj = new JSONObject();
+
+							listobj.put("ID", zohoobj.getString("ID1"));
+							if (zohoobj.get("Name") != null && !zohoobj.get("Name").toString().equals("null") && 
+								!zohoobj.get("Name").toString().equals("")) {
+								listobj.put("NAME", zohoobj.getString("Name"));
+							} else {
+								listobj.put("NAME", "No Name");
+							}
+						    
+						    listArr.put(listobj);
+						}
+					}
+				}
+			} else {
+				morepage = false;
+			}
+						
+			pagecnt++;
+		}
+				
+		return listArr.toString();
+	}
+	
+	@RequestMapping(value = "/getpostlist", method = RequestMethod.GET)
+	@ResponseBody
+	public String getContactsInList(@RequestParam("ID") String id) {
+		JSONArray contArr = new JSONArray();
+		JSONObject contobj = new JSONObject();
+		JSONArray idArr = new JSONArray();
+		HashMap<String, String> parms = new HashMap<String, String>();
+		ArrayList<String> fields = new ArrayList<String>();
+		
+		parms.put("Name", id);
+		
+		fields.add("contact_id");
+		
+		int pagecnt = 1;
+		Boolean morepage = true;
+		String acctoken = auts.getIniAuthCode();
+					
+		while (morepage) {
+		    String zohores = zdhr.getSpecRecord("PostGroup", parms, fields, String.valueOf(pagecnt), acctoken, "", "OR");
+						
+		    if (zohores != null && !zohores.equals("")) {
+			    JSONObject masterobj = new JSONObject(zohores);
+			    JSONArray zohoarr = masterobj.getJSONArray("data");
+				JSONObject infoobj = masterobj.getJSONObject("info");
+				morepage = infoobj.getBoolean("more_records");
+							
+				if (zohoarr.length() > 0) {
+					for (int r = 0; r < zohoarr.length(); r++) {
+						JSONObject zohoobj = zohoarr.getJSONObject(r);
+						
+						if (zohoobj.get("contact_id") instanceof JSONObject) {
+							idArr.put(zohoobj.getString("name"));
+						}
+					}
+				}
+			} else {
+				morepage = false;
+			}
+						
+			pagecnt++;
+		}
+		
+		contobj.put("column", "field8");
+		contobj.put("value", idArr);
+		
+		contArr.put(contobj);
+				
+		return contArr.toString();
 	}
 }

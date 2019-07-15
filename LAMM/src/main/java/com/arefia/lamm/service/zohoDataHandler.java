@@ -3,6 +3,8 @@ package com.arefia.lamm.service;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,7 +51,8 @@ public class zohoDataHandler {
     	}
     }
     
-    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields, String page, String acctoken, String allFileld) {
+    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields, String page, String acctoken, 
+    		                    String allFileld, String condtype) {
     	try {
         	webCommunicationModel zohomod = new webCommunicationModel();
         	HashMap<String, String> zohohead = new HashMap<String, String>();
@@ -60,25 +63,43 @@ public class zohoDataHandler {
         	parbd.append(scope);
         	parbd.append("/search?");
         	
-        	parbd.append("criteria=(" + allFileld + ":starts_with:*)");
-        	
-            if (parms != null && parms.size() > 0) {
-                Iterator<Map.Entry<String, String>> parpint = parms.entrySet().iterator();
-            
-                while (parpint.hasNext()) {
-                    Map.Entry<String, String> parmdata = parpint.next();
+        	if (condtype.equals("MIX")) {
+        		parbd.append("criteria=(" + parms.get("CONDITIONS"));
+        	} else {
+        		if (condtype.equals("AND")) {
+            		parbd.append("criteria=((" + allFileld + ":starts_with:*)");
+            	} else {
+            		parbd.append("criteria=(");
+            	}
+            	
+                if (parms != null && parms.size() > 0) {
+                    Iterator<Map.Entry<String, String>> parpint = parms.entrySet().iterator();
+                    int orcnt = 0;
                 
-                    parbd.append("and");
-                    parbd.append("(");
-                    parbd.append(parmdata.getKey());
-                    parbd.append(":starts_with:*");
-                    parbd.append(parmdata.getValue());
-                    parbd.append(")");
+                    while (parpint.hasNext()) {
+                        Map.Entry<String, String> parmdata = parpint.next();
+                    
+                        if (condtype.equals("AND")) {
+                        	parbd.append("and");
+                        } else {
+                        	if (orcnt > 0) {
+                        		parbd.append("or");
+                        	}
+                        	
+                        	orcnt++;
+                        }
+                        
+                        parbd.append("(");
+                        parbd.append(parmdata.getKey());
+                        parbd.append(":starts_with:*");
+                        parbd.append(URLEncoder.encode(parmdata.getValue(), StandardCharsets.UTF_8.toString()));
+                        parbd.append(")");
+                    }
                 }
-            }
+        	}
         	
 			parbd.append(")");
-        	
+//			log.info("-------------------------------------------------------------\n" + parbd.toString());
 			if (fields != null && fields.size() > 0) {
 				parbd.append("&fields=");
 				
