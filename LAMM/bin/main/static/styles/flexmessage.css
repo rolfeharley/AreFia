@@ -337,7 +337,7 @@
 	padding: 0 5px 0 5px;
 }
 
-#recflsdiv, #qryflsdiv {
+#recflsdiv, #qryflsdiv, #lssoflsdiv {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start; 
@@ -360,6 +360,14 @@
 	padding: 0 0 10px 0;
 }
 
+.flssearchdiv button {
+	width: 50%;
+}
+
+.lssoearchdiv {
+	padding: 0 0 10px 0;
+}
+
 .flsopeupdiv {
 	width: 40vw;
 	padding: 0 0 10px 0;
@@ -376,6 +384,10 @@
 
 .flsconsel {
 	width: 10vw;
+}
+
+#lssoroutterdiv label {
+	color: #FFF;
 }
 
 .contactsinfoblock {

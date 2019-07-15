@@ -49,7 +49,7 @@ public class zohoDataHandler {
     	}
     }
     
-    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields, String page, String acctoken) {
+    public String getSpecRecord(String scope, HashMap<String, String> parms, ArrayList<String> fields, String page, String acctoken, String allFileld) {
     	try {
         	webCommunicationModel zohomod = new webCommunicationModel();
         	HashMap<String, String> zohohead = new HashMap<String, String>();
@@ -60,7 +60,7 @@ public class zohoDataHandler {
         	parbd.append(scope);
         	parbd.append("/search?");
         	
-        	parbd.append("criteria=((First_Name:starts_with:*)");
+        	parbd.append("criteria=(" + allFileld + ":starts_with:*)");
         	
             if (parms != null && parms.size() > 0) {
                 Iterator<Map.Entry<String, String>> parpint = parms.entrySet().iterator();
@@ -68,7 +68,8 @@ public class zohoDataHandler {
                 while (parpint.hasNext()) {
                     Map.Entry<String, String> parmdata = parpint.next();
                 
-                    parbd.append("and(");
+                    parbd.append("and");
+                    parbd.append("(");
                     parbd.append(parmdata.getKey());
                     parbd.append(":starts_with:*");
                     parbd.append(parmdata.getValue());

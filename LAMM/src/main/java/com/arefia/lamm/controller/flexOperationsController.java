@@ -534,7 +534,7 @@ public class flexOperationsController {
 			String acctoken = auts.getIniAuthCode();
 			
 			while (morepage) {
-				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken);
+				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken, "First_Name");
 				
 				if (zohores != null && !zohores.equals("")) {
 					JSONObject masterobj = new JSONObject(zohores);
@@ -734,5 +734,51 @@ public class flexOperationsController {
         wcc.comWithPost(flexWebMod);
 		
 		return wcc.postIns;
+	}
+	
+	@RequestMapping(value = "/getpostlisttype", method = RequestMethod.GET)
+	@ResponseBody
+	public String getAllListType() {
+		JSONArray contactsArr = new JSONArray();
+		ArrayList<String> typearr = new ArrayList<String>();
+		
+		int pagecnt = 1;
+		Boolean morepage = true;
+		String acctoken = auts.getIniAuthCode();
+					
+		while (morepage) {
+		    String zohores = zdhr.getAllRecord("PostGroup", String.valueOf(pagecnt), acctoken);
+						
+		    if (zohores != null && !zohores.equals("")) {
+			    JSONObject masterobj = new JSONObject(zohores);
+			    JSONArray zohoarr = masterobj.getJSONArray("data");
+				JSONObject infoobj = masterobj.getJSONObject("info");
+				morepage = infoobj.getBoolean("more_records");
+							
+				if (zohoarr.length() > 0) {
+					for (int r = 0; r < zohoarr.length(); r++) {
+						JSONObject zohoobj = zohoarr.getJSONObject(r);
+						
+						if (zohoobj.get("group_type") != null && !zohoobj.get("group_type").toString().equals("null") && 
+							!zohoobj.get("group_type").toString().equals("")) {
+							if (!typearr.contains(zohoobj.getString("group_type"))) {
+							    JSONObject typeobj = new JSONObject();
+
+							    typeobj.put("TYPE", zohoobj.getString("group_type"));
+							    
+							    contactsArr.put(typeobj);
+							    typearr.add(zohoobj.getString("group_type"));
+							}
+						}
+					}
+				}
+			} else {
+				morepage = false;
+			}
+						
+			pagecnt++;
+		}
+				
+		return contactsArr.toString();
 	}
 }

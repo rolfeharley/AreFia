@@ -1053,9 +1053,12 @@ function flexmsgsaveandsend() {
 }
 
 function createSendFollowers(ftype) {
-	var sflstr = '<div id="sendopeoutterdiv"><div class="flssearchdiv"><button id="recflsbtn" class="btn btn-info" onclick="showslsselector()">';
+	var sflstr = '<div id="sendopeoutterdiv"><div class="flssearchdiv btn-group"><button id="recflsbtn" class="btn btn-info" onclick="showslsselector()">';
 	
-	sflstr += '<span><i class="far fa-user-circle"></i>Search Follower</span></button></button></div><div id="recflsdiv"></div>';
+	sflstr += '<span><i class="far fa-user-circle"></i>Search Follower</span></button>';
+	sflstr += '<button id="postgrouplistbtn" class="btn btn-primary" onclick="showgrouplist()">';
+	sflstr += '<span><i class="fas fa-clipboard-list"></i>List Select</span></button>';
+	sflstr += '</div><div id="recflsdiv"></div>';
 	sflstr += '<div class="btn-group flsopedndiv"><button id="sendflsbtn" class="btn btn-success flexqrybtn leftbuttongrp" onclick="sendflexmessage()"><span>';
 	sflstr += '<i class="far fa-paper-plane"></i>Send</span></button>';
 	sflstr += '<button id="deleteflsbtn" class="btn btn-danger flexqrybtn" onclick="deletecontactinlist()"><span>';
@@ -1205,6 +1208,29 @@ function createlinecontactssel() {
     });
 }
 
+function createlistselector() {
+    var lssstr = '<div id="lssoroutterdiv" style="width: 0; opacity: 0;">';
+	
+    lssstr += '<div class="lssoearchdiv">';
+    lssstr += '<label>List Type</label><select id="lssogrptpsel" class="form-control"></select>';
+    lssstr += '</div><div class="lssoearchdiv">';
+    lssstr += '<label>List Name</label><select id="lssogrpnasel" class="form-control"></select>';
+	lssstr += '</div><div id="lssoflsdiv"></div></div >';
+	lssstr += '<img src="medias/load.gif" width="300px" height="300px" id="lssoqryloadimg" style="display: none; opacity: 0;"/>';
+		
+	$('.editarea').append(lssstr);
+	
+	$('#lssogrptpsel').append('<option value="none">All Type</option>');
+		
+	$('#lssogrptpsel').change(function() {
+		
+	});
+	
+    $('#lssogrpnasel').change(function() {
+    	
+	});
+}
+
 function showslsselector() {
 	$('#sendopeoutterdiv').animate({
 		'opacity': '0',
@@ -1217,6 +1243,48 @@ function showslsselector() {
 			'opacity': '1',
 			'width': '40vw'
 		}, 500);
+	});
+}
+
+function showgrouplist() {
+	$('#sendopeoutterdiv').animate({
+		'opacity': '0',
+		'width': '0'
+	}, 500, function() {
+		$('#sendopeoutterdiv').css('display', 'none');
+	    createlistselector();
+	    
+	    $('#lssoroutterdiv').css('display', 'none');
+	    $('#lssoqryloadimg').css('display', '');
+	    
+	    $('#lssoqryloadimg').animate({
+	    	'opacity': '1'
+	    }, 500, function() {
+	    	$.get('getpostlisttype', function(result) {
+				
+		        if (result != null && result != '') {
+		        	var typelist = JSON.parse(result);
+		        	
+		        	if (typelist.length > 0) {
+		            	for (var t = 0; t < typelist.length; t++) {
+		            		$('#lssogrptpsel').append('<option value="' + typelist[t].TYPE + '">' + typelist[t].TYPE + '</option>');
+		            	}
+		        	}
+		        }
+		        
+		        $('#lssoqryloadimg').animate({
+		        	'opacity': '0'
+		        }, 500, function() {
+		        	$('#lssoqryloadimg').css('display', 'none');
+		        	$('#lssoroutterdiv').css('display', '');
+		        	
+				    $('#lssoroutterdiv').animate({
+						'opacity': '1',
+						'width': '40vw'
+					}, 500);
+		        });
+		    });
+	    });
 	});
 }
 
