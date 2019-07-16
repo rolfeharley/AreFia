@@ -564,39 +564,42 @@ public class flexOperationsController {
 						for (int r = 0; r < zohoarr.length(); r++) {
 							JSONObject zohoobj = zohoarr.getJSONObject(r);
 							JSONObject companyobj = new JSONObject();
-							if (zohoobj.get("Account_Name") instanceof JSONObject) {
+							
+							if (zohoobj.get("Account_Name") instanceof JSONObject && !zohoobj.isNull("Account_Name")) {
 								companyobj = zohoobj.getJSONObject("Account_Name");
+							} else {
+								companyobj = null;
 							}
-							log.info("--------------------------------------------------------\n" + companyobj.toString());
-//							if (zohoobj.get("Line_UID") instanceof String && !zohoobj.getString("Line_UID").equals("")) {
-							if (zohoobj.getJSONObject("Account_Name").length() > 0) {
-							    JSONObject zohocontobj = new JSONObject();
 							
-							    if (companyobj.get("name") instanceof String && !companyobj.getString("name").equals("")) {
-							        zohocontobj.put("COMPANY", companyobj.getString("name"));
-							    } else {
-							    	zohocontobj.put("COMPANY", "Unknow Company");
-							    }
-							    
-							    if (zohoobj.get("First_Name") instanceof String && !zohoobj.getString("First_Name").equals("")) {
-							    	if (zohoobj.get("Last_Name") instanceof String && !zohoobj.getString("Last_Name").equals("")) {
-							    		zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name") + " " + zohoobj.getString("Last_Name"));
-							    	} else {
-							    		zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name"));
-							    	}
-							    } else {
-                                    if (zohoobj.get("Last_Name") instanceof String && !zohoobj.getString("Last_Name").equals("")) {
-                                    	zohocontobj.put("CONTACT_NAME", zohoobj.getString("Last_Name"));
-							    	} else {
-							    		zohocontobj.put("CONTACT_NAME", "No Name");
-							    	}
-							    }
-							    
-							    zohocontobj.put("LINE_UID", zohoobj.getString("Line_UID"));
+							JSONObject zohocontobj = new JSONObject();
 							
-							    contactsArr.put(zohocontobj);
-//							}
+						    if (companyobj != null && companyobj.get("name") instanceof String && !companyobj.isNull("name")) {
+						        zohocontobj.put("COMPANY", companyobj.getString("name"));
+						    } else {
+						    	zohocontobj.put("COMPANY", "Unknow Company");
 						    }
+						    
+						    if (zohoobj.get("First_Name") instanceof String && !zohoobj.isNull("First_Name")) {
+						    	if (zohoobj.get("Last_Name") instanceof String && !zohoobj.isNull("Last_Name")) {
+						    		zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name") + " " + zohoobj.getString("Last_Name"));
+						    	} else {
+						    		zohocontobj.put("CONTACT_NAME", zohoobj.getString("First_Name"));
+						    	}
+						    } else {
+                                if (zohoobj.get("Last_Name") instanceof String && !zohoobj.isNull("Last_Name")) {
+                                	zohocontobj.put("CONTACT_NAME", zohoobj.getString("Last_Name"));
+						    	} else {
+						    		zohocontobj.put("CONTACT_NAME", "No Name");
+						    	}
+						    }
+						    
+						    if (zohoobj.get("Line_UID") instanceof String && !zohoobj.isNull("Line_UID")) {
+						        zohocontobj.put("LINE_UID", zohoobj.getString("Line_UID"));
+						    } else {
+						    	zohocontobj.put("LINE_UID", "");
+						    }
+						
+						    contactsArr.put(zohocontobj);
 						}
 					}
 				} else {

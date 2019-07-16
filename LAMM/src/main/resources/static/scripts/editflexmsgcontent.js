@@ -1084,12 +1084,12 @@ function createlinecontactssel() {
     flsstr += '<select id="flsconsel3" class="form-control flsconsel"></select>';
 	flsstr += '<input type="text" id="flskeytxt3" class="form-control" placeholder="Please Enter The Keyword" />';
 	flsstr += '</div >';
-	flsstr += '<div class="btn-group  flsopeupdiv">';
-	flsstr += '<button id="recflsbtn"class="btn btn-info flexqrybtn" style="margin-left: -1px;" onclick="querylinecontacts()">';
+	flsstr += '<div class="btn-group flsopeupdiv">';
+	flsstr += '<button id="recflsbtn" class="btn btn-info flexqrybtn" style="margin-left: -1px;" onclick="querylinecontacts()">';
 	flsstr += '<span><i class="fas fa-search"></i>Query</span></button></button>';
 	flsstr += '<button id="sendflsbtn" class="btn btn-success flexqrybtn" onclick="addlinecontacts()"><span>';
 	flsstr += '<i class="fas fa-check"></i>Confirm</span></button>';
-	flsstr += '<button id="canflsbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel()">';
+	flsstr += '<button id="canflsbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel(\'fwlseloutterdiv\')">';
 	flsstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div>';
 	flsstr += '<div id="qryflsdiv"></div></div>';
 	flsstr += '<img src="medias/load.gif" width="300px" height="300px" id="contactsqryloadimg" style="display: none; opacity: 0;"/>';
@@ -1215,7 +1215,12 @@ function createlistselector() {
     lssstr += '<label>List Type</label><select id="lssogrptpsel" class="form-control"></select>';
     lssstr += '</div><div class="lssoearchdiv">';
     lssstr += '<label>List Name</label><select id="lssogrpnasel" class="form-control"></select>';
-	lssstr += '</div><div id="lssoflsdiv"></div></div >';
+	lssstr += '</div><div id="lssoflsdiv"></div>';
+	lssstr += '<div class="btn-group lssopeupdiv">';
+	lssstr += '<button id="sendlssbtn" class="btn btn-success flexqrybtn" onclick="addlistcontacts()"><span>';
+	lssstr += '<i class="fas fa-check"></i>Confirm</span></button>';
+	lssstr += '<button id="canlssbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel(\'lssoroutterdiv\')">';
+	lssstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div></div>';
 	lssstr += '<img src="medias/load.gif" width="300px" height="300px" id="lssoqryloadimg" style="display: none; opacity: 0;"/>';
 		
 	$('.editarea').append(lssstr);
@@ -1309,7 +1314,9 @@ function createlistselector() {
 					        	var contlist = JSON.parse(result);
 					        	
 					        	if (contlist.length > 0) {
-					        		$('#lssoflsdiv').append('<div class="continlistblock" data-lineuid="' + contactsList[c].LINE_UID + '"><label>' + contactsList[c].COMPANY + '-' + contactsList[c].CONTACT_NAME + '</label></div>');
+					        		for (var s = 0; s < contlist.length; s++) {
+					        			$('#lssoflsdiv').append('<div class="continlistblock" data-lineuid="' + contlist[s].LINE_UID + '"><label>' + contlist[s].COMPANY + '-' + contlist[s].CONTACT_NAME + '</label></div>');
+					        		}
 					        	}
 					        }
 					        
@@ -1392,7 +1399,7 @@ function showgrouplist() {
 function addlinecontacts() {	
 	if ($('#qryflsdiv input[type="checkbox"]:checked').length > 0) {
 		if (sendlist.length > 0) {
-			$('#recflsdiv').prepend('<div class="contactsinfoblock"><input type="checkbox" value="ALL" onchange="contsallchange(this)">ALL');
+			$('#recflsdiv').prepend('<div class="contactsinfoblock"><input type="checkbox" value="ALL" onchange="contsallchange(this)">ALL</div>');
 		}
 		
 		$('#qryflsdiv input[type="checkbox"]:checked').each(function(){
@@ -1418,6 +1425,30 @@ function addlinecontacts() {
 	} else {
 		alert('You Didn\'t Select Any Contact!!');
 	}
+}
+
+function addlistcontacts() {
+	if (sendlist.length > 0) {
+		$('#recflsdiv').prepend('<div class="contactsinfoblock"><input type="checkbox" value="ALL" onchange="contsallchange(this)">ALL</div>');
+	}
+	
+	$('#lssoflsdiv div').each(function() {
+		$('#recflsdiv').append('<div class="contactsinfoblock"><input type="checkbox" value="' + $(this).attr('data-lineuid') + '">' + $(this).find('label').text() + '</div>');
+		sendlist.push($(this).val());
+	});
+	
+	$('#lssoroutterdiv').animate({
+		'opacity': '0',
+		'width': '0'
+	}, 500, function() {
+		$('#lssoroutterdiv').remove();
+		$('#sendopeoutterdiv').css('display', '');
+		
+		$('#sendopeoutterdiv').animate({
+			'opacity': '1',
+			'width': '40vw'
+		}, 500);
+	});
 }
 
 function deletecontactinlist() {
@@ -1593,12 +1624,12 @@ function contsallchange(allcheck) {
 	}
 }
 
-function flsquerycancel() {
-	$('#fwlseloutterdiv').animate({
+function flsquerycancel(divname) {
+	$('#' + divname).animate({
 		'opacity': '0',
 		'width': '0'
 	}, 500, function() {
-		$('#fwlseloutterdiv').remove();
+		$('#' + divname).remove();
 		$('#sendopeoutterdiv').css('display', '');
 		
 		$('#sendopeoutterdiv').animate({
