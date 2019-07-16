@@ -401,6 +401,11 @@
 	color: #FFF;
 }
 
+.continlistblock {
+	width: 100%;
+	color: #FFF;
+}
+
 @media screen and (max-width:575.99px) {
 	
 }

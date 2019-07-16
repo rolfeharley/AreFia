@@ -511,6 +511,7 @@ public class flexOperationsController {
 		JSONArray contactsArr = new JSONArray();
 		
 		if (zohointe.equals("1")) {
+			Boolean mutiid = false;
 			HashMap<String, String> parmmap = new HashMap<String, String>();
 			ArrayList<String> fieldarr = new ArrayList<String>();
 			
@@ -522,10 +523,21 @@ public class flexOperationsController {
 			JSONArray zohoArr = new JSONArray(keyword);
 			
 			if (zohoArr.length() > 0) {
-				for (int z = 0; z < zohoArr.length(); z++) {
-				    JSONObject zohoObj = zohoArr.getJSONObject(z);
-				    
-				    parmmap.put(zohoObj.getString("column"), zohoObj.getString("value"));
+				if (zohoArr.getJSONObject(0).get("value") instanceof JSONArray) {
+					mutiid = true;
+					JSONArray idarr = zohoArr.getJSONObject(0).getJSONArray("value");
+					
+					if (idarr.length() > 0) {
+						for (int i = 0; i < idarr.length(); i++) {
+							parmmap.put(zohoArr.getJSONObject(0).getString("column"), idarr.getString(i));
+						}
+					}
+				} else {
+					for (int z = 0; z < zohoArr.length(); z++) {
+					    JSONObject zohoObj = zohoArr.getJSONObject(z);
+					    
+					    parmmap.put(zohoObj.getString("column"), zohoObj.getString("value"));
+					}
 				}
 			}
 			
@@ -534,7 +546,13 @@ public class flexOperationsController {
 			String acctoken = auts.getIniAuthCode();
 			
 			while (morepage) {
-				String zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken, "First_Name", "AND");
+				String zohores;
+				
+				if (mutiid) {
+					zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken, "First_Name", "OR");
+				} else {
+					zohores = zdhr.getSpecRecord("Contacts", parmmap, fieldarr, String.valueOf(pagecnt), acctoken, "First_Name", "AND");
+				}				
 				
 				if (zohores != null && !zohores.equals("")) {
 					JSONObject masterobj = new JSONObject(zohores);
@@ -549,8 +567,9 @@ public class flexOperationsController {
 							if (zohoobj.get("Account_Name") instanceof JSONObject) {
 								companyobj = zohoobj.getJSONObject("Account_Name");
 							}
-							
-							if (zohoobj.get("Line_UID") instanceof String && !zohoobj.getString("Line_UID").equals("")) {
+							log.info("--------------------------------------------------------\n" + companyobj.toString());
+//							if (zohoobj.get("Line_UID") instanceof String && !zohoobj.getString("Line_UID").equals("")) {
+							if (zohoobj.getJSONObject("Account_Name").length() > 0) {
 							    JSONObject zohocontobj = new JSONObject();
 							
 							    if (companyobj.get("name") instanceof String && !companyobj.getString("name").equals("")) {
@@ -576,7 +595,8 @@ public class flexOperationsController {
 							    zohocontobj.put("LINE_UID", zohoobj.getString("Line_UID"));
 							
 							    contactsArr.put(zohocontobj);
-							}
+//							}
+						    }
 						}
 					}
 				} else {
@@ -584,7 +604,7 @@ public class flexOperationsController {
 				}
 				
 				pagecnt++;
-			}	
+			}
 		} else {
 			List<contactsEntity> contactsList = null;
 			
@@ -837,7 +857,7 @@ public class flexOperationsController {
 		return listArr.toString();
 	}
 	
-	@RequestMapping(value = "/getpostlist", method = RequestMethod.GET)
+	@RequestMapping(value = "/getcontactsinlist", method = RequestMethod.GET)
 	@ResponseBody
 	public String getContactsInList(@RequestParam("ID") String id) {
 		JSONArray contArr = new JSONArray();
@@ -855,20 +875,22 @@ public class flexOperationsController {
 		String acctoken = auts.getIniAuthCode();
 					
 		while (morepage) {
-		    String zohores = zdhr.getSpecRecord("PostGroup", parms, fields, String.valueOf(pagecnt), acctoken, "", "OR");
-						
+		    String zohores = zdhr.getSpecRecord("PostGroupDetail", parms, fields, String.valueOf(pagecnt), acctoken, "", "OR");
+					
 		    if (zohores != null && !zohores.equals("")) {
 			    JSONObject masterobj = new JSONObject(zohores);
 			    JSONArray zohoarr = masterobj.getJSONArray("data");
 				JSONObject infoobj = masterobj.getJSONObject("info");
 				morepage = infoobj.getBoolean("more_records");
-							
+				
 				if (zohoarr.length() > 0) {
 					for (int r = 0; r < zohoarr.length(); r++) {
 						JSONObject zohoobj = zohoarr.getJSONObject(r);
 						
 						if (zohoobj.get("contact_id") instanceof JSONObject) {
-							idArr.put(zohoobj.getString("name"));
+							JSONObject ctobj = zohoobj.getJSONObject("contact_id");
+							
+							idArr.put(ctobj.getString("name"));
 						}
 					}
 				}
@@ -883,7 +905,7 @@ public class flexOperationsController {
 		contobj.put("value", idArr);
 		
 		contArr.put(contobj);
-				
-		return contArr.toString();
+		
+		return getLineContactsList(contArr.toString());
 	}
 }

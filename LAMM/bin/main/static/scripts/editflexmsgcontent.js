@@ -1285,7 +1285,49 @@ function createlistselector() {
     	if ($('#lssogrpnasel').val() === 'NONE') {
 			$('#lssoflsdiv').html('');
 		} else {
-			
+			$('#lssoroutterdiv').animate({
+				'opacity': '0',
+				'width': '0'
+			}, 300, function() {
+				$('#lssoroutterdiv').css('display', 'none');
+				$('#lssoqryloadimg').css('display', '');
+				
+				$('#lssoqryloadimg').animate({
+			    	'opacity': '1'
+			    }, 300, function() {
+			    	var listsel;
+			    	
+			    	if ($('#lssogrpnasel').val() === undefined) {
+			    		alert('You Didn\'t Select Any List!!');
+			    	} else {
+			    		listsel = $('#lssogrpnasel').val();
+		    			
+		    			$.get('getcontactsinlist', {ID: listsel}, function(result) {
+							$('#lssoflsdiv').html('');
+
+					        if (result != null && result != '') {
+					        	var contlist = JSON.parse(result);
+					        	
+					        	if (contlist.length > 0) {
+					        		$('#lssoflsdiv').append('<div class="continlistblock" data-lineuid="' + contactsList[c].LINE_UID + '"><label>' + contactsList[c].COMPANY + '-' + contactsList[c].CONTACT_NAME + '</label></div>');
+					        	}
+					        }
+					        
+					        $('#lssoqryloadimg').animate({
+					        	'opacity': '0'
+					        }, 300, function() {
+					        	$('#lssoqryloadimg').css('display', 'none');
+					        	$('#lssoroutterdiv').css('display', '');
+					        	
+							    $('#lssoroutterdiv').animate({
+									'opacity': '1',
+									'width': '40vw'
+								}, 300);
+					        });
+					    });
+			    	}
+			    });
+			});
 		}
 	});
 }

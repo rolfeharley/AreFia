@@ -99,7 +99,7 @@ public class zohoDataHandler {
         	}
         	
 			parbd.append(")");
-//			log.info("-------------------------------------------------------------\n" + parbd.toString());
+            
 			if (fields != null && fields.size() > 0) {
 				parbd.append("&fields=");
 				
