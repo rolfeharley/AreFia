@@ -24,7 +24,7 @@ function createflexdetaileditor(createtype, empindex, senduid) {
             	createbase('1');
             	createSendFollowers('1');
             } else {
-            	alert('This Flex Message Was Disabled!!');
+            	alert('此訊息不可使用!!');
             	flexmsgcancel();
             }	
         });
@@ -496,10 +496,10 @@ function textcomp() {
 	txtfstr += '<input type="text" class="form-control flexlinkurltxt" placeholder="You Can Fill The URL Of Link Here" ';
 	txtfstr += 'onkeyup="bindinglink(this)"/>';
 	txtfstr += '<div class="flexbtnoutter"><button type="button" class="btn btn-primary flexqrybtn" onclick="readyflextext()">';
-	txtfstr += '<span><i class="fas fa-check"></i>Done</span></button><button type="button" class="btn btn-warning flexqrybtn" ';
+	txtfstr += '<span><i class="fas fa-check"></i>完成</span></button><button type="button" class="btn btn-warning flexqrybtn" ';
 	txtfstr += 'onclick="cleartextcontent()" style="margin-left: 20px;">';
-	txtfstr += '<span><i class="fas fa-eraser"></i>Clear</span></button><button type="button" class="btn btn-danger flexqrybtn" ';
-	txtfstr += 'onclick="canceleditor()" style="margin-left: 20px;"><span><i class="fas fa-ban"></i>Cancel</span></button></div>';
+	txtfstr += '<span><i class="fas fa-eraser"></i>清除</span></button><button type="button" class="btn btn-danger flexqrybtn" ';
+	txtfstr += 'onclick="canceleditor()" style="margin-left: 20px;"><span><i class="fas fa-ban"></i>取消</span></button></div>';
 	
 	$('.editarea').append(txtfstr);
 	
@@ -586,8 +586,8 @@ function imagecomp() {
     imgfstr += '<input type="text" class="form-control flexlinkurltxt" placeholder="You Can Fill The URL Of Link Here" ';
     imgfstr += 'onkeyup="bindinglink(this)"/>';
     imgfstr += '<div class="flexbtnoutter"><button type="button" class="btn btn-primary flexqrybtn" onclick="readyfleximg()">';
-    imgfstr += '<span><i class="fas fa-check"></i>Done</span></button><button type="button" class="btn btn-danger flexqrybtn" ';
-    imgfstr += 'onclick="canceleditor()" style="margin-left: 20px;"><span><i class="fas fa-ban"></i>Cancel</span></button></div>';
+    imgfstr += '<span><i class="fas fa-check"></i>完成</span></button><button type="button" class="btn btn-danger flexqrybtn" ';
+    imgfstr += 'onclick="canceleditor()" style="margin-left: 20px;"><span><i class="fas fa-ban"></i>取消</span></button></div>';
 	
 	$('.editarea').append(imgfstr);
 	
@@ -604,7 +604,7 @@ function readyflextext() {
 	var cnval = $('#classnum').val();
 	
 	if ($('textarea[name="textareaforflex"]').val() == '') {
-		alert('The Content Is Empty!');
+		alert('沒有填入內容!');
 	} else {
 		$('#' + cnval).data('type', 'text');
 		$('#' + cnval).data('oritxt', $('textarea[name="textareaforflex"]').val());
@@ -629,7 +629,7 @@ function readyfleximg() {
 	var cnval = $('#classnum').val();
 	
 	if ($('.fleximgstyle').attr('src') == 'medias/uploadimg.png') {
-		alert('No Image Was Selected!');
+		alert('未選擇圖檔!');
 	} else {		
 		$('#' + cnval).data('type', 'image');
 		$('#' + cnval).css({
@@ -672,7 +672,7 @@ function initimage(imgselector) {
 
 function flexmsgsaveonly(opetype) {
 	if ($('#flextitleeditbox').val() == '') {
-		alert('The Title Can\'t Be Empty!!');
+		alert('主旨不可為空!!');
 		return null;
 	} else {
 		var flexdata = new FormData();
@@ -685,7 +685,7 @@ function flexmsgsaveonly(opetype) {
 		switch(tmpselectnum) {
 		    case '1':
 		    	if ($('#flexcontent1').html() == '' && $('#flexcontent1').find('img').length == 0) {
-		    		alert('The Content Of Block 1 Is Empty!!');
+		    		alert('區塊1沒有內容!!');
 		    		return null;
 		    	} else {
 		    		flexdata.append('block1type', $('#flexcontent1').data('type'));
@@ -707,11 +707,11 @@ function flexmsgsaveonly(opetype) {
 	        case '2':
 	        case '3':
 	        	if ($('#flexcontent1').html() == '' && $('#flexcontent1').find('img').length == 0) {
-		    		alert('The Content Of Block 1 Is Empty!!');
+		    		alert('區塊1沒有內容!!');
 		    		return null;
 		    	} else {
 		    		if ($('#flexcontent2').html() == '' && $('#flexcontent2').find('img').length == 0) {
-			    		alert('The Content Of Block 2 Is Empty!!');
+			    		alert('區塊2沒有內容!!');
 			    		return null;
 			    	} else {
 			    		flexdata.append('block1type', $('#flexcontent1').data('type'));
@@ -749,15 +749,15 @@ function flexmsgsaveonly(opetype) {
 	        case '6':
 	        case '7':
 	        	if ($('#flexcontent1').html() == '' && $('#flexcontent1').find('img').length == 0) {
-		    		alert('The Content Of Block 1 Is Empty!!');
+		    		alert('區塊1沒有內容!!');
 		    		return null;
 		    	} else {
 		    		if ($('#flexcontent2').html() == '' && $('#flexcontent2').find('img').length == 0) {
-			    		alert('The Content Of Block 2 Is Empty!!');
+			    		alert('區塊2沒有內容!!');
 			    		return null;
 			    	} else {
 			    		if ($('#flexcontent3').html() == '' && $('#flexcontent3').find('img').length == 0) {
-				    		alert('The Content Of Block 3 Is Empty!!');
+				    		alert('區塊3沒有內容!!');
 				    		return null;
 				    	} else {
 				    		flexdata.append('block1type', $('#flexcontent1').data('type'));
@@ -808,19 +808,19 @@ function flexmsgsaveonly(opetype) {
 		    	break;
 	        case '5':
 	        	if ($('#flexcontent1').html() == '' && $('#flexcontent1').find('img').length == 0) {
-		    		alert('The Content Of Block 1 Is Empty!!');
+		    		alert('區塊1沒有內容!!');
 		    		return null;
 		    	} else {
 		    		if ($('#flexcontent2').html() == '' && $('#flexcontent2').find('img').length == 0) {
-			    		alert('The Content Of Block 2 Is Empty!!');
+			    		alert('區塊2沒有內容!!');
 			    		return null;
 			    	} else {
 			    		if ($('#flexcontent3').html() == '' && $('#flexcontent3').find('img').length == 0) {
-				    		alert('The Content Of Block 3 Is Empty!!');
+				    		alert('區塊3沒有內容!!');
 				    		return null;
 				    	} else {
 				    		if ($('#flexcontent4').html() == '' && $('#flexcontent4').find('img').length == 0) {
-					    		alert('The Content Of Block 4 Is Empty!!');
+					    		alert('區塊4沒有內容!!');
 					    		return null;
 					    	} else {
 					    		flexdata.append('block1type', $('#flexcontent1').data('type'));
@@ -886,27 +886,27 @@ function flexmsgsaveonly(opetype) {
 		    	break;
 	        case '8':
 	        	if ($('#flexcontent1').html() == '' && $('#flexcontent1').find('img').length == 0) {
-		    		alert('The Content Of Block 1 Is Empty!!');
+		    		alert('區塊1沒有內容!!');
 		    		return null;
 		    	} else {
 		    		if ($('#flexcontent2').html() == '' && $('#flexcontent2').find('img').length == 0) {
-			    		alert('The Content Of Block 2 Is Empty!!');
+			    		alert('區塊2沒有內容!!');
 			    		return null;
 			    	} else {
 			    		if ($('#flexcontent3').html() == '' && $('#flexcontent3').find('img').length == 0) {
-				    		alert('The Content Of Block 3 Is Empty!!');
+				    		alert('區塊3沒有內容!!');
 				    		return null;
 				    	} else {
 				    		if ($('#flexcontent4').html() == '' && $('#flexcontent4').find('img').length == 0) {
-					    		alert('The Content Of Block 4 Is Empty!!');
+					    		alert('區塊4沒有內容!!');
 					    		return null;
 					    	} else {
 					    		if ($('#flexcontent5').html() == '' && $('#flexcontent5').find('img').length == 0) {
-						    		alert('The Content Of Block 5 Is Empty!!');
+						    		alert('區塊5沒有內容!!');
 						    		return null;
 						    	} else {
 						    		if ($('#flexcontent6').html() == '' && $('#flexcontent6').find('img').length == 0) {
-							    		alert('The Content Of Block 6 Is Empty!!');
+							    		alert('區塊6沒有內容!!');
 							    		return null;
 							    	} else {
 							    		flexdata.append('block1type', $('#flexcontent1').data('type'));
@@ -1023,11 +1023,11 @@ function flexmsgsaveonly(opetype) {
 			$('#flexprocessgif').remove();
 
 			if (res == '') {
-				alert('Save Failed!!');
+				alert('訊息儲存失敗!!');
 				flexmsgcancel();
 			} else {
 				if (opetype == '1') {
-					alert('Save Completed, You Could\'t Modify Anymore!!');
+					alert('儲存完成，此筆訊息目前不可再進行修改!!');
 					$('.flextitleoutterdiv').css('display', '');
 					$('.demoarea').css('display', 'flex');
 					$('.editarea').css('display', 'flex');
@@ -1036,13 +1036,13 @@ function flexmsgsaveonly(opetype) {
 					
 					createSendFollowers('0');
 				} else {
-					alert('Save Completed!!');
+					alert('訊息儲存完成!!');
 					flexmsgcancel();
 				}
 			}
 		}).fail(function(res) {
 			$('#flexprocessgif').remove();
-			alert('Save Failed!!');
+			alert('訊息儲存失敗!!');
 			flexmsgcancel();
 		});
 	}
@@ -1055,16 +1055,16 @@ function flexmsgsaveandsend() {
 function createSendFollowers(ftype) {
 	var sflstr = '<div id="sendopeoutterdiv"><div class="flssearchdiv btn-group"><button id="recflsbtn" class="btn btn-info" onclick="showslsselector()">';
 	
-	sflstr += '<span><i class="far fa-user-circle"></i>Search Follower</span></button>';
+	sflstr += '<span><i class="far fa-user-circle"></i>搜尋聯絡人</span></button>';
 	sflstr += '<button id="postgrouplistbtn" class="btn btn-primary" onclick="showgrouplist()">';
-	sflstr += '<span><i class="fas fa-clipboard-list"></i>List Select</span></button>';
+	sflstr += '<span><i class="fas fa-clipboard-list"></i>選擇發送名單</span></button>';
 	sflstr += '</div><div id="recflsdiv"></div>';
 	sflstr += '<div class="btn-group flsopedndiv"><button id="sendflsbtn" class="btn btn-success flexqrybtn leftbuttongrp" onclick="sendflexmessage()"><span>';
-	sflstr += '<i class="far fa-paper-plane"></i>Send</span></button>';
+	sflstr += '<i class="far fa-paper-plane"></i>送出</span></button>';
 	sflstr += '<button id="deleteflsbtn" class="btn btn-danger flexqrybtn" onclick="deletecontactinlist()"><span>';
-	sflstr += '<i class="fas fa-trash-alt"></i>Delete</span></button>';
+	sflstr += '<i class="fas fa-trash-alt"></i>刪除</span></button>';
 	sflstr += '<button id="canflsbtn" class="btn btn-warning flexqrybtn" onclick="flexmsgcancel()">';
-	sflstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div></div>';
+	sflstr += '<span><i class="fas fa-ban"></i>取消</span></button></div></div>';
 	
 	$('.editarea').append(sflstr);
 }
@@ -1086,11 +1086,11 @@ function createlinecontactssel() {
 	flsstr += '</div >';
 	flsstr += '<div class="btn-group flsopeupdiv">';
 	flsstr += '<button id="recflsbtn" class="btn btn-info flexqrybtn" style="margin-left: -1px;" onclick="querylinecontacts()">';
-	flsstr += '<span><i class="fas fa-search"></i>Query</span></button></button>';
+	flsstr += '<span><i class="fas fa-search"></i>查詢</span></button></button>';
 	flsstr += '<button id="sendflsbtn" class="btn btn-success flexqrybtn" onclick="addlinecontacts()"><span>';
-	flsstr += '<i class="fas fa-check"></i>Confirm</span></button>';
+	flsstr += '<i class="fas fa-check"></i>確認</span></button>';
 	flsstr += '<button id="canflsbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel(\'fwlseloutterdiv\')">';
-	flsstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div>';
+	flsstr += '<span><i class="fas fa-ban"></i>取消</span></button></div>';
 	flsstr += '<div id="qryflsdiv"></div></div>';
 	flsstr += '<img src="medias/load.gif" width="300px" height="300px" id="contactsqryloadimg" style="display: none; opacity: 0;"/>';
 		
@@ -1218,9 +1218,9 @@ function createlistselector() {
 	lssstr += '</div><div id="lssoflsdiv"></div>';
 	lssstr += '<div class="btn-group lssopeupdiv">';
 	lssstr += '<button id="sendlssbtn" class="btn btn-success flexqrybtn" onclick="addlistcontacts()"><span>';
-	lssstr += '<i class="fas fa-check"></i>Confirm</span></button>';
+	lssstr += '<i class="fas fa-check"></i>確認</span></button>';
 	lssstr += '<button id="canlssbtn" class="btn btn-warning flexqrybtn" onclick="flsquerycancel(\'lssoroutterdiv\')">';
-	lssstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div></div>';
+	lssstr += '<span><i class="fas fa-ban"></i>取消</span></button></div></div>';
 	lssstr += '<img src="medias/load.gif" width="300px" height="300px" id="lssoqryloadimg" style="display: none; opacity: 0;"/>';
 		
 	$('.editarea').append(lssstr);
@@ -1246,7 +1246,7 @@ function createlistselector() {
 			    	var typesel;
 			    	
 			    	if ($('#lssogrptpsel').val() === undefined) {
-			    		alert('You Didn\'t Select Any List Type!!');
+			    		alert('您未選擇名單類型!!');
 			    	} else {
 			    		if ($('#lssogrptpsel').val() === 'ALL') {
 		    				typesel = '';
@@ -1303,7 +1303,7 @@ function createlistselector() {
 			    	var listsel;
 			    	
 			    	if ($('#lssogrpnasel').val() === undefined) {
-			    		alert('You Didn\'t Select Any List!!');
+			    		alert('您未選擇名單!!');
 			    	} else {
 			    		listsel = $('#lssogrpnasel').val();
 		    			
@@ -1423,7 +1423,7 @@ function addlinecontacts() {
 			}, 500);
 		});
 	} else {
-		alert('You Didn\'t Select Any Contact!!');
+		alert('您未選擇任何聯絡人!!');
 	}
 }
 
@@ -1468,7 +1468,7 @@ function deletecontactinlist() {
 			}
 		});
 	} else {
-		alert('You Didn\'t Select Any Contact!!');
+		alert('您未選擇任何聯絡人!!');
 	}
 }
 
@@ -1506,15 +1506,15 @@ function sendflexmessage() {
 			$('#flexprocessgif').remove();
 			
 			if (result == 'OK') {
-				alert('Sent Successfully!!');
+				alert('訊息傳送成功!!');
 			} else {
-				alert('Sent Failed!!');
+				alert('訊息傳送失敗!!');
 			}
 			
 			flexmsgcancel();
 		});
 	} else {
-		alert('You Didn\'t Select Any Contact!!');
+		alert('您未選擇任何聯絡人!!');
 	}
 }
 
@@ -1594,13 +1594,13 @@ function querylinecontacts() {
 		                		$('#qryflsdiv').append(cinfd);
 		                	}
 		            	} else {
-		            		alert('No Contact Found!!');
+		            		alert('搜尋不到任何聯絡人!!');
 		            	}
 		        	} else {
-		        		alert('No Contact Found!!');
+		        		alert('搜尋不到任何聯絡人!!');
 		        	}
 		        } else {
-		        	alert('No Contact Found!!');
+		        	alert('搜尋不到任何聯絡人!!');
 		        }
 		        $('#fwlseloutterdiv').css('display', '');
 		        $('#contactsqryloadimg').animate({

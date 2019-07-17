@@ -73,7 +73,7 @@
             
             function showhistoryconversation() {
             	if ($('#msghistqrykwb').val() == '') {
-                    alert('Please Select User!!');
+                    alert('請選擇聯絡人!!');
                 } else {
                 	var userid;
                 	
@@ -85,7 +85,7 @@
                 	
                 	if (userid == undefined) {
                 		$('#msghistqrykwb').val('');
-                		alert('Please Select User!!');
+                		alert('請選擇聯絡人!!');
                 	} else {
                 		var datecheck = false;
                         
@@ -94,7 +94,7 @@
                             var edate = new Date($('#msgqryeddate').val().replace(/\//g, '-'));
                             
                             if (bdate > edate) {
-                                alert('The Start Date Is Later Than End Date!');
+                                alert('區間節說日期不可小於開使日期!');
                                 datecheck = false;
                             } else {
                                 datecheck = true;
@@ -143,11 +143,11 @@
                                         	$('#arefiamessagelist').css('display', '');
                                         } else {
                                         	$('#arefiamessagelist').css('display', 'none');
-                                            alert('There Are No Any History Conversation!');
+                                            alert('查詢不到任何歷史對談紀錄!');
                                         }
                                 	} else {
                                 		$('#arefiamessagelist').css('display', 'none');
-                                        alert('There Are No Any History Conversation!');
+                                        alert('查詢不到任何歷史對談紀錄!');
                                 	}
                                 });
                         	});
@@ -168,14 +168,14 @@
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: right; width: 10%; height: 40px;">
-                                    <label>User</label>
+                                    <label>聯絡人名稱</label>
                                 </td>
                                 <td style="text-align: left; width: 40%;">
-                                    <input id="msghistqrykwb" list="historyfollowers" class="form-control largetextbox" placeholder="Please Enter Name" />
+                                    <input id="msghistqrykwb" list="historyfollowers" class="form-control largetextbox" placeholder="請輸入聯絡人名稱" />
                                     <datalist id="historyfollowers"></datalist>
                                 </td>
                                 <td style="text-align: right; width: 10%;">
-                                    <label>Date Range</label>
+                                    <label>日期區間</label>
                                 </td>
                                 <td style="text-align: left; width: 15%;">
                                     <input type="text" id="msgqrystdate" class="form-control datepickerbox"/>
@@ -190,10 +190,10 @@
                             <tr>
                                 <td colspan="6" style="height: 60px; text-align: center; vertical-align: bottom;">
                                     <button type="button" class="btn btn-info histqrybtn" onclick="showhistoryconversation()">
-                                        <span><i class="fas fa-search"></i>Query</span>
+                                        <span><i class="fas fa-search"></i>查詢</span>
                                     </button>
                                     <button type="button" class="btn btn-warning histqrybtn" onclick="clearconditions()">
-                                        <span><i class="fas fa-redo-alt" onclick="clearconditions()"></i>Clear</span>
+                                        <span><i class="fas fa-redo-alt" onclick="clearconditions()"></i>清除</span>
                                     </button>
                                 </td>
                             </tr>

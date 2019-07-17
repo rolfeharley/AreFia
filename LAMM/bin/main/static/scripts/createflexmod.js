@@ -50,9 +50,9 @@ function createflexmodselect() {
 	
 	modstr += '<div class="row"><div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><div class="templateexebtn">';
 	modstr += '<button type="button" class="btn btn-primary flexqrybtn" style="margin-right: 10px; margin-top: 20px;" onclick="editflexmessage()">';
-	modstr += '<span><i class="fas fa-cog"></i>Execute</span></button>';
+	modstr += '<span><i class="fas fa-cog"></i>執行</span></button>';
 	modstr += '<button type="button" class="btn btn-danger flexqrybtn" style="margin-top: 20px;" onclick="canselecttemp()">';
-	modstr += '<span><i class="fas fa-ban"></i>Cancel</span></button></div></div></div>';
+	modstr += '<span><i class="fas fa-ban"></i>取消</span></button></div></div></div>';
 	
 	modstr += '</div></div></div>';
 	
@@ -76,7 +76,7 @@ function canselecttemp() {
 
 function editflexmessage() {
 	if (curselnum == null) {
-		alert('You Haven\'t Select Any Template!!');
+		alert('您未選取任何樣板!!');
 	} else {
 		var tmpnumtmp = curselnum;
 		curselnum = null;

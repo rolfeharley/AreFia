@@ -268,7 +268,7 @@
             	if (currentfollower == undefined || currentfollower != userId) {
             		currentfollower = userId;
                 	
-                    $('#arefiasourcername').html('Conversation Of ' + $('#' + userId + '_udna').html());
+                    $('#arefiasourcername').html('與' + $('#' + userId + '_udna').html() + '	的對話');
                     $('#arefiamessagebody').css('justify-content', 'flex-start');
                     $('#arefiamessagebody').css('align-items', 'flex-start');
                     $('#arefiaconvtitle').css('display', '');
@@ -326,7 +326,7 @@
             	var filetype = linefile.type.substring(0, 5);
     			
             	if (filetype != 'image') {
-                	alert('System Is Not Support This Type Of File Temporarily.');
+                	alert('系統目前暫不支援傳輸此格式訊息!');
             	} else {
             		var pushfid = generateGuid();
             		var pushdata = new FormData();
@@ -366,7 +366,7 @@
                     	currentfollower = undefined;
                     });
             	} else {
-            	    alert('Cancel');
+            	    alert('取消');
             	}
             }
         </script>

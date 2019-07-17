@@ -31,7 +31,7 @@ function createRecieveFrame(userId, type, msg, time, msgid, imgw, imgh, stadw) {
         	newFrame += '';
 	        break;
         default :
-        	newFrame += '<span style="color: #FF0000">This Message Type Is Not Surpported!</span>';
+        	newFrame += '<span style="color: #FF0000">系統目前暫不支援傳輸此格式訊息!</span>';
 	        break;
     }
 	
@@ -73,7 +73,7 @@ function createPushFrame(type, msg, time, msgid, imgw, imgh, stadw) {
         	newFrame += '';
             break;
         default :
-        	newFrame += '<span style="color: #FF0000">This Message Type Is Not Surpported!</span>';
+        	newFrame += '<span style="color: #FF0000">系統目前暫不支援傳輸此格式訊息!</span>';
             break;
     }
 	
