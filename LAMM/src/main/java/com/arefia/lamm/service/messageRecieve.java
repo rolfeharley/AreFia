@@ -97,29 +97,29 @@ public class messageRecieve {
             			contdao.saveAndFlush(contEnt);
             		}
             		
-            		if (zohointe.equals("0")) {
-            			List<Object[]> chkSourcer = fsdao.checkFollowerIsExist(sObj.getString("userId"));
-                		
-                		if (chkSourcer.get(0)[0].toString().equals("0")) {
-                			JSONObject rtObj = gfi.getFollowerInfo(sObj.getString("userId"));
-                			
-                			followersEntity nfe = new followersEntity();
-                			
-                			nfe.setUserid(sObj.getString("userId"));
-                			nfe.setDisplayname(rtObj.getString("displayName"));
-                			nfe.setPictureurl(rtObj.getString("pictureUrl"));
-                			
-                			if (rtObj.has("statusMessage")) {
-                				nfe.setStatusmessage(rtObj.getString("statusMessage"));
-                			} else {
-                				nfe.setStatusmessage("");
-                			}
-                			
-                			fsdao.saveAndFlush(nfe);
-                			
-                			mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
-                		}
-            		} else {
+            		List<Object[]> chkSourcer = fsdao.checkFollowerIsExist(sObj.getString("userId"));
+            		
+            		if (chkSourcer.get(0)[0].toString().equals("0")) {
+            			JSONObject rtObj = gfi.getFollowerInfo(sObj.getString("userId"));
+            			
+            			followersEntity nfe = new followersEntity();
+            			
+            			nfe.setUserid(sObj.getString("userId"));
+            			nfe.setDisplayname(rtObj.getString("displayName"));
+            			nfe.setPictureurl(rtObj.getString("pictureUrl"));
+            			
+            			if (rtObj.has("statusMessage")) {
+            				nfe.setStatusmessage(rtObj.getString("statusMessage"));
+            			} else {
+            				nfe.setStatusmessage("");
+            			}
+            			
+            			fsdao.saveAndFlush(nfe);
+            			
+            			mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
+            		}
+            		
+            		if (zohointe.equals("1")) {
             			String acctoken = auts.getIniAuthCode();
             			HashMap<String, String> parmap = new HashMap<String, String>();
             			ArrayList<String> fidarr = new ArrayList<String>();
@@ -140,8 +140,6 @@ public class messageRecieve {
             				isnline.put("data", isndarr);
             				
             				zdhn.addRecord("Contacts", isnline, acctoken);
-            				
-            				mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
             			}
             		}
             		

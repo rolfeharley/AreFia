@@ -1,9 +1,14 @@
 @charset "UTF-8";
 
-#arefiauserlist {
+#arefiauserlist, #arefiacontlist {
+	width: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
 	background: #FFFFFF;
+	padding: 0;
+}
+
+#arefiacontactlist {
 	padding: 0;
 }
 
@@ -18,6 +23,12 @@
 #arefiaconvtitle {
 	clear: both;
     width: 100%;
+    background: #EFF2F5;
+    border-bottom: 1px solid #DADEE1;
+}
+
+#arefiafunctions {
+	width: 100%;
     background: #EFF2F5;
     border-bottom: 1px solid #DADEE1;
 }
@@ -38,6 +49,14 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+}
+
+#arefiacontinfoshow {
+	width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
     
 #arefiamessageeditor {
@@ -119,6 +138,16 @@
 	color: #FF0000;
 }
 
+.seldfunbtn {
+    outline: 0 !important;
+    outline-offset: 0  !important;
+    background: #666666 !important;
+    color: #FFFFFF !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none  !important;
+    border: none !important;
+}
+
 @media screen and (max-width:575.99px) {
 	#arefiauserlist {
 	    height: 90vh;
@@ -160,19 +189,27 @@
 }
 
 @media screen and (min-width:1200px) {
-	#arefiauserlist {
+	#arefiauserlist, #arefiacontlist {
+	    height: 87vh;
+	}
+	
+	#arefiacontinfoshow {
 	    height: 93vh;
 	}
 	
-	#arefiamessagelist {
+	#arefiamessagelist, #arefiacontactlist {
 	    height: 93vh;
 	    overflow: hidden;
+	}
+	
+	#arefiafunctions {
+	    height: 6vh;
 	}
 	
 	#arefiaconvtitle {
         height: 6vh;
         padding-left: 20px;
-        padding-top: 1vh;
+        padding-top: 1.5vh;
     }
     
     #mvhistbtn {
@@ -225,6 +262,14 @@
         padding-right: 10px;
     }
     
+    .arefiaconlstname {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 4vw;
+    }
+    
     .arefialastmessage {
         height: 2vw;
         width: calc(33vw - 15vw - 10px);
@@ -254,5 +299,11 @@
     #stickbtn, #attabtn {
         font-size: 1.5vw;
         margin: 0 2vw;
+    }
+    
+    .afbtngrp, .seldfunbtn {
+        height: 6vh;
+        width: 80px;
+        border-radius: 0;
     }
 }

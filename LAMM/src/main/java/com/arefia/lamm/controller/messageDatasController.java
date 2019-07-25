@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.arefia.lamm.dao.followersDao;
 import com.arefia.lamm.dao.msgpushDao;
 import com.arefia.lamm.dao.msgrecDao;
+import com.arefia.lamm.entity.followersEntity;
 import com.arefia.lamm.service.followerInfo;
 
 @Controller
@@ -155,6 +156,30 @@ public class messageDatasController {
 			}
 			
 		    return ofsObj.toString();
+		} else {
+			return "";
+		}
+	}
+	
+	@RequestMapping(value = "/getfollowerinfolist", method = RequestMethod.GET)
+	@ResponseBody
+	public String getAllFollowerData() {
+		List<followersEntity> afe = fsdao.findAll();
+		JSONArray afarr = new JSONArray();
+
+		if (afe.size() > 0) {
+			for (followersEntity fent : afe) {
+				JSONObject afObj = new JSONObject();
+				
+				afObj.put("USERID", fent.getUserid());
+				afObj.put("DISPLAYNAME", fent.getDisplayname());
+				afObj.put("PICTUREURL", fent.getPictureurl());
+				afObj.put("STATUSMESSAGE", fent.getStatusmessage());
+				
+				afarr.put(afObj);
+			}
+			
+		    return afarr.toString();
 		} else {
 			return "";
 		}

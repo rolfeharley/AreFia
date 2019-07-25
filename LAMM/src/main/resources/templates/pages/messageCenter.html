@@ -19,6 +19,19 @@
             var stadw;
         
             $(function() {
+            	$('#arefiauserlist').css('display', 'none');
+            	$('#arefiacontlist').css('display', 'none');
+            	$('#arefiacontinfoshow').css('display', 'none');
+            	$('#arefiacontinfoshow').append('<img src="medias/unknowusers.png" style="width: 15%; height: 18%;"/>');
+            	$('#arefiamessageshow').css('display', 'none');
+                $('#arefiaconvtitle').css('display', 'none');
+                $('#arefiamessagetool').css('display', 'none');
+                $('#arefiamessageeditor').css('display', 'none');
+                $('#arefiamessagebody').css('justify-content', 'flex-end');
+                $('#arefiamessagebody').css('align-items', 'center');
+                $('#arefiamessagebody').append('<img src="medias/emptymessage.png" style="width: 20%; height: 40%;"/>');
+            	$('#arefiaconvselbtn').click();
+            	
             	if (xsSize.matches) {
             		stadw = 128;
             	} else if (smSize.matches) {
@@ -77,13 +90,18 @@
                 	}
                 });
                 
-                $('#arefiaconvtitle').css('display', 'none');
-                $('#arefiamessagetool').css('display', 'none');
-                $('#arefiamessageeditor').css('display', 'none');
-                $('#arefiamessagebody').css('justify-content', 'center');
-                $('#arefiamessagebody').css('align-items', 'center');
-                $('#arefiamessagebody').append('<img src="medias/emptymessage.png" style="width: 20%; height: 38%;"/>');
-                
+                $.get('getfollowerinfolist', function(result) {
+                	if (result != null && result != '') {
+                		var usList = JSON.parse(result);
+                    	
+                    	for (var u = 0; u < usList.length; u++) {
+                    		var usObj = usList[u];
+                    		
+                    		addNewUserList(usObj, $('#arefiacontlist'));
+                    	}
+                	}
+                });
+                               
                 websocketConnect();
             })
             
@@ -369,6 +387,24 @@
             	    alert('取消');
             	}
             }
+            
+            function convfunsel(stype) {
+            	if (stype === 'conv') {
+                	$('#arefiacontlist').css('display', 'none');
+                	$('#arefiauserlist').css('display', '');
+                	$('#arefiacontinfoshow').css('display', 'none');
+                	$('#arefiamessageshow').css('display', '');
+                	$('#arefiaconvselbtn').removeClass('afbtngrp').addClass('seldfunbtn');
+                	$('#arefiauserselbtn').removeClass('seldfunbtn').addClass('afbtngrp');
+            	} else {
+                	$('#arefiauserlist').css('display', 'none');
+            		$('#arefiacontlist').css('display', '');
+            		$('#arefiamessageshow').css('display', 'none');
+            		$('#arefiacontinfoshow').css('display', '');
+                	$('#arefiauserselbtn').removeClass('afbtngrp').addClass('seldfunbtn');
+                	$('#arefiaconvselbtn').removeClass('seldfunbtn').addClass('afbtngrp');
+            	}
+            }
         </script>
         <link rel="stylesheet" type="text/css" href="styles/messagecenter.css" />
     </head>
@@ -376,21 +412,33 @@
         <div th:replace="fragment/lineApiHeader :: headerTemp"></div>
         <div class="container-fluid areafiamainbody">
             <div class="row">
-                <div id="arefiauserlist" class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4"></div>
+                <div id="arefiacontactlist" class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4">
+                    <div id="arefiafunctions">
+                        <div class="btn-group">
+                            <button id="arefiaconvselbtn" type="button" class="btn btn-primary" onclick="convfunsel('conv')"><i class="fas fa-comment-dots fa-lg"></i></button>
+                            <button id="arefiauserselbtn" type="button" class="btn btn-warning" onclick="convfunsel('user')"><i class="fas fa-users fa-lg"></i></button>
+                        </div>
+                    </div>
+                    <div id="arefiauserlist"></div>
+                    <div id="arefiacontlist"></div>
+                </div>
                 <div id="arefiamessagelist" class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-8">
-                    <div id="arefiaconvtitle">
-                        <label id="arefiasourcername"></label>
-                        <i id="mvhistbtn" class="far fa-trash-alt" onclick="movetohistory()"></i>
+                    <div id="arefiamessageshow">
+                        <div id="arefiaconvtitle">
+                            <label id="arefiasourcername"></label>
+                            <i id="mvhistbtn" class="far fa-trash-alt" onclick="movetohistory()"></i>
+                        </div>
+                        <div id="arefiamessagebody"></div>
+                        <div id="arefiamessagetool">
+                            <i class="far fa-smile" id="stickbtn" onclick="showstick()" style="display: none;"></i>
+                            <i class="fas fa-paperclip" id="attabtn" onclick="selectfile()"></i>
+                            <input id="fileselector" type="file" name="pushfiles" accept="image/*" style="display: none;" onchange="uploadhandler(this.files)" />
+                        </div>
+                        <div id="arefiamessageeditor">
+                            <textarea id="arefiamsgtxtarea"></textarea>
+                        </div>
                     </div>
-                    <div id="arefiamessagebody"></div>
-                    <div id="arefiamessagetool">
-                        <i class="far fa-smile" id="stickbtn" onclick="showstick()" style="display: none;"></i>
-                        <i class="fas fa-paperclip" id="attabtn" onclick="selectfile()"></i>
-                        <input id="fileselector" type="file" name="pushfiles" accept="image/*" style="display: none;" onchange="uploadhandler(this.files)" />
-                    </div>
-                    <div id="arefiamessageeditor">
-                        <textarea id="arefiamsgtxtarea"></textarea>
-                    </div>
+                    <div id="arefiacontinfoshow"></div>
                 </div>
             </div>
         </div>

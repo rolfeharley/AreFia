@@ -73,3 +73,13 @@ function addNewLine(userObj, tarcomp, addtype) {
 		$(tarcomp).prepend(followerdiv);
 	}
 }
+
+function addNewUserList(userObj, tarcomp) {
+    var contsdiv = '<div id="' + userObj.USERID + '_outulist" class="arefiafollowercontainer" onclick="showcontactcontent(\'' + userObj.USERID + '\')">';
+	
+    contsdiv += '<div id="' + userObj.USERID + '_ulicon" class="arefiafollowericon" data-imgurl="' + userObj.PICTUREURL + '" style="background-image: url(' + userObj.PICTUREURL + ');"></div>';
+    contsdiv += '<div class="arefiafollowerinfo">';
+    contsdiv += '<div id="' + userObj.USERID + '_ulsnam" class="arefiaconlstname">' + userObj.DISPLAYNAME + '</div></div>';
+    
+    $(tarcomp).append(contsdiv);
+}
