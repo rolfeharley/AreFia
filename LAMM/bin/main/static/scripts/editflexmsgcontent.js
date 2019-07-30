@@ -39,7 +39,7 @@ var editstr = '<div class="demoarea">';
 	$('body').append('<div class="contenttypeselector" style="top: calc(5vw + 45px); left: 45vw;" onclick="imagecomp()"><i class="fas fa-image"></i></div>');
 	
 	if (ctype == '0') {
-		$('body').append('<div class="flextitleoutterdiv"><input type="text" id="flextitleeditbox" class="form-control" placeholder="Please Fill The Title" /></div>');
+		$('body').append('<div class="flextitleoutterdiv"><input type="text" id="flextitleeditbox" class="form-control" placeholder="請填寫主旨" /></div>');
 	} else {
 		$('body').append('<div class="flextitleoutterdiv"><input type="text" id="flextitleeditbox" class="form-control" value="' + flexinfo.TITLE + '" disabled style="color: #000;" /></div>');
 	}
@@ -428,10 +428,10 @@ var editstr = '<div class="demoarea">';
 	}
 	
 	if (ctype == '0') {
-		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw - 270px);" onclick="flexmsgsaveonly(\'0\')"><span><i class="fas fa-save"></i>Save</span></div>');
-		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw - 130px);" onclick="flexmsgsaveandsend()"><span><i class="fas fa-comment-alt"></i>Send</span></div>');
-		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw + 10px);" onclick="flexmsgreselect()"><span><i class="fas fa-retweet"></i>Change</span></div>');
-		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw + 150px);" onclick="flexmsgcancel()"><span><i class="fas fa-ban"></i>Cancel</span></div>');
+		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw - 270px);" onclick="flexmsgsaveonly(\'0\')"><span><i class="fas fa-save"></i>存檔</span></div>');
+		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw - 130px);" onclick="flexmsgsaveandsend()"><span><i class="fas fa-comment-alt"></i>發送</span></div>');
+		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw + 10px);" onclick="flexmsgreselect()"><span><i class="fas fa-retweet"></i>修正</span></div>');
+		$('body').append('<div class="operationflexmsg" style="top: calc(100vh - 40px); left: calc(25vw + 150px);" onclick="flexmsgcancel()"><span><i class="fas fa-ban"></i>取消</span></div>');
 	}
 		
 	editstr += '</div><div class="editarea"></div>';
@@ -493,7 +493,7 @@ function textcomp() {
 	
 	var txtfstr = '<textarea class="form-control ' + classtype + '" name="textareaforflex" style="height: 50vh;" onkeyup="showthetext(this)"/>';
 	
-	txtfstr += '<input type="text" class="form-control flexlinkurltxt" placeholder="You Can Fill The URL Of Link Here" ';
+	txtfstr += '<input type="text" class="form-control flexlinkurltxt" placeholder="你可以將連結網址輸入於此" ';
 	txtfstr += 'onkeyup="bindinglink(this)"/>';
 	txtfstr += '<div class="flexbtnoutter"><button type="button" class="btn btn-primary flexqrybtn" onclick="readyflextext()">';
 	txtfstr += '<span><i class="fas fa-check"></i>完成</span></button><button type="button" class="btn btn-warning flexqrybtn" ';
@@ -583,7 +583,7 @@ function imagecomp() {
 	
     var imgfstr = '<div class="' + classtype + '" onclick="openimgselect()"><img src="medias/uploadimg.png" class="fleximgstyle" /></div>';
     
-    imgfstr += '<input type="text" class="form-control flexlinkurltxt" placeholder="You Can Fill The URL Of Link Here" ';
+    imgfstr += '<input type="text" class="form-control flexlinkurltxt" placeholder="你可以將連結網址輸入於此" ';
     imgfstr += 'onkeyup="bindinglink(this)"/>';
     imgfstr += '<div class="flexbtnoutter"><button type="button" class="btn btn-primary flexqrybtn" onclick="readyfleximg()">';
     imgfstr += '<span><i class="fas fa-check"></i>完成</span></button><button type="button" class="btn btn-danger flexqrybtn" ';
@@ -1212,9 +1212,9 @@ function createlistselector() {
     var lssstr = '<div id="lssoroutterdiv" style="width: 0; opacity: 0;">';
 	
     lssstr += '<div class="lssoearchdiv">';
-    lssstr += '<label>List Type</label><select id="lssogrptpsel" class="form-control"></select>';
+    lssstr += '<label>群組類別</label><select id="lssogrptpsel" class="form-control"></select>';
     lssstr += '</div><div class="lssoearchdiv">';
-    lssstr += '<label>List Name</label><select id="lssogrpnasel" class="form-control"></select>';
+    lssstr += '<label>群組名稱</label><select id="lssogrpnasel" class="form-control"></select>';
 	lssstr += '</div><div id="lssoflsdiv"></div>';
 	lssstr += '<div class="btn-group lssopeupdiv">';
 	lssstr += '<button id="sendlssbtn" class="btn btn-success flexqrybtn" onclick="addlistcontacts()"><span>';
@@ -1225,8 +1225,8 @@ function createlistselector() {
 		
 	$('.editarea').append(lssstr);
 	
-	$('#lssogrptpsel').append('<option value="NONE">Please Select List Type</option>');
-	$('#lssogrptpsel').append('<option value="ALL">All Type</option>');
+	$('#lssogrptpsel').append('<option value="NONE">請選擇群組類別</option>');
+	$('#lssogrptpsel').append('<option value="ALL">所有類別</option>');
 		
 	$('#lssogrptpsel').change(function() {
 		if ($('#lssogrptpsel').val() === 'NONE') {
@@ -1260,7 +1260,7 @@ function createlistselector() {
 					        	var listlist = JSON.parse(result);
 					        	
 					        	if (listlist.length > 0) {
-					        		$('#lssogrpnasel').append('<option value="none">Please Select List</option>');
+					        		$('#lssogrpnasel').append('<option value="none">請選擇群組</option>');
 					        		
 					            	for (var t = 0; t < listlist.length; t++) {
 					            		$('#lssogrpnasel').append('<option value="' + listlist[t].ID + '">' + listlist[t].NAME + '</option>');

@@ -3,7 +3,7 @@ var curselnum;
 function createflexmodselect() {
 	var modstr = '<div id="flexmoddiv"><div class="container-fluid"><div class="row">';
 	
-	modstr += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><center style="margin-bottom: 20px;">Please Select Template</center></div>';
+	modstr += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><center style="margin-bottom: 20px;">請選擇版型</center></div>';
 	modstr += '</div><div class="row">';
 	
 	modstr += '<div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3"><div class="flexmodselector">';

@@ -52,12 +52,12 @@
                 			    pagerContainer: $('#flexgridpager'),
                 			    pageSize: 5,
                 			    fields:  [
-                			        { name: "TITLE", title: "Title", type: "text", align: "center", width: 250 },
-                			        { name: "CREATEDATE", title: "Create Date", type: "text",  align: "center", width: 60 },
+                			        { name: "TITLE", title: "主旨", type: "text", align: "center", width: 250 },
+                			        { name: "CREATEDATE", title: "建立日期", type: "text",  align: "center", width: 60 },
                 			        {
                 			            type: "control", width: 100, editButton: false, deleteButton: false,
                 			            headerTemplate: function() {
-                			            	return 'Send Message';
+                			            	return '傳送訊息';
                 			            },
                 			            itemTemplate: function(value, item) {
                 			                var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
