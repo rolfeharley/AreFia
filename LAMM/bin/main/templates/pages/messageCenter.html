@@ -325,6 +325,21 @@
             	}
             }
             
+            function showcontactcontent(name, pic, sta) {
+            	$('#arefiacontinfoshow').html('');
+            	$('#arefiacontinfoshow').css('background-image', 'url(/medias/contactinfoback.jpeg)');
+            	
+            	var infoobj = '<label class="displaynamelabel">' + name + '</label><div class="contactavatar" style="background-image: url(\'' + pic + '\');"></div>';
+            	
+            	if (sta != '') {
+            		infoobj += '<label class="statustxtlabel">' + sta + '</label>';
+            	}
+      
+            	infoobj += '<button type="button" class="btn btn-success" style="margin-top: 20px;"><span><i class="fas fa-comment-dots"></i>聊天</span></button>';
+            	
+            	$('#arefiacontinfoshow').append(infoobj);
+            }
+            
             function showstick() {
             	var blockmodel = '<div id="arefiablockdiv" style="position: fixed; top: 101vh; left: 0; width: 100vw; height: 100vh; background: #000; opacity: 0.5; z-index: 998;"></div>';
             	
@@ -415,8 +430,8 @@
                 <div id="arefiacontactlist" class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4">
                     <div id="arefiafunctions">
                         <div class="btn-group">
-                            <button id="arefiaconvselbtn" type="button" class="btn btn-primary" onclick="convfunsel('conv')"><i class="fas fa-comment-dots fa-lg"></i></button>
-                            <button id="arefiauserselbtn" type="button" class="btn btn-warning" onclick="convfunsel('user')"><i class="fas fa-users fa-lg"></i></button>
+                            <button id="arefiaconvselbtn" type="button" onclick="convfunsel('conv')"><i class="fas fa-comment-dots fa-lg"></i></button>
+                            <button id="arefiauserselbtn" type="button" onclick="convfunsel('user')"><i class="fas fa-users fa-lg"></i></button>
                         </div>
                     </div>
                     <div id="arefiauserlist"></div>

@@ -75,7 +75,7 @@ function addNewLine(userObj, tarcomp, addtype) {
 }
 
 function addNewUserList(userObj, tarcomp) {
-    var contsdiv = '<div id="' + userObj.USERID + '_outulist" class="arefiafollowercontainer" onclick="showcontactcontent(\'' + userObj.USERID + '\')">';
+    var contsdiv = '<div id="' + userObj.USERID + '_outulist" class="arefiafollowercontainer" onclick="showcontactcontent(\'' + userObj.DISPLAYNAME + '\', \'' + userObj.PICTUREURL + '\',\'' + userObj.STATUSMESSAGE + '\')">';
 	
     contsdiv += '<div id="' + userObj.USERID + '_ulicon" class="arefiafollowericon" data-imgurl="' + userObj.PICTUREURL + '" style="background-image: url(' + userObj.PICTUREURL + ');"></div>';
     contsdiv += '<div class="arefiafollowerinfo">';

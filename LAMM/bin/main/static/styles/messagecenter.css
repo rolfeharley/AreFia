@@ -57,6 +57,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-size: cover; 
+	background-repeat: no-repeat; 
+	background-position: center center;
 }
     
 #arefiamessageeditor {
@@ -93,7 +96,7 @@
 	background: #EDEFF2;
 }
 
-.arefiafollowericon, .arefiaSrcFimg {
+.arefiafollowericon, .arefiaSrcFimg, .contactavatar {
 	background-size: cover; 
 	background-repeat: no-repeat; 
 	background-position: center center;
@@ -146,6 +149,33 @@
     -webkit-box-shadow: none !important;
     box-shadow: none  !important;
     border: none !important;
+}
+
+.afbtngrp {
+    background: #ECEFF3 !important;
+    color: #000000 !important;
+    border: none !important;
+}
+
+#arefiaconvselbtn:active, 
+#arefiaconvselbtn:hover,
+#arefiaconvselbtn:focus,
+#arefiaconvselbtn:link,
+#arefiaconvselbtn:visited,
+#arefiauserselbtn:active, 
+#arefiauserselbtn:hover,
+#arefiauserselbtn:focus,
+#arefiauserselbtn:link,
+#arefiauserselbtn:visited {
+	outline: 0 !important;
+    outline-offset: 0  !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none  !important;
+    border: none !important;
+}
+
+.statustxtlabel {
+	color: #EAEAEAEA;
 }
 
 @media screen and (max-width:575.99px) {
@@ -305,5 +335,16 @@
         height: 6vh;
         width: 80px;
         border-radius: 0;
+    }
+    
+    .contactavatar {
+        height: 10vw;
+        width: 10vw;
+        border-radius: 10vw;
+    }
+    
+    .displaynamelabel {
+        font-weight: 900;
+        font-size: 2em;
     }
 }
