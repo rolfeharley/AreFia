@@ -15,21 +15,14 @@
         <script th:inline="javascript">
             var websxUser;
             var currentfollower;
+            var currentinfosta;
             var shiftsta;
             var stadw;
         
             $(function() {
-            	$('#arefiauserlist').css('display', 'none');
-            	$('#arefiacontlist').css('display', 'none');
-            	$('#arefiacontinfoshow').css('display', 'none');
-            	$('#arefiacontinfoshow').append('<img src="medias/unknowusers.png" style="width: 15%; height: 18%;"/>');
-            	$('#arefiamessageshow').css('display', 'none');
-                $('#arefiaconvtitle').css('display', 'none');
-                $('#arefiamessagetool').css('display', 'none');
-                $('#arefiamessageeditor').css('display', 'none');
-                $('#arefiamessagebody').css('justify-content', 'flex-end');
-                $('#arefiamessagebody').css('align-items', 'center');
-                $('#arefiamessagebody').append('<img src="medias/emptymessage.png" style="width: 20%; height: 40%;"/>');
+            	initcotgarden();
+            	initmsggarden();
+            	
             	$('#arefiaconvselbtn').click();
             	
             	if (xsSize.matches) {
@@ -78,18 +71,6 @@
                 
                 $('#usernamelab').text([[${username}]]);
                 
-                $.get('conversationfollowers', function(result) {
-                	if (result != null && result != '') {
-                		var fsList = JSON.parse(result);
-                    	
-                    	for (var s = 0; s < fsList.length; s++) {
-                    		var fsObj = fsList[s];
-                    		
-                    		addNewLine(fsObj, $('#arefiauserlist'), 'initial');
-                    	}
-                	}
-                });
-                
                 $.get('getfollowerinfolist', function(result) {
                 	if (result != null && result != '') {
                 		var usList = JSON.parse(result);
@@ -100,10 +81,51 @@
                     		addNewUserList(usObj, $('#arefiacontlist'));
                     	}
                 	}
+                	
+                	$.get('conversationfollowers', function(result) {
+                    	if (result != null && result != '') {
+                    		var fsList = JSON.parse(result);
+                        	
+                        	for (var s = 0; s < fsList.length; s++) {
+                        		var fsObj = fsList[s];
+                        		
+                        		addNewLine(fsObj, $('#arefiauserlist'), 'initial');
+                        	}
+                    	}
+                    });
                 });
                                
                 websocketConnect();
             })
+            
+            function initmsggarden() {
+            	$('#arefiamessageshow').css('display', 'none');
+                $('#arefiaconvtitle').css('display', 'none');
+                $('#arefiamessagetool').css('display', 'none');
+                $('#arefiamessageeditor').css('display', 'none');
+                $('#arefiamessagebody').html('');
+                $('#arefiamessagebody').css('justify-content', 'flex-end');
+                $('#arefiamessagebody').css('align-items', 'center');
+                $('#arefiamessagebody').append('<img src="medias/emptymessage.png" style="width: 20%; height: 40%;"/>');
+                if (currentfollower != undefined && currentfollower != '') {
+                	$('#' + currentfollower + '_outcon').removeClass('arefiafollowercontainerselected');
+                	$('#' + currentfollower + '_outcon').addClass('arefiafollowercontainer');
+                    currentfollower = '';
+                }
+            }
+            
+            function initcotgarden() {
+            	$('#arefiauserlist').css('display', 'none');
+            	$('#arefiacontlist').css('display', 'none');
+            	$('#arefiacontinfoshow').html('');
+            	$('#arefiacontinfoshow').css('background-image', '');
+            	$('#arefiacontinfoshow').append('<img src="medias/unknowusers.png" style="width: 15%; height: 18%;"/>');
+            	if (currentinfosta != undefined && currentinfosta != '') {
+                	$('#' + currentinfosta + '_outulist').removeClass('arefiafollowercontainerselected');
+                	$('#' + currentinfosta + '_outulist').addClass('arefiafollowercontainer');
+                	currentinfosta = '';
+            	}
+            }
             
             function redirectPage(urlStr) {
                 window.location.href = urlStr;
@@ -284,6 +306,11 @@
             
             function showmessagecontent(userId) {
             	if (currentfollower == undefined || currentfollower != userId) {
+            		if (currentfollower != undefined) {
+            		    $('#' + currentfollower + '_outcon').removeClass('arefiafollowercontainerselected');
+                	    $('#' + currentfollower + '_outcon').addClass('arefiafollowercontainer');
+            		}
+            		
             		currentfollower = userId;
                 	
                     $('#arefiasourcername').html('與' + $('#' + userId + '_udna').html() + '	的對話');
@@ -294,16 +321,11 @@
                     $('#arefiamessageeditor').css('display', '');
                     $('#' + userId + '_unrcnt').html('');
                     $('#' + userId + '_unrcnt').css('display', 'none');
-                    
-                	$('#arefiauserlist').children('div').each(function() {
-                		$(this).removeClass('arefiafollowercontainerselected');
-                		$(this).addClass('arefiafollowercontainer');
-                	});
                 	
-                	$('#' + userId + '_outcon').removeClass('arefiafollowercontainer');
-                	$('#' + userId + '_outcon').addClass('arefiafollowercontainerselected');
+                	$('#' + currentfollower + '_outcon').removeClass('arefiafollowercontainer');
+                	$('#' + currentfollower + '_outcon').addClass('arefiafollowercontainerselected');
                 	$('#arefiamessagebody').html('');
-                	$('#arefiamessagebody').append('<img src="medias/load.gif"/>');
+                	//$('#arefiamessagebody').append('<img src="medias/load.gif"/>');
                 	
                 	$.get('getfollowerMsgs', {followerid: userId}, function(result) {
             			if (result != null && result != '') {
@@ -325,19 +347,56 @@
             	}
             }
             
-            function showcontactcontent(name, pic, sta) {
-            	$('#arefiacontinfoshow').html('');
-            	$('#arefiacontinfoshow').css('background-image', 'url(/medias/contactinfoback.jpeg)');
-            	
-            	var infoobj = '<label class="displaynamelabel">' + name + '</label><div class="contactavatar" style="background-image: url(\'' + pic + '\');"></div>';
-            	
-            	if (sta != '') {
-            		infoobj += '<label class="statustxtlabel">' + sta + '</label>';
+            function showcontactcontent(id, name, pic, sta) {
+            	if (currentinfosta == undefined || currentinfosta != id) {
+            		if (currentinfosta != undefined) {
+            		    $('#' + currentinfosta + '_outulist').removeClass('arefiafollowercontainerselected');
+                	    $('#' + currentinfosta + '_outulist').addClass('arefiafollowercontainer');
+            		}
+                	
+            		currentinfosta = id;
+            		
+            		$('#arefiacontinfoshow').html('');
+                	$('#arefiacontinfoshow').css('background-image', 'url(/medias/contactinfoback.jpeg)');
+                	
+                	var infoobj = '<label class="displaynamelabel">' + name + '</label><div class="contactavatar" style="background-image: url(\'' + pic + '\');"></div>';
+                	
+                	if (sta != '') {
+                		infoobj += '<label class="statustxtlabel">' + sta + '</label>';
+                	}
+          
+                	infoobj += '<button type="button" class="btn btn-success" style="margin-top: 20px;"';
+                	infoobj += 'onclick="startconversation(\'' + id + '\',\'' + name + '\', \'' + pic + '\', \'' + sta + '\')">';
+                	infoobj += '<span><i class="fas fa-comment-dots"></i>聊天</span></button>';
+                	
+                	$('#arefiacontinfoshow').append(infoobj);
+                	
+                	$('#' + currentinfosta + '_outulist').removeClass('arefiafollowercontainer');
+                	$('#' + currentinfosta + '_outulist').addClass('arefiafollowercontainerselected');
             	}
-      
-            	infoobj += '<button type="button" class="btn btn-success" style="margin-top: 20px;"><span><i class="fas fa-comment-dots"></i>聊天</span></button>';
+            }
+            
+            function startconversation(userid, displayname, picurl, statusmsg) {
+            	$('#arefiaconvselbtn').click();
             	
-            	$('#arefiacontinfoshow').append(infoobj);
+            	if ($('#' + userid + '_outcon').length > 0) {
+            		$('#' + userid + '_outcon').click();
+            	} else {
+            		var ncfuser = new Object();
+            		
+            		ncfuser.USERID = userid;
+            		ncfuser.DISPLAYNAME = displayname;
+            		ncfuser.PICTUREURL = picurl;
+            		ncfuser.STATUSMESSAGE = statusmsg;
+            		ncfuser.MSGTYPE = '';
+            		ncfuser.MSGFROM = '';
+            		ncfuser.UNREADCOUNT = 0;
+            		ncfuser.LASTDATE = '';
+            		
+            		addNewLine(ncfuser, $('#arefiauserlist'), 'newcon');
+            		
+            		$('#' + userid + '_outcon').click();
+            	}           	
             }
             
             function showstick() {
@@ -405,6 +464,7 @@
             
             function convfunsel(stype) {
             	if (stype === 'conv') {
+            		initcotgarden();
                 	$('#arefiacontlist').css('display', 'none');
                 	$('#arefiauserlist').css('display', '');
                 	$('#arefiacontinfoshow').css('display', 'none');
@@ -412,6 +472,7 @@
                 	$('#arefiaconvselbtn').removeClass('afbtngrp').addClass('seldfunbtn');
                 	$('#arefiauserselbtn').removeClass('seldfunbtn').addClass('afbtngrp');
             	} else {
+            		initmsggarden();
                 	$('#arefiauserlist').css('display', 'none');
             		$('#arefiacontlist').css('display', '');
             		$('#arefiamessageshow').css('display', 'none');

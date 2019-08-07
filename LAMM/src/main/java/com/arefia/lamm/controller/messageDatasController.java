@@ -97,26 +97,15 @@ public class messageDatasController {
 				JSONArray fsArr = new JSONArray();
 				
 				for (Object[] follower: followersList) {
-					JSONObject rtObj = gfi.getFollowerInfo(follower[0].toString());
 					JSONObject fsObj = new JSONObject();
 					Date lstDate = fsdf.parse(follower[8].toString());
 					
 					fsObj.put("USERID", follower[0].toString());
 					
-					if (rtObj != null) {
-						fsObj.put("DISPLAYNAME", rtObj.getString("displayName"));
-						fsObj.put("PICTUREURL", rtObj.getString("pictureUrl"));
-						if (rtObj.has("statusMessage")) {
-							fsObj.put("STATUSMESSAGE", rtObj.getString("statusMessage"));
-						} else {
-							fsObj.put("STATUSMESSAGE", "");
-						}
-					} else {
-						fsObj.put("USERID", follower[0].toString());
-						fsObj.put("DISPLAYNAME", follower[1].toString());
-						fsObj.put("PICTUREURL", follower[2].toString());
-						fsObj.put("STATUSMESSAGE", follower[3].toString());
-					}
+					fsObj.put("USERID", follower[0].toString());
+					fsObj.put("DISPLAYNAME", follower[1].toString());
+					fsObj.put("PICTUREURL", follower[2].toString());
+					fsObj.put("STATUSMESSAGE", follower[3].toString());
 					
 					fsObj.put("MESSAGEFROM", follower[4].toString());
 					fsObj.put("MSGTYPE", follower[5].toString());
@@ -164,6 +153,7 @@ public class messageDatasController {
 	@RequestMapping(value = "/getfollowerinfolist", method = RequestMethod.GET)
 	@ResponseBody
 	public String getAllFollowerData() {
+		
 		List<followersEntity> afe = fsdao.findAll();
 		JSONArray afarr = new JSONArray();
 
@@ -172,9 +162,27 @@ public class messageDatasController {
 				JSONObject afObj = new JSONObject();
 				
 				afObj.put("USERID", fent.getUserid());
-				afObj.put("DISPLAYNAME", fent.getDisplayname());
-				afObj.put("PICTUREURL", fent.getPictureurl());
-				afObj.put("STATUSMESSAGE", fent.getStatusmessage());
+				
+				JSONObject ffsObj = gfi.getFollowerInfo(fent.getUserid());
+				
+				if (ffsObj != null) {
+					String stamsg = "";
+					
+					afObj.put("DISPLAYNAME", ffsObj.getString("displayName"));
+					afObj.put("PICTUREURL", ffsObj.getString("pictureUrl"));
+					
+					if (ffsObj.has("statusMessage")) {
+						stamsg = ffsObj.getString("statusMessage");					
+					}
+					
+					afObj.put("STATUSMESSAGE", stamsg);
+					
+					fsdao.updateFollowerInfo(ffsObj.getString("displayName"), ffsObj.getString("pictureUrl"), stamsg, fent.getUserid());
+				} else {
+					afObj.put("DISPLAYNAME", fent.getDisplayname());
+					afObj.put("PICTUREURL", fent.getPictureurl());
+					afObj.put("STATUSMESSAGE", fent.getStatusmessage());
+				}
 				
 				afarr.put(afObj);
 			}

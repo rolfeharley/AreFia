@@ -148,13 +148,19 @@
     color: #FFFFFF !important;
     -webkit-box-shadow: none !important;
     box-shadow: none  !important;
-    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #D6D9DD !important;
 }
 
 .afbtngrp {
     background: #ECEFF3 !important;
     color: #000000 !important;
-    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #D6D9DD !important;
 }
 
 #arefiaconvselbtn:active, 
@@ -171,11 +177,14 @@
     outline-offset: 0  !important;
     -webkit-box-shadow: none !important;
     box-shadow: none  !important;
-    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #D6D9DD !important;
 }
 
 .statustxtlabel {
-	color: #EAEAEAEA;
+	color: #000000;
 }
 
 @media screen and (max-width:575.99px) {

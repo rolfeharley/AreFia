@@ -56,4 +56,11 @@ public interface followersDao extends JpaRepository<followersEntity, Long> {
     		"'RECIEVE' AS MSGFROM, MSGID, CHECKFLAG FROM MSG_RECIEVE) A " + 
     		"WHERE A.SOURCERID = :SOURCERID AND A.CHECKFLAG = '2' AND A.EXETIME BETWEEN :STDATE AND :EDDATE ORDER BY EXETIME", nativeQuery = true)
     public List<Object[]> getSingleFollowerHistory(@Param("SOURCERID") String SOURCERID, @Param("STDATE") String STDATE, @Param("EDDATE") String EDDATE);
+    
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE LINE_FOLLOWERS SET DISPLAYNAME = :DISPLAYNAME, PICTUREURL = :PICTUREURL, " +
+                   "STATUSMESSAGE = :STATUSMESSAGE, UDT = NOW() WHERE USERID = :USERID", nativeQuery = true)
+    public void updateFollowerInfo(@Param("DISPLAYNAME") String DISPLAYNAME, @Param("PICTUREURL") String PICTUREURL, 
+    		                       @Param("STATUSMESSAGE") String STATUSMESSAGE, @Param("USERID") String USERID);
 }

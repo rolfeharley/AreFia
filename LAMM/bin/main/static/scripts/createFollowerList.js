@@ -6,53 +6,61 @@ function addNewLine(userObj, tarcomp, addtype) {
 	followerdiv += '<div id="' + userObj.USERID + '_udna" class="arefiafollowername">' + userObj.DISPLAYNAME + '</div>';
 	followerdiv += '<div id="' + userObj.USERID + '_lstmsg" class="arefialastmessage">';
 	
-	switch(userObj.MSGTYPE) {
-	    case 'text':
-	    	var textmsg = userObj.MSG;
+	if (userObj.MSGTYPE != undefined && userObj.MSGTYPE != '') {
+		switch(userObj.MSGTYPE) {
+	        case 'text':
+	    	    var textmsg = userObj.MSG;
 	    	
-	    	textmsg.substring(0, textmsg.indexOf('\r\n'));
+	    	    textmsg.substring(0, textmsg.indexOf('\r\n'));
 	    	
-	    	if (textmsg.length > 25) {
-		    	followerdiv += textmsg.substr(0, 25) + '&#8228;&#8228;&#8228;';
-	    	} else {
-		    	followerdiv += textmsg;
-	    	}
-	    	break;
-	    case 'image':
-	    	if (userObj.MSGFROM == 'PUSH') {
-		    	followerdiv += 'Image';
-	    	} else {
-	    		followerdiv += 'Image';
-	    	}
-	    	break;
-	    case 'video':
-	    	if (userObj.MSGFROM == 'PUSH') {
-		    	followerdiv += 'Video';
-	    	} else {
-	    		followerdiv += 'Video';
-	    	}
-	    	break;
-	    case 'audio':
-	    	if (userObj.MSGFROM == 'PUSH') {
-		    	followerdiv += 'Audio';
-	    	} else {
-	    		followerdiv += 'Audio';
-	    	}
-	    	break;
-	    case 'sticker':
-	    	if (userObj.MSGFROM == 'PUSH') {
-		    	followerdiv += 'Sticker';
-	    	} else {
-	    		followerdiv += 'Sticker';
-	    	}
-	    	break;
-	    default:
-	    	followerdiv += 'Unsupported';
-	        break;
+	    	    if (textmsg.length > 25) {
+		    	    followerdiv += textmsg.substr(0, 25) + '&#8228;&#8228;&#8228;';
+	    	    } else {
+		    	    followerdiv += textmsg;
+	    	    }
+	    	    break;
+	        case 'image':
+	    	    if (userObj.MSGFROM == 'PUSH') {
+		    	    followerdiv += 'Image';
+	    	    } else {
+	    		    followerdiv += 'Image';
+	    	    }
+	    	    break;
+	        case 'video':
+	    	    if (userObj.MSGFROM == 'PUSH') {
+		    	    followerdiv += 'Video';
+	    	    } else {
+	    		    followerdiv += 'Video';
+	    	    }
+	    	    break;
+	        case 'audio':
+	    	    if (userObj.MSGFROM == 'PUSH') {
+		    	    followerdiv += 'Audio';
+	    	    } else {
+	    		    followerdiv += 'Audio';
+	    	    }
+	    	    break;
+	        case 'sticker':
+	    	    if (userObj.MSGFROM == 'PUSH') {
+		    	    followerdiv += 'Sticker';
+	    	    } else {
+	    		    followerdiv += 'Sticker';
+	    	    }
+	    	    break;
+	        default:
+	    	    followerdiv += 'Unsupported';
+	            break;
+	    }
 	}
 	                		
 	followerdiv += '</div></div>';
-	followerdiv += '<div id="' + userObj.USERID + '_mgtime" class="arefiamessagetime">' + userObj.LASTDATE + '<br/>' + userObj.LASTTIME;
+	
+	if (userObj.LASTDATE != undefined && userObj.LASTDATE != '') {
+		followerdiv += '<div id="' + userObj.USERID + '_mgtime" class="arefiamessagetime">' + userObj.LASTDATE + '<br/>' + userObj.LASTTIME;
+	} else {
+		followerdiv += '<div id="' + userObj.USERID + '_mgtime" class="arefiamessagetime">';
+	}
+	
 	followerdiv += '</div><div id="' + userObj.USERID + '_unrcnt" class="arefiaunrmsgcount"';
 
 	if (Number(userObj.UNREADCOUNT) > 0) {
@@ -75,7 +83,7 @@ function addNewLine(userObj, tarcomp, addtype) {
 }
 
 function addNewUserList(userObj, tarcomp) {
-    var contsdiv = '<div id="' + userObj.USERID + '_outulist" class="arefiafollowercontainer" onclick="showcontactcontent(\'' + userObj.DISPLAYNAME + '\', \'' + userObj.PICTUREURL + '\',\'' + userObj.STATUSMESSAGE + '\')">';
+    var contsdiv = '<div id="' + userObj.USERID + '_outulist" class="arefiafollowercontainer" onclick="showcontactcontent(\'' + userObj.USERID + '\',\'' + userObj.DISPLAYNAME + '\', \'' + userObj.PICTUREURL + '\',\'' + userObj.STATUSMESSAGE + '\')">';
 	
     contsdiv += '<div id="' + userObj.USERID + '_ulicon" class="arefiafollowericon" data-imgurl="' + userObj.PICTUREURL + '" style="background-image: url(' + userObj.PICTUREURL + ');"></div>';
     contsdiv += '<div class="arefiafollowerinfo">';
