@@ -145,6 +145,7 @@
                         	var msgArr = JSON.parse(msgInfo.RECIEVEARRAY);
                         	
                         	var conexist = false;
+                        	var floexist = false;
 
                         	for (var m = 0; m < msgArr.length; m++) {
                         		var msgObj = msgArr[m];
@@ -165,7 +166,7 @@
                         		}
                         		
                         		if (!conexist) {
-                            		$.get('getfollowerinfos', {followerid: sourcerObj.userId}, function(result) {
+                            		$.get('getfollowerindb', {followerid: sourcerObj.userId}, function(result) {
                             			if (result != null && result != '') {
                                             var ofrObj = JSON.parse(result);
                                             
@@ -197,6 +198,23 @@
                                             
                                             addNewLine(ofrObj, $('#arefiauserlist'), 'newcon');
                                     	}
+                            			
+                            			if ($('#arefiacontlist').children().length > 0) {
+                            				$('#arefiacontlist').children('div').each(function(index) {
+                                    			var fcompid = $(this).attr('id');
+                                    			
+                                    			fcompid = fcompid.substring(0, compid.indexOf('_'));
+
+                                    			if (fcompid == sourcerObj.userId) {
+                                    				floexist = true;
+                                    				return false;
+                                    			}
+                                    		});
+                            			}
+                            			
+                            			if (!floexist) {
+                            				addNewUserList(ofrObj, $('#arefiacontlist'));
+                            			}
                                     });
                         		} else {
                         			var nfcon = conObj.text;

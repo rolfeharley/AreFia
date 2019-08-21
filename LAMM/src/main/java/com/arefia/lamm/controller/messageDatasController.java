@@ -150,6 +150,26 @@ public class messageDatasController {
 		}
 	}
 	
+	@RequestMapping(value = "/getfollowerindb", method = RequestMethod.GET)
+	@ResponseBody
+	public String getFollowerInDB(@RequestParam("followerid") String followerid) {
+		List<followersEntity> finfo = fsdao.getSpecFollower(followerid);
+
+		if (finfo != null && finfo.size() == 1) {
+			JSONObject nfobj = new JSONObject();
+			followersEntity spefl = finfo.get(0);
+			
+			nfobj.put("USERID", followerid);
+			nfobj.put("DISPLAYNAME", spefl.getDisplayname());
+			nfobj.put("PICTUREURL", spefl.getPictureurl());
+			nfobj.put("STATUSMESSAGE", spefl.getStatusmessage());
+			
+		    return nfobj.toString();
+		} else {
+			return "";
+		}
+	}
+	
 	@RequestMapping(value = "/getfollowerinfolist", method = RequestMethod.GET)
 	@ResponseBody
 	public String getAllFollowerData() {

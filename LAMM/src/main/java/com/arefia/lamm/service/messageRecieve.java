@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.arefia.lamm.dao.autoreplymsgDao;
 import com.arefia.lamm.dao.contactsDao;
 import com.arefia.lamm.dao.followersDao;
 import com.arefia.lamm.dao.msgrecDao;
@@ -61,6 +62,9 @@ public class messageRecieve {
     
     @Autowired
     zohoAuthService auts;
+    
+    @Autowired
+    autoreplymsgDao aid;
     
     @Resource
     private SimpMessagingTemplate lineTemplate;
@@ -116,7 +120,13 @@ public class messageRecieve {
             			
             			fsdao.saveAndFlush(nfe);
             			
-            			mps.push(sObj.getString("userId"), "text", "This is your first time logging in, welcome!", auth.getName(), null);
+            			List<Object[]> welObj = aid.getWelcomeMsg();
+            			
+            			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
+            			    mps.push(sObj.getString("userId"), "text", welObj.get(0)[0].toString(), auth.getName(), null);
+            			} else {
+            				mps.push(sObj.getString("userId"), "text", "非常開心看見您的首次光臨", auth.getName(), null);
+            			}
             		}
             		
             		if (zohointe.equals("1")) {

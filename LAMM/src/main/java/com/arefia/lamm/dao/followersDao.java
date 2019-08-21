@@ -63,4 +63,7 @@ public interface followersDao extends JpaRepository<followersEntity, Long> {
                    "STATUSMESSAGE = :STATUSMESSAGE, UDT = NOW() WHERE USERID = :USERID", nativeQuery = true)
     public void updateFollowerInfo(@Param("DISPLAYNAME") String DISPLAYNAME, @Param("PICTUREURL") String PICTUREURL, 
     		                       @Param("STATUSMESSAGE") String STATUSMESSAGE, @Param("USERID") String USERID);
+    
+    @Query(value = "SELECT * FROM LINE_FOLLOWERS WHERE USERID = :USERID", nativeQuery = true)
+    public List<followersEntity> getSpecFollower(@Param("USERID") String USERID);
 }
