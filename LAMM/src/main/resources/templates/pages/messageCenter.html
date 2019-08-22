@@ -203,8 +203,8 @@
                             				$('#arefiacontlist').children('div').each(function(index) {
                                     			var fcompid = $(this).attr('id');
                                     			
-                                    			fcompid = fcompid.substring(0, compid.indexOf('_'));
-
+                                    			fcompid = fcompid.substring(0, fcompid.indexOf('_'));
+                                    			
                                     			if (fcompid == sourcerObj.userId) {
                                     				floexist = true;
                                     				return false;
