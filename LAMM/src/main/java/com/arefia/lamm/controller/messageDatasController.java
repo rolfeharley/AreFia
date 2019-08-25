@@ -109,7 +109,29 @@ public class messageDatasController {
 					
 					fsObj.put("MESSAGEFROM", follower[4].toString());
 					fsObj.put("MSGTYPE", follower[5].toString());
-					fsObj.put("MSG", follower[6].toString());
+					
+					switch (follower[5].toString()) {
+					    case "text":
+							fsObj.put("MSG", follower[6].toString());
+					    	break;
+					    case "image":
+					    	fsObj.put("MSG", "您收到圖片");
+						    break;
+					    case "audio":
+					    	fsObj.put("MSG", "您收到聲音檔");
+					    	break;
+					    case "video":
+					    	fsObj.put("MSG", "您收到影像檔");
+					    	break;
+					    case "sticker":
+					    	fsObj.put("MSG", "您收到貼圖");
+					    	break;
+					    default:
+					    	fsObj.put("MSG", "不支援的格式");
+					    	break;
+					    
+					}
+					
 					fsObj.put("UNREADCOUNT", follower[7].toString());
 					fsObj.put("LASTDATE", tsdd.format(lstDate));
 					fsObj.put("LASTTIME", tstt.format(lstDate));

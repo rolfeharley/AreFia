@@ -25,10 +25,10 @@ function createRecieveFrame(userId, type, msg, time, msgid, imgw, imgh, stadw) {
         	newFrame += 'Line Sticker';
 	        break;
         case 'video':
-        	newFrame += '';
+        	newFrame += '<video width="400" controls><source src="lineResources/videos/' + msgid + '.avi" type="video/ogg"></video>';
 	        break;
         case 'audio':
-        	newFrame += '';
+        	newFrame += '<audio controls="controls"><source src="lineResources/audios/' + msgid + '.mp3" type="audio/mpeg" /></audio>';
 	        break;
         default :
         	newFrame += '<span style="color: #FF0000">系統目前暫不支援傳輸此格式訊息!</span>';

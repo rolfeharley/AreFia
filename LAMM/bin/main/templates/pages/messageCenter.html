@@ -182,16 +182,24 @@
                                             	ofrObj.MSG = ntstr;
                                             } else {
                                             	if (conObj.type == 'image') {
-                                                	ofrObj.MSG = 'Image';
+                                                	ofrObj.MSG = '您收到圖片';
                                             	} else {
                                             		if (conObj.type == 'sticker') {
-                                                    	ofrObj.MSG = 'Sticker';
+                                                    	ofrObj.MSG = '您收到貼圖';
                                                 	} else {
-                                                		ofrObj.MSG = 'Unsupported';
+                                                		if (conObj.type == 'audio') {
+                                                			ofrObj.MSG = '您收到聲音檔';
+                                                		} else {
+                                                			if (conObj.type == 'video') {
+                                                				ofrObj.MSG = '您收到影像檔';
+                                                			} else {
+                                                        		ofrObj.MSG = '不支援的格式';
+                                                			}
+                                                		}
                                                 	}
                                             	}
                                             }
-                                            
+
                                             ofrObj.UNREADCOUNT = '1';
                                             ofrObj.LASTDATE = msgObj.recievedate;
                                             ofrObj.LASTTIME = msgObj.recievetime;
@@ -232,19 +240,19 @@
                                 			nfcon = nfcon.replace(/(?:\r\n|\r|\n)/g, '<br/>');
             		    	                break;
             		                    case 'image':
-            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Image');
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('您收到圖片');
             		    	                break;
             		                    case 'sticker':
-            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Sticker');
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('您收到貼圖');
             		    	                break;
             		                    case 'video':
-            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Video');
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('您收到影像檔');
             		    	                break;
             		                    case 'audio':
-            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Audio');
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('您收到聲音檔');
             		    	                break;
             		                    default :
-            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('Unsupported');
+            		                    	$('#' + sourcerObj.userId + '_lstmsg').html('不支援的格式');
             		    	                break;
             		                }                    			
                                     
@@ -435,7 +443,7 @@
             	var linefile = files[0];
             	var filetype = linefile.type.substring(0, 5);
     			
-            	if (filetype != 'image') {
+            	if (filetype != 'image' && filetype != 'audio' && filetype != 'video') {
                 	alert('系統目前暫不支援傳輸此格式訊息!');
             	} else {
             		var pushfid = generateGuid();
@@ -526,7 +534,7 @@
                         <div id="arefiamessagetool">
                             <i class="far fa-smile" id="stickbtn" onclick="showstick()" style="display: none;"></i>
                             <i class="fas fa-paperclip" id="attabtn" onclick="selectfile()"></i>
-                            <input id="fileselector" type="file" name="pushfiles" accept="image/*" style="display: none;" onchange="uploadhandler(this.files)" />
+                            <input id="fileselector" type="file" name="pushfiles" accept="image/*,audio/*,video/*" style="display: none;" onchange="uploadhandler(this.files)" />
                         </div>
                         <div id="arefiamessageeditor">
                             <textarea id="arefiamsgtxtarea"></textarea>

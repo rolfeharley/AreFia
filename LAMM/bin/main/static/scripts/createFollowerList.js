@@ -18,37 +18,9 @@ function addNewLine(userObj, tarcomp, addtype) {
 	    	    } else {
 		    	    followerdiv += textmsg;
 	    	    }
-	    	    break;
-	        case 'image':
-	    	    if (userObj.MSGFROM == 'PUSH') {
-		    	    followerdiv += 'Image';
-	    	    } else {
-	    		    followerdiv += 'Image';
-	    	    }
-	    	    break;
-	        case 'video':
-	    	    if (userObj.MSGFROM == 'PUSH') {
-		    	    followerdiv += 'Video';
-	    	    } else {
-	    		    followerdiv += 'Video';
-	    	    }
-	    	    break;
-	        case 'audio':
-	    	    if (userObj.MSGFROM == 'PUSH') {
-		    	    followerdiv += 'Audio';
-	    	    } else {
-	    		    followerdiv += 'Audio';
-	    	    }
-	    	    break;
-	        case 'sticker':
-	    	    if (userObj.MSGFROM == 'PUSH') {
-		    	    followerdiv += 'Sticker';
-	    	    } else {
-	    		    followerdiv += 'Sticker';
-	    	    }
-	    	    break;
+	    	    break;	        
 	        default:
-	    	    followerdiv += 'Unsupported';
+	        	followerdiv += userObj.MSG;
 	            break;
 	    }
 	}
