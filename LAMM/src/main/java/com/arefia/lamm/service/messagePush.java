@@ -9,6 +9,9 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +46,7 @@ public class messagePush {
 	@Resource
     private SimpMessagingTemplate lineTemplate;
 	
-	public void push(String sourcerid, String msgtype, String msg, String pushid, String pushfid) {
+	public void push(String sourcerid, String msgtype, String fileexts, String msg, String pushid, String pushfid) {
 		try {
 			HashMap<String, String> repHead = new HashMap<String, String>();
 		    JSONObject repBody = new JSONObject();
@@ -83,14 +86,37 @@ public class messagePush {
 					imgh = imgbuff.getHeight();
 	        	    break;
 	            case "audio":
-	        	    fspath += "static/lineResources/audios/" + pushfid.toString() + ".mp3";
-	        	    remObj.put("originalContentUrl", "lineResources/audios/" + pushfid.toString() + ".mp3"); 
-	        	    remObj.put("duration", 0);
+	        	    fspath += "static/lineResources/audios/" + pushfid.toString() + "." + fileexts;
+	        	    log.info("-----------------------------------------------\n" + fspath);
+	        	    
+	        	    File audiof = new File(fspath);
+	        	    
+	        	    if (audiof.exists()) {
+	        	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audiof);
+	        	    } else {
+	        	    	log.info("------------------------------------------------\nNG");
+	        	    }
+//	        	    AudioInputStream audstr = AudioSystem.getAudioInputStream(new File(fspath));
+//	        	    AudioFormat audifmt = audstr.getFormat();
+//	        	    long frames = audstr.getFrameLength();
+//	        	    double audidur = (frames + 0.0) / audifmt.getFrameRate();
+//	        	    JSONObject audicontobj = new JSONObject();
+//	        	    
+//	        	    audicontobj.put("type", "line");
+//	        	    
+//	        	    remObj.put("originalContentUrl", "lineResources/audios/" + pushfid.toString() + "." + fileexts);
+//	        	    remObj.put("duration", (int)audidur);
+//	        	    remObj.put("contentProvider", audicontobj);
 	        	    break;
 	            case "video":
-	        	    fspath += "static/lineResources/videos/" + pushfid.toString() + ".mp4";
-	        	    remObj.put("originalContentUrl", "lineResources/videos/" + pushfid.toString() + ".mp4"); 
-	        	    remObj.put("previewImageUrl", ""); 
+//	        	    fspath += "static/lineResources/videos/" + pushfid.toString() + "." + fileexts;
+//	        	    IContainer container = IContainer.make();
+//	        	    int result = container.open(filename, IContainer.Type.READ, null);
+//	        	    long duration = container.getDuration();
+//	        	    long fileSize = container.getFileSize();
+//	        	    
+//	        	    remObj.put("originalContentUrl", "lineResources/videos/" + pushfid.toString() + "." + fileexts); 
+//	        	    remObj.put("previewImageUrl", ""); 
 	        	    break;
 	            default:
 	        	
@@ -109,41 +135,41 @@ public class messagePush {
 		    
 		    wcc.comWithPost(repObj);
 			
-		    if (wcc.postIns.equals("OK")) {
-				msgpushEntity pushObj = new msgpushEntity();
-				Date cdt = new Date();
-				
-				pushObj.setMsgtype(msgtype);
-				if (msgtype.equals("text")) {
-				    pushObj.setMsgid(msgid.toString());
-				} else {
-					pushObj.setMsgid(pushfid.toString());
-				}
-				pushObj.setMsg(msg);
-				pushObj.setPushuser(pushid);
-				pushObj.setSourcerid(sourcerid);
-				pushObj.setPushtime(sdf.format(cdt));
-				pushObj.setCheckflag("1");
-				
-				pdo.saveAndFlush(pushObj);
-				
-                JSONObject pumObj = new JSONObject();
-                
-                pumObj.put("OBJTYPE", "PUSH");
-                pumObj.put("SOURCERID", sourcerid);
-                pumObj.put("MSGTYPE", msgtype);
-                if (msgtype.equals("text")) {
-                	pumObj.put("MSGID", msgid.toString());
-				} else {
-					pumObj.put("MSGID", pushfid.toString());
-				}
-                pumObj.put("MSG", msg);
-                pumObj.put("EXETIME", udf.format(cdt));
-                pumObj.put("IMAGEWIDTH", imgw);
-                pumObj.put("IMAGEHEIGHT", imgh);
-				
-				lineTemplate.convertAndSend("/topic/linemessage", pumObj.toString());
-		    }
+//		    if (wcc.postIns.equals("OK")) {
+//				msgpushEntity pushObj = new msgpushEntity();
+//				Date cdt = new Date();
+//				
+//				pushObj.setMsgtype(msgtype);
+//				if (msgtype.equals("text")) {
+//				    pushObj.setMsgid(msgid.toString());
+//				} else {
+//					pushObj.setMsgid(pushfid.toString());
+//				}
+//				pushObj.setMsg(msg);
+//				pushObj.setPushuser(pushid);
+//				pushObj.setSourcerid(sourcerid);
+//				pushObj.setPushtime(sdf.format(cdt));
+//				pushObj.setCheckflag("1");
+//				
+//				pdo.saveAndFlush(pushObj);
+//				
+//                JSONObject pumObj = new JSONObject();
+//                
+//                pumObj.put("OBJTYPE", "PUSH");
+//                pumObj.put("SOURCERID", sourcerid);
+//                pumObj.put("MSGTYPE", msgtype);
+//                if (msgtype.equals("text")) {
+//                	pumObj.put("MSGID", msgid.toString());
+//				} else {
+//					pumObj.put("MSGID", pushfid.toString());
+//				}
+//                pumObj.put("MSG", msg);
+//                pumObj.put("EXETIME", udf.format(cdt));
+//                pumObj.put("IMAGEWIDTH", imgw);
+//                pumObj.put("IMAGEHEIGHT", imgh);
+//				
+//				lineTemplate.convertAndSend("/topic/linemessage", pumObj.toString());
+//		    }
 		} catch(Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 		} finally {

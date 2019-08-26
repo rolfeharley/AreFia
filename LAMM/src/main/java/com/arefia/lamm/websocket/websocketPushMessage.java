@@ -14,6 +14,6 @@ public class websocketPushMessage {
 	
 	@MessageMapping("/pushMessage")
 	public void pushMessage(linePushMessageObject message) {
-		mps.push(message.getSourcer(), message.getMessageType(), message.getMessage(), message.getPusher(), message.getPushfid());
+		mps.push(message.getSourcer(), message.getMessageType(), message.getFileexts(), message.getMessage(), message.getPusher(), message.getPushfid());
 	}
 }

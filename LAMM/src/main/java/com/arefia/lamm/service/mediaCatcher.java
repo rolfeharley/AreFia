@@ -48,23 +48,25 @@ public class mediaCatcher {
 		    wcc.comWithGet(repObj);
 		    
 		    InputStream mediaInp = wcc.getIns;
-		    
 		    String basePathString = getClass().getResource("/").getPath().replaceAll("%20", " ");
             
 		    switch (mediaType) {
 		        case "image":
 		        	BufferedImage imgbf = ImageIO.read(mediaInp);
-		        	ImageIO.write(imgbf, "png", new File(basePathString + "static/lineResources/images/" + mediaid + ".png"));
+		        	ImageIO.write(imgbf, "png", new File(basePathString + "static/lineResources/images/" + mediaid));
 		        	mediaResources.put("IMAGEWIDTH", imgbf.getWidth());
 		        	mediaResources.put("IMAGEHEIGHT", imgbf.getHeight());
 		        	break;
 		        case "video":
-		        	FileOutputStream vdoos = new FileOutputStream(new File(basePathString + "static/lineResources/videos/" + mediaid + ".avi"));
+		        	FileOutputStream vdoos = new FileOutputStream(new File(basePathString + "static/lineResources/videos/" + mediaid));
 		        	IOUtils.copy(mediaInp, vdoos);
 		        	break;
 		        case "audio":
-		        	FileOutputStream adoos = new FileOutputStream(new File(basePathString + "static/lineResources/audios/" + mediaid + ".mp3"));
+		        	FileOutputStream adoos = new FileOutputStream(new File(basePathString + "static/lineResources/audios/" + mediaid));
 		        	IOUtils.copy(mediaInp, adoos);
+		        	break;
+		        default:
+		        	mediaResources.put("FILEEXTS", "");
 		        	break;
 		    }
 		    

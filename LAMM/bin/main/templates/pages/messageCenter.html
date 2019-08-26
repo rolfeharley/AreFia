@@ -441,17 +441,20 @@
             
             function uploadhandler(files) {
             	var linefile = files[0];
-            	var filetype = linefile.type.substring(0, 5);
-    			
-            	if (filetype != 'image' && filetype != 'audio' && filetype != 'video') {
+            	var filetype = linefile.type;
+            	var filecate = filetype.substring(0, filetype.indexOf('/'));
+            	var fileexts = filetype.substring(filetype.indexOf('/') + 1);
+            	
+            	if (filecate != 'image' && filecate != 'audio' && filecate != 'video') {
                 	alert('系統目前暫不支援傳輸此格式訊息!');
             	} else {
             		var pushfid = generateGuid();
             		var pushdata = new FormData();
             		
-            		pushdata.append("msgtype", filetype);
-            		pushdata.append("pushfid", pushfid);
-            		pushdata.append("pushfile", linefile);
+            		pushdata.append('msgtype', filecate);
+            		pushdata.append('pushfid', pushfid);
+            		pushdata.append('pushfile', linefile);
+            		pushdata.append('fileexts', fileexts);
             		
             		$.ajax({
             		    url: '/pushfiles',
@@ -461,7 +464,7 @@
             		    processData: false,
             		    contentType: false
             		}).done(function(res) {
-            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': 'image', 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
+            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'fileexts': fileexts, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
             		}).fail(function(res) {});
             	}
             }

@@ -123,9 +123,9 @@ public class messageRecieve {
             			List<Object[]> welObj = aid.getWelcomeMsg();
             			
             			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
-            			    mps.push(sObj.getString("userId"), "text", welObj.get(0)[0].toString(), auth.getName(), null);
+            			    mps.push(sObj.getString("userId"), "text", null, welObj.get(0)[0].toString(), auth.getName(), null);
             			} else {
-            				mps.push(sObj.getString("userId"), "text", "ÈùûÂ∏∏ÈñãÂøÉÁúãË¶ãÊÇ®ÁöÑÈ¶ñÊ¨°ÂÖâËá®", auth.getName(), null);
+            				mps.push(sObj.getString("userId"), "text", null, "Ω–≥sµ≤•H§U∫Ùß}ßπ¶®∞Ú•ª∏ÍÆ∆≥]≠q", auth.getName(), null);
             			}
             		}
             		
@@ -163,8 +163,9 @@ public class messageRecieve {
                 	
                 	switch (mObj.getString("type")) {
         		        case "text":
+        		        	recm.setFileext("");
         		    	    recm.setMsg(mObj.getString("text"));
-        		    	    recm.setDuration(null);
+        		    	    recm.setDuration("");
         		    	    break;
         		        case "sticker":
         		    	    JSONObject stickObj = new JSONObject();
@@ -172,6 +173,7 @@ public class messageRecieve {
         		    	    stickObj.put("stickerId", mObj.getString("stickerId"));
         		    	    stickObj.put("packageId", mObj.getString("packageId"));
         		    	    
+        		    	    recm.setFileext("");
         		    	    recm.setMsg(stickObj.toString());
         		    	    recm.setDuration(null);
         		        	break;
@@ -190,26 +192,28 @@ public class messageRecieve {
         		        	break;
         		        case "audio":
                             JSONObject audObj = new JSONObject();
-        		    	    
+                            
+                            saveMedia(mObj.getString("id"), "audio");
+                            
                             audObj.put("contentProvider", mObj.getJSONObject("contentProvider"));
                             
                             recm.setMsg(audObj.toString());
         		    	    recm.setDuration(mObj.getBigInteger("duration").toString());
-        		    	    
-        		    	    saveMedia(mObj.getString("id"), "audio");
         		        	break;
         		        case "video":
                             JSONObject vidObj = new JSONObject();
-        		    	    
+                            
+                            saveMedia(mObj.getString("id"), "video");
+                            
                             vidObj.put("contentProvider", mObj.getJSONObject("contentProvider"));
                             
                             recm.setMsg(vidObj.toString());
         		    	    recm.setDuration(mObj.getBigInteger("duration").toString());
-        		    	    
-        		    	    saveMedia(mObj.getString("id"), "video");
         		        	break;
         		        default:
-        		        	
+                            recm.setFileext("");
+                            recm.setMsg("");
+        		    	    recm.setDuration("");
         		        	break;
         		    }
                 	

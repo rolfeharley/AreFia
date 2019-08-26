@@ -3,6 +3,8 @@ package com.arefia.lamm.controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -25,6 +27,7 @@ public class savePushFilesController {
 	    try {
 	    	String msgtype = request.getParameter("msgtype");
 	    	String pushfid = request.getParameter("pushfid");
+	    	String fileexts = request.getParameter("fileexts");
 	    	MultipartFile pushfile = request.getFile("pushfile");
 	    	
 	    	if (pushfile != null) {
@@ -42,16 +45,35 @@ public class savePushFilesController {
 				    	
 				    	ImageIO.write(imgbuff, "png", saveFile);
 				    	
+				    	imgin.close();
 				    	break;
 				    case "audio":
-				    	fspath += "static/lineResources/audios/" + pushfid + ".mp3";
+				    	InputStream audin = pushfile.getInputStream();
+				    	byte[] audbuf = new byte[audin.available()];
+				    	audin.read(audbuf);
 				    	
-				    	saveFile = new File(fspath);
+				    	fspath += "static/lineResources/audios/" + pushfid + "." + fileexts;
+				    	
+				    	FileOutputStream audot = new FileOutputStream(new File(fspath));				    					    	
+				    	audot.write(audbuf);
+				    	
+				    	audin.close();
+				    	audot.flush();
+				    	audot.close();
 				    	break;
 				    case "video":
-				    	fspath += "static/lineResources/videos/" + pushfid + ".mp4";
+				    	InputStream vidin = pushfile.getInputStream();
+				    	byte[] vidbuf = new byte[vidin.available()];
+				    	vidin.read(vidbuf);
 				    	
-				    	saveFile = new File(fspath);
+				    	fspath += "static/lineResources/videos/" + pushfid + "." + fileexts;
+				    	
+				    	FileOutputStream vidot = new FileOutputStream(new File(fspath));
+				    	vidot.write(vidbuf);
+				    	
+				    	vidin.close();
+				    	vidot.flush();
+				    	vidot.close();
 				    	break;
 				}
 		    }

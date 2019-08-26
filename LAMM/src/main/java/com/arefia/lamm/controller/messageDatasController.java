@@ -254,8 +254,8 @@ public class messageDatasController {
 					
 					if (msg[1].toString().equals("image")) {
 						BufferedImage imgbuff = null;
-						File imgfile = new File(basePathString + "static/lineResources/images/" + msg[4].toString() + ".png");
-						
+						File imgfile = new File(basePathString + "static/lineResources/images/" + msg[4].toString());
+
 						if (imgfile.exists()) {
 							imgbuff = ImageIO.read(imgfile);
 							
