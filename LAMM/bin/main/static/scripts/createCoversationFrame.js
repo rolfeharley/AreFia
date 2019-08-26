@@ -60,17 +60,17 @@ function createPushFrame(type, msg, time, msgid, imgw, imgh, stadw) {
         		shimgh = imgh;
         	}
         	
-        	newFrame += '<img src="lineResources/images/' + msgid + '.png" width="' + shimgw + '" height="' + shimgh + '" />';
+        	newFrame += '<img src="lineResources/images/' + msgid + '" width="' + shimgw + '" height="' + shimgh + '" />';
 	        break;
             break;
         case 'sticker':
         	newFrame += 'Line Sticker';
             break;
         case 'video':
-        	newFrame += '';
+        	newFrame += '<video width="400" controls><source src="lineResources/videos/' + msgid + '"></video>';
             break;
         case 'audio':
-        	newFrame += '';
+        	newFrame += '<audio controls="controls"><source src="lineResources/audios/' + msgid + '" /></audio>';
             break;
         default :
         	newFrame += '<span style="color: #FF0000">系統目前暫不支援傳輸此格式訊息!</span>';

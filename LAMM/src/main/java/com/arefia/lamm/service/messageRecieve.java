@@ -125,7 +125,7 @@ public class messageRecieve {
             			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
             			    mps.push(sObj.getString("userId"), "text", null, welObj.get(0)[0].toString(), auth.getName(), null);
             			} else {
-            				mps.push(sObj.getString("userId"), "text", null, "請連結以下網址完成基本資料設訂", auth.getName(), null);
+            				mps.push(sObj.getString("userId"), "text", null, "Welcome!!", auth.getName(), null);
             			}
             		}
             		
@@ -163,7 +163,6 @@ public class messageRecieve {
                 	
                 	switch (mObj.getString("type")) {
         		        case "text":
-        		        	recm.setFileext("");
         		    	    recm.setMsg(mObj.getString("text"));
         		    	    recm.setDuration("");
         		    	    break;
@@ -173,7 +172,6 @@ public class messageRecieve {
         		    	    stickObj.put("stickerId", mObj.getString("stickerId"));
         		    	    stickObj.put("packageId", mObj.getString("packageId"));
         		    	    
-        		    	    recm.setFileext("");
         		    	    recm.setMsg(stickObj.toString());
         		    	    recm.setDuration(null);
         		        	break;
@@ -211,7 +209,6 @@ public class messageRecieve {
         		    	    recm.setDuration(mObj.getBigInteger("duration").toString());
         		        	break;
         		        default:
-                            recm.setFileext("");
                             recm.setMsg("");
         		    	    recm.setDuration("");
         		        	break;

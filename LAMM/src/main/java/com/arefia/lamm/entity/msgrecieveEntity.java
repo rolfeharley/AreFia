@@ -28,8 +28,6 @@ public class msgrecieveEntity {
 	private String replytoken;
 	@Column(name = "MSGTYPE", nullable = false, columnDefinition = "varchar(50)")
     private String msgtype;
-	@Column(name = "FILEEXT", nullable = true, columnDefinition = "varchar(30)")
-	private String fileext;
 	@Column(name = "MSGID", nullable = false, columnDefinition = "varchar(300)")
     private String msgid;
 	@Column(name = "MSG", nullable = true, columnDefinition = "varchar(10000)")

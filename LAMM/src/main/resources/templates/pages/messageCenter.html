@@ -299,19 +299,19 @@
                         			pfcon = pfcon.replace(/(?:\r\n|\r|\n)/g, '<br/>');
     		    	                break;
     		                    case 'image':
-    		    	                
+    		                    	$('#' + msgInfo.SOURCERID + '_lstmsg').html('您收到圖片');
     		    	                break;
     		                    case 'sticker':
-    		    	            
+    		                    	$('#' + msgInfo.SOURCERID + '_lstmsg').html('您收到貼圖');
     		    	                break;
     		                    case 'video':
-    		    	            
+    		                    	$('#' + msgInfo.SOURCERID + '_lstmsg').html('您收到聲音檔');
     		    	                break;
     		                    case 'audio':
-
+    		                    	$('#' + msgInfo.SOURCERID + '_lstmsg').html('您收到影像檔');
     		    	                break;
     		                    default :
-    		    	            
+    		                    	$('#' + msgInfo.SOURCERID + '_lstmsg').html('不支援的格式');
     		    	                break;
     		                } 
                 			
@@ -454,7 +454,6 @@
             		pushdata.append('msgtype', filecate);
             		pushdata.append('pushfid', pushfid);
             		pushdata.append('pushfile', linefile);
-            		pushdata.append('fileexts', fileexts);
             		
             		$.ajax({
             		    url: '/pushfiles',
@@ -464,7 +463,7 @@
             		    processData: false,
             		    contentType: false
             		}).done(function(res) {
-            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'fileexts': fileexts, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
+            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
             		}).fail(function(res) {});
             	}
             }

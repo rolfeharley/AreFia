@@ -27,7 +27,6 @@ public class savePushFilesController {
 	    try {
 	    	String msgtype = request.getParameter("msgtype");
 	    	String pushfid = request.getParameter("pushfid");
-	    	String fileexts = request.getParameter("fileexts");
 	    	MultipartFile pushfile = request.getFile("pushfile");
 	    	
 	    	if (pushfile != null) {
@@ -39,7 +38,7 @@ public class savePushFilesController {
 				    	FileInputStream imgin = (FileInputStream) pushfile.getInputStream(); 
 				    	BufferedImage imgbuff = ImageIO.read(imgin);
 				    	
-				    	fspath += "static/lineResources/images/" + pushfid + ".png";
+				    	fspath += "static/lineResources/images/" + pushfid;
 				    	
 				    	saveFile = new File(fspath);
 				    	
@@ -52,7 +51,7 @@ public class savePushFilesController {
 				    	byte[] audbuf = new byte[audin.available()];
 				    	audin.read(audbuf);
 				    	
-				    	fspath += "static/lineResources/audios/" + pushfid + "." + fileexts;
+				    	fspath += "static/lineResources/audios/" + pushfid;
 				    	
 				    	FileOutputStream audot = new FileOutputStream(new File(fspath));				    					    	
 				    	audot.write(audbuf);
@@ -66,7 +65,7 @@ public class savePushFilesController {
 				    	byte[] vidbuf = new byte[vidin.available()];
 				    	vidin.read(vidbuf);
 				    	
-				    	fspath += "static/lineResources/videos/" + pushfid + "." + fileexts;
+				    	fspath += "static/lineResources/videos/" + pushfid;
 				    	
 				    	FileOutputStream vidot = new FileOutputStream(new File(fspath));
 				    	vidot.write(vidbuf);
