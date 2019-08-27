@@ -131,7 +131,7 @@
 	background: #BEF18C;
 }
 
-#stickbtn, #attabtn {
+#stickbtn, #imgattbtn, #audattbtn, #vidattbtn, #fisattbtn {
     cursor: pointer;
 }
 
@@ -352,7 +352,7 @@ video:visited {
         padding: 20px 10px;;
     }
     
-    #stickbtn, #attabtn {
+    #stickbtn, #imgattbtn, #audattbtn, #vidattbtn, #fisattbtn {
         font-size: 1.5vw;
         margin: 0 2vw;
     }

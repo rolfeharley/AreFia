@@ -24,6 +24,8 @@ public class msgpushEntity {
     private String sourcerid;
 	@Column(name = "MSGTYPE", nullable = false, columnDefinition = "varchar(50)")
     private String msgtype;
+	@Column(name = "FILEEXTS", nullable = false, columnDefinition = "varchar(20)")
+    private String fileexts;
 	@Column(name = "MSGID", nullable = false, columnDefinition = "varchar(300)")
     private String msgid;
 	@Column(name = "MSG", nullable = true, columnDefinition = "varchar(10000)")

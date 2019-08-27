@@ -435,25 +435,56 @@
             	}, 500);
             }
             
-            function selectfile() {
-            	$('#fileselector').trigger('click');
+            function selectimg() {
+            	$('#imgselector').trigger('click');
             }
             
-            function uploadhandler(files) {
+            function selectaud() {
+            	$('#audselector').trigger('click');
+            }
+            
+            function selectvid() {
+            	$('#vidselector').trigger('click');
+            }
+            
+            function selectfis() {
+            	$('#fisselector').trigger('click');
+            }
+            
+            function upimghandler(files) {
+            	uploadhandler(files, 'image');
+            }
+            
+            function upaudhandler(files) {
+            	uploadhandler(files, 'audio');
+            }
+            
+            function upvidhandler(files) {
+            	uploadhandler(files, 'video');
+            }
+            
+            function upfishandler(files) {
+            	uploadhandler(files, 'file');
+            }
+            
+            function uploadhandler(files, type) {
             	var linefile = files[0];
             	var filetype = linefile.type;
             	var filecate = filetype.substring(0, filetype.indexOf('/'));
             	var fileexts = filetype.substring(filetype.indexOf('/') + 1);
             	
-            	if (filecate != 'image' && filecate != 'audio' && filecate != 'video') {
+            	if (filecate != 'image' && filecate != 'audio' && filecate != 'video' && fileexts != 'xls' &&
+            		fileexts != 'xlsx' && fileexts != 'doc' && fileexts != 'docx' && fileexts != 'ppt' && 
+            		fileexts != 'pptx' && fileexts != 'pdf' && fileexts != 'zip' && fileexts != 'rar') {
                 	alert('系統目前暫不支援傳輸此格式訊息!');
             	} else {
             		var pushfid = generateGuid();
             		var pushdata = new FormData();
             		
-            		pushdata.append('msgtype', filecate);
+            		pushdata.append('msgtype', type);
             		pushdata.append('pushfid', pushfid);
             		pushdata.append('pushfile', linefile);
+            		pushdata.append('fileeexts', fileexts);
             		
             		$.ajax({
             		    url: '/pushfiles',
@@ -463,7 +494,7 @@
             		    processData: false,
             		    contentType: false
             		}).done(function(res) {
-            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
+            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'fileexts': fileexts, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
             		}).fail(function(res) {});
             	}
             }
@@ -535,8 +566,14 @@
                         <div id="arefiamessagebody"></div>
                         <div id="arefiamessagetool">
                             <i class="far fa-smile" id="stickbtn" onclick="showstick()" style="display: none;"></i>
-                            <i class="fas fa-paperclip" id="attabtn" onclick="selectfile()"></i>
-                            <input id="fileselector" type="file" name="pushfiles" accept="image/*,audio/*,video/*" style="display: none;" onchange="uploadhandler(this.files)" />
+                            <i class="fas fa-image" id="imgattbtn" onclick="selectimg()"></i>
+                            <i class="fas fa-music" id="audattbtn" onclick="selectaud()"></i>
+                            <i class="fas fa-video" id="vidattbtn" onclick="selectvid()"></i>
+                            <i class="fas fa-file-alt" id="fisattbtn" onclick="selectfis()"></i>
+                            <input id="imgselector" type="file" name="pushimgs" accept="image/*" style="display: none;" onchange="upimghandler(this.files)" />
+                            <input id="audselector" type="file" name="pushauds" accept="audio/*" style="display: none;" onchange="upaudhandler(this.files)" />
+                            <input id="vidselector" type="file" name="pushvids" accept="video/*" style="display: none;" onchange="upvidhandler(this.files)" />
+                            <input id="fisselector" type="file" name="pushfiss" accept=".xls,.xlsx,.doc,.docx,.ppt,.pptx,.pdf,.txt,.zip,.rar" style="display: none;" onchange="upfishandler(this.files)" />
                         </div>
                         <div id="arefiamessageeditor">
                             <textarea id="arefiamsgtxtarea"></textarea>

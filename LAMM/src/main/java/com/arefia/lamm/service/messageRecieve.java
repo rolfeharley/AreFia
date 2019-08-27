@@ -123,9 +123,9 @@ public class messageRecieve {
             			List<Object[]> welObj = aid.getWelcomeMsg();
             			
             			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
-            			    mps.push(sObj.getString("userId"), "text", null, welObj.get(0)[0].toString(), auth.getName(), null);
+            			    mps.push(sObj.getString("userId"), "text", "", welObj.get(0)[0].toString(), auth.getName(), null);
             			} else {
-            				mps.push(sObj.getString("userId"), "text", null, "Welcome!!", auth.getName(), null);
+            				mps.push(sObj.getString("userId"), "text", "", "Welcome!!", auth.getName(), null);
             			}
             		}
             		

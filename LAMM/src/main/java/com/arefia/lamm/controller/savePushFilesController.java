@@ -2,7 +2,6 @@ package com.arefia.lamm.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
@@ -27,6 +26,7 @@ public class savePushFilesController {
 	    try {
 	    	String msgtype = request.getParameter("msgtype");
 	    	String pushfid = request.getParameter("pushfid");
+	    	String fileext = request.getParameter("fileeexts");
 	    	MultipartFile pushfile = request.getFile("pushfile");
 	    	
 	    	if (pushfile != null) {
@@ -35,7 +35,7 @@ public class savePushFilesController {
 		    	
 				switch (msgtype) {
 				    case "image":
-				    	FileInputStream imgin = (FileInputStream) pushfile.getInputStream(); 
+				    	InputStream imgin = pushfile.getInputStream(); 
 				    	BufferedImage imgbuff = ImageIO.read(imgin);
 				    	
 				    	fspath += "static/lineResources/images/" + pushfid;
@@ -73,6 +73,20 @@ public class savePushFilesController {
 				    	vidin.close();
 				    	vidot.flush();
 				    	vidot.close();
+				    	break;
+				    case "file":
+				    	InputStream fisin = pushfile.getInputStream();
+				    	byte[] fisbuf = new byte[fisin.available()];
+				    	fisin.read(fisbuf);
+				    	
+				    	fspath += "static/lineResources/files/" + pushfid + '.' + fileext;
+				    	
+				    	FileOutputStream fisot = new FileOutputStream(new File(fspath));
+				    	fisot.write(fisbuf);
+				    	
+				    	fisin.close();
+				    	fisot.flush();
+				    	fisot.close();
 				    	break;
 				}
 		    }

@@ -1,7 +1,10 @@
 package com.arefia.lamm.service;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +49,7 @@ public class messagePush {
 	@Resource
     private SimpMessagingTemplate lineTemplate;
 	
-	public void push(String sourcerid, String msgtype, String msg, String pushid, String pushfid) {
+	public void push(String sourcerid, String msgtype, String fileexts, String msg, String pushid, String pushfid) {
 		try {
 			HashMap<String, String> repHead = new HashMap<String, String>();
 		    JSONObject repBody = new JSONObject();
@@ -87,16 +90,20 @@ public class messagePush {
 	        	    break;
 	            case "audio":
 	        	    fspath += "static/lineResources/audios/" + pushfid.toString();
-	        	    
-	        	    AudioInputStream audstr = AudioSystem.getAudioInputStream(new File(fspath));
+	        	    File audfs = new File(fspath);
+	        	    InputStream audin = new FileInputStream(audfs);
+	        	    InputStream buffaud = new BufferedInputStream(audin);
+                    
+	        	    AudioInputStream audstr = AudioSystem.getAudioInputStream(buffaud);
 	        	    AudioFormat audifmt = audstr.getFormat();
 	        	    long frames = audstr.getFrameLength();
 	        	    double audidur = (frames + 0.0) / audifmt.getFrameRate();
+	        	    
 	        	    JSONObject audicontobj = new JSONObject();
 	        	    
 	        	    audicontobj.put("type", "line");
 	        	    
-	        	    remObj.put("originalContentUrl", "lineResources/audios/" + pushfid.toString());
+	        	    remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/audios/" + pushfid.toString());
 	        	    remObj.put("duration", (int)audidur);
 	        	    remObj.put("contentProvider", audicontobj);
 	        	    break;
@@ -128,6 +135,7 @@ public class messagePush {
 				Date cdt = new Date();
 				
 				pushObj.setMsgtype(msgtype);
+				pushObj.setFileexts(fileexts);
 				if (msgtype.equals("text")) {
 				    pushObj.setMsgid(msgid.toString());
 				} else {
@@ -148,6 +156,8 @@ public class messagePush {
                 pumObj.put("MSGTYPE", msgtype);
                 if (msgtype.equals("text")) {
                 	pumObj.put("MSGID", msgid.toString());
+				} else if (msgtype.equals("file")) {
+					pumObj.put("MSGID", pushfid.toString() + '.' + fileexts);
 				} else {
 					pumObj.put("MSGID", pushfid.toString());
 				}
