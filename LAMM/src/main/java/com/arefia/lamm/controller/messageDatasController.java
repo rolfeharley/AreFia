@@ -380,14 +380,19 @@ public class messageDatasController {
 				
 				for (Object[] conv: histConve) {
 					JSONObject convObj = new JSONObject();
-					Date exeDate = fsdf.parse(conv[3].toString());
+					Date exeDate = fsdf.parse(conv[4].toString());
+                    String fileexts = "";
+					
+					if (conv[3] != null && !conv[3].toString().equals("")) {
+						fileexts = conv[3].toString().substring(conv[3].toString().lastIndexOf("."));
+					}
 					
 					convObj.put("MSGFROM", conv[0].toString());
 					convObj.put("MSGTYPE", conv[1].toString());
 					
 					if (conv[1].toString().equals("image")) {
 						BufferedImage imgbuff = null;
-						File imgfile = new File(basePathString + "static/lineResources/images/" + conv[4].toString());
+						File imgfile = new File(basePathString + "static/lineResources/images/" + conv[5].toString() + fileexts);
 						
 						if (imgfile.exists()) {
 							imgbuff = ImageIO.read(imgfile);
@@ -401,8 +406,13 @@ public class messageDatasController {
 					}
 					
 					convObj.put("MSG", conv[2].toString());
+					if (conv[3] != null && !conv[3].toString().equals("")) {
+						convObj.put("FILENAME", conv[3].toString());
+					} else{
+						convObj.put("FILENAME", "");
+					}	
 					convObj.put("EXETIME", fulldf.format(exeDate));
-					convObj.put("MSGID", conv[4].toString());
+					convObj.put("MSGID", conv[5].toString());
 					
 					convArr.put(convObj);
 				}

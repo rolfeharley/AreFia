@@ -436,35 +436,55 @@
             }
             
             function selectimg() {
+            	$('#imgselector').val(null);
             	$('#imgselector').trigger('click');
             }
             
             function selectaud() {
+            	$('#audselector').val(null);
             	$('#audselector').trigger('click');
             }
             
             function selectvid() {
+            	$('#vidselector').val(null);
             	$('#vidselector').trigger('click');
             }
             
             function selectfis() {
+            	$('#fisselector').val(null);
             	$('#fisselector').trigger('click');
             }
             
             function upimghandler(files) {
-            	uploadhandler(files, 'image');
+            	if (files[0].size > 104857600) {
+            		alert('檔案大小超過可傳送之限制(100MB)!!');
+            	} else {
+                	uploadhandler(files, 'image');
+            	}
             }
             
             function upaudhandler(files) {
-            	uploadhandler(files, 'audio');
+            	if (files[0].size > 104857600) {
+            		alert('檔案大小超過可傳送之限制(100MB)!!');
+            	} else {
+                	uploadhandler(files, 'audio');
+            	}
             }
             
             function upvidhandler(files) {
-            	uploadhandler(files, 'video');
+            	if (files[0].size > 104857600) {
+            		alert('檔案大小超過可傳送之限制(100MB)!!');
+            	} else {
+                	uploadhandler(files, 'video');
+            	}
             }
             
             function upfishandler(files) {
-            	uploadhandler(files, 'file');
+            	if (files[0].size > 104857600) {
+            		alert('檔案大小超過可傳送之限制(100MB)!!');
+            	} else {
+                	uploadhandler(files, 'file');
+            	}
             }
             
             function uploadhandler(files, type) {
@@ -575,7 +595,7 @@
                             <i class="fas fa-image" id="imgattbtn" onclick="selectimg()"></i>
                             <i class="fas fa-music" id="audattbtn" onclick="selectaud()"></i>
                             <i class="fas fa-video" id="vidattbtn" onclick="selectvid()"></i>
-                            <i class="fas fa-file-alt" id="fisattbtn" onclick="selectfis()"></i>
+                            <i class="fas fa-file-alt" id="fisattbtn" onclick="selectfis()" style="display: none;"></i>
                             <input id="imgselector" type="file" name="pushimgs" accept="image/*" style="display: none;" onchange="upimghandler(this.files)" />
                             <input id="audselector" type="file" name="pushauds" accept="audio/*" style="display: none;" onchange="upaudhandler(this.files)" />
                             <input id="vidselector" type="file" name="pushvids" accept="video/*" style="display: none;" onchange="upvidhandler(this.files)" />

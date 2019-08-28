@@ -113,30 +113,22 @@ public class messagePush {
 	        	    break;
 	            case "video":
 	        	    fspath += "static/lineResources/videos/" + pushfid.toString() + fileexts;
-//                    long viddus = 0;
-//	        	    
-//                    IContainer vidcont = IContainer.make();
-//                    vidcont.open(fspath, IContainer.Type.READ, null);
-//                    viddus = vidcont.getDuration();
-                    
-                      JSONObject vidcontobj = new JSONObject();
-	        	    
-                      vidcontobj.put("type", "line");
-                    
-//                    vidcontobj.put("type", "external");
-                    remObj.put("duration", 24000);
+
                     remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/videos/" + pushfid.toString() + fileexts); 
-                    remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.png");
-                    remObj.put("contentProvider", vidcontobj);
-                    
-//                    remObj.put("duration", 24000);
-//                    remObj.put("contentProvider", vidcontobj);
+                    remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.jpg");
 	        	    break;
 	            case "file":
-	            
+	                
 	                break;
 	            default:
-	        	
+	            	fspath += "static/lineResources/files/" + pushfid.toString() + fileexts;
+	            	File fsfs = new File(fspath);	            	
+	            	long fssize = fsfs.length();
+	            	
+	            	log.info("--------------------------------\n" + fssize);
+	            	
+	            	remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/videos/" + pushfid.toString() + fileexts); 
+                    remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.jpg");
 	        	    break;
 		    }
 		    

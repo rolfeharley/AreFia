@@ -136,7 +136,7 @@
                                             	if (hcarr[c].MSGFROM == 'RECIEVE') {
                                                 	$('#arefiamessagebody').append(createRecieveFrame('history', hcarr[c].MSGTYPE, hcarr[c].MSG, hcarr[c].EXETIME, hcarr[c].MSGID, hcarr[c].IMAGEWIDTH, hcarr[c].IMAGEHEIGHT, stadw));
                                             	} else {
-                                            		$('#arefiamessagebody').append(createPushFrame(hcarr[c].MSGTYPE, hcarr[c].MSG, hcarr[c].EXETIME, hcarr[c].MSGID, hcarr[c].IMAGEWIDTH, hcarr[c].IMAGEHEIGHT, stadw));
+                                            		$('#arefiamessagebody').append(createPushFrame(hcarr[c].MSGTYPE, hcarr[c].MSG, hcarr[c].EXETIME, hcarr[c].MSGID, hcarr[c].IMAGEWIDTH, hcarr[c].IMAGEHEIGHT, stadw, hcarr[c].FILENAME));
                                             	}
                                             }
                                         	
