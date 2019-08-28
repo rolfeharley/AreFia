@@ -40,10 +40,16 @@ function createRecieveFrame(userId, type, msg, time, msgid, imgw, imgh, stadw) {
 	return newFrame;
 }
 
-function createPushFrame(type, msg, time, msgid, imgw, imgh, stadw) {
+function createPushFrame(type, msg, time, msgid, imgw, imgh, stadw, filename) {
+	var fileexts;
+	
+	if (filename != undefined && filename.indexOf('.') > 0) {
+		fileexts = filename.substring(filename.lastIndexOf('.'));
+	}
+	
 	var newFrame = '<div class="arefiaMsfFrame" align="right"><table><tr>';
 	newFrame += '<td style="text-align: right;"><div class="arefiaConTimes">' + time + '</div></td>';
-	newFrame += '<td style="text-align: left;"><div class="arefiaMsfMsgBox">';                       		
+	newFrame += '<td style="text-align: left;"><div class="arefiaMsfMsgBox">';                   		
 
 	switch (type) {
         case 'text':
@@ -60,18 +66,21 @@ function createPushFrame(type, msg, time, msgid, imgw, imgh, stadw) {
         		shimgh = imgh;
         	}
         	
-        	newFrame += '<img src="lineResources/images/' + msgid + '" width="' + shimgw + '" height="' + shimgh + '" />';
+        	newFrame += '<img src="lineResources/images/' + msgid + fileexts + '" width="' + shimgw + '" height="' + shimgh + '" />';
 	        break;
             break;
         case 'sticker':
         	newFrame += 'Line Sticker';
             break;
         case 'video':
-        	newFrame += '<video width="400" controls><source src="lineResources/videos/' + msgid + '"></video>';
+        	newFrame += '<video width="400" controls><source src="lineResources/videos/' + msgid + fileexts + '"></video>';
             break;
         case 'audio':
-        	newFrame += '<audio controls="controls"><source src="lineResources/audios/' + msgid + '" /></audio>';
+        	newFrame += '<audio controls="controls"><source src="lineResources/audios/' + msgid + fileexts + '" /></audio>';
             break;
+        case 'file':
+        	
+        	break;
         default :
         	newFrame += '<span style="color: #FF0000">系統目前暫不支援傳輸此格式訊息!</span>';
             break;

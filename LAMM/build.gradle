@@ -18,6 +18,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
@@ -47,5 +48,8 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	compile files('libs/arefiaEncrypt.jar')
+	compile 'com.arefia:encrypttool:1.0'
+	compile 'javazoom.spi:MP3SPI:1.9.5'
+	compile 'javazoom.spi:jl:1.0.1'
+	compile 'javazoom.spi:tritonus_share:1.0'
 }

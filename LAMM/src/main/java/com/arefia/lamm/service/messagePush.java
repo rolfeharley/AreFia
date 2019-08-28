@@ -1,19 +1,16 @@
 package com.arefia.lamm.service;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,7 +46,7 @@ public class messagePush {
 	@Resource
     private SimpMessagingTemplate lineTemplate;
 	
-	public void push(String sourcerid, String msgtype, String fileexts, String msg, String pushid, String pushfid) {
+	public void push(String sourcerid, String msgtype, String filename, String msg, String pushid, String pushfid) {
 		try {
 			HashMap<String, String> repHead = new HashMap<String, String>();
 		    JSONObject repBody = new JSONObject();
@@ -57,8 +54,13 @@ public class messagePush {
 		    JSONObject remObj = new JSONObject();
 			UUID msgid = UUID.randomUUID();
 			String fspath = getClass().getResource("/").getPath().replaceAll("%20", " ");
+			String fileexts = ""; 
 			int imgw = 0, imgh = 0;
 			sysinfoEntity sysEnt = sido.findAll().get(0);
+			
+			if (filename != null && !filename.equals("")) {
+				fileexts = filename.substring(filename.lastIndexOf("."));
+			}
 		    
 			repHead.put("Content-Type", "application/json");
 		    repHead.put("Authorization", "Bearer  " + sysEnt.getChannel_token());
@@ -76,9 +78,9 @@ public class messagePush {
 	    	        remObj.put("stickerId", "");
 	        	    break;
 	            case "image":
-	        	    fspath += "static/lineResources/images/" + pushfid.toString();
-	        	    remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/images/" + pushfid.toString()); 
-	    	        remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/images/" + pushfid.toString());
+	        	    fspath += "static/lineResources/images/" + pushfid.toString() + fileexts;
+	        	    remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/images/" + pushfid.toString() + fileexts); 
+	    	        remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/images/" + pushfid.toString() + fileexts);
 	    	        
 	    	        BufferedImage imgbuff = null;
 					File imgfile = new File(fspath);
@@ -89,30 +91,50 @@ public class messagePush {
 					imgh = imgbuff.getHeight();
 	        	    break;
 	            case "audio":
-	        	    fspath += "static/lineResources/audios/" + pushfid.toString();
+	        	    fspath += "static/lineResources/audios/" + pushfid.toString() + fileexts;
 	        	    File audfs = new File(fspath);
-	        	    InputStream audin = new FileInputStream(audfs);
-	        	    InputStream buffaud = new BufferedInputStream(audin);
-                    
-	        	    AudioInputStream audstr = AudioSystem.getAudioInputStream(buffaud);
-	        	    AudioFormat audifmt = audstr.getFormat();
-	        	    long frames = audstr.getFrameLength();
-	        	    double audidur = (frames + 0.0) / audifmt.getFrameRate();
+	        	    long suddus = 0;
 	        	    
+	        	    AudioFileFormat audfft = AudioSystem.getAudioFileFormat(audfs);
+	        	    
+	        	    Map<String, Object> audpro = audfft.properties();
+	        	    
+	        	    if (audpro.containsKey("duration")) {
+	        	    	suddus = (long) Math.round((((Long) audpro.get("duration")).longValue()) / 1000);
+	    			}
+	    			
 	        	    JSONObject audicontobj = new JSONObject();
 	        	    
 	        	    audicontobj.put("type", "line");
 	        	    
-	        	    remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/audios/" + pushfid.toString());
-	        	    remObj.put("duration", (int)audidur);
+	        	    remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/audios/" + pushfid.toString() + fileexts);
+	        	    remObj.put("duration", suddus);
 	        	    remObj.put("contentProvider", audicontobj);
 	        	    break;
 	            case "video":
-	        	    fspath += "static/lineResources/videos/" + pushfid.toString();
-
-	        	    remObj.put("originalContentUrl", "lineResources/videos/" + pushfid.toString()); 
-	        	    remObj.put("previewImageUrl", "lineResources/videos/snapshot.png"); 
+	        	    fspath += "static/lineResources/videos/" + pushfid.toString() + fileexts;
+//                    long viddus = 0;
+//	        	    
+//                    IContainer vidcont = IContainer.make();
+//                    vidcont.open(fspath, IContainer.Type.READ, null);
+//                    viddus = vidcont.getDuration();
+                    
+                      JSONObject vidcontobj = new JSONObject();
+	        	    
+                      vidcontobj.put("type", "line");
+                    
+//                    vidcontobj.put("type", "external");
+                    remObj.put("duration", 24000);
+                    remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/videos/" + pushfid.toString() + fileexts); 
+                    remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.png");
+                    remObj.put("contentProvider", vidcontobj);
+                    
+//                    remObj.put("duration", 24000);
+//                    remObj.put("contentProvider", vidcontobj);
 	        	    break;
+	            case "file":
+	            
+	                break;
 	            default:
 	        	
 	        	    break;
@@ -135,13 +157,13 @@ public class messagePush {
 				Date cdt = new Date();
 				
 				pushObj.setMsgtype(msgtype);
-				pushObj.setFileexts(fileexts);
 				if (msgtype.equals("text")) {
 				    pushObj.setMsgid(msgid.toString());
 				} else {
 					pushObj.setMsgid(pushfid.toString());
 				}
 				pushObj.setMsg(msg);
+				pushObj.setFilename(filename);
 				pushObj.setPushuser(pushid);
 				pushObj.setSourcerid(sourcerid);
 				pushObj.setPushtime(sdf.format(cdt));
@@ -156,12 +178,11 @@ public class messagePush {
                 pumObj.put("MSGTYPE", msgtype);
                 if (msgtype.equals("text")) {
                 	pumObj.put("MSGID", msgid.toString());
-				} else if (msgtype.equals("file")) {
-					pumObj.put("MSGID", pushfid.toString() + '.' + fileexts);
 				} else {
 					pumObj.put("MSGID", pushfid.toString());
 				}
                 pumObj.put("MSG", msg);
+                pumObj.put("FILENAME", filename);
                 pumObj.put("EXETIME", udf.format(cdt));
                 pumObj.put("IMAGEWIDTH", imgw);
                 pumObj.put("IMAGEHEIGHT", imgh);

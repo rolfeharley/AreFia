@@ -115,16 +115,44 @@ public class messageDatasController {
 							fsObj.put("MSG", follower[6].toString());
 					    	break;
 					    case "image":
-					    	fsObj.put("MSG", "您收到圖片");
+					    	if (follower[4].toString().equals("RECIEVE")) {
+						    	fsObj.put("MSG", "您收到圖片");
+					    	} else {
+						    	fsObj.put("MSG", "您發送了圖片");
+					    	}
+
 						    break;
 					    case "audio":
-					    	fsObj.put("MSG", "您收到聲音檔");
+					    	if (follower[4].toString().equals("RECIEVE")) {
+						    	fsObj.put("MSG", "您收到聲音檔");
+					    	} else {
+						    	fsObj.put("MSG", "您發送了聲音檔");
+					    	}
+					    	
 					    	break;
 					    case "video":
-					    	fsObj.put("MSG", "您收到影像檔");
+					    	if (follower[4].toString().equals("RECIEVE")) {
+						    	fsObj.put("MSG", "您收到影像檔");
+					    	} else {
+						    	fsObj.put("MSG", "您發送了影像檔");
+					    	}
+					    	
 					    	break;
 					    case "sticker":
-					    	fsObj.put("MSG", "您收到貼圖");
+					    	if (follower[4].toString().equals("RECIEVE")) {
+						    	fsObj.put("MSG", "您收到貼圖");
+					    	} else {
+						    	fsObj.put("MSG", "您發送了貼圖");
+					    	}
+					    	
+					    	break;
+					    case "file":
+					    	if (follower[4].toString().equals("RECIEVE")) {
+						    	fsObj.put("MSG", "您收到檔案");
+					    	} else {
+						    	fsObj.put("MSG", "您發送了檔案");
+					    	}
+					    	
 					    	break;
 					    default:
 					    	fsObj.put("MSG", "不支援的格式");
@@ -247,14 +275,19 @@ public class messageDatasController {
 				
 				for (Object[] msg: msgList) {
 					JSONObject msgObj = new JSONObject();
-					Date exeDate = fsdf.parse(msg[3].toString());
+					Date exeDate = fsdf.parse(msg[4].toString());
+					String fileexts = "";
+					
+					if (msg[3] != null && !msg[3].toString().equals("")) {
+						fileexts = msg[3].toString().substring(msg[3].toString().lastIndexOf("."));
+					}
 					
 					msgObj.put("MSGFROM", msg[0].toString());
 					msgObj.put("MSGTYPE", msg[1].toString());
 					
 					if (msg[1].toString().equals("image")) {
 						BufferedImage imgbuff = null;
-						File imgfile = new File(basePathString + "static/lineResources/images/" + msg[4].toString());
+						File imgfile = new File(basePathString + "static/lineResources/images/" + msg[5].toString() + fileexts);
 
 						if (imgfile.exists()) {
 							imgbuff = ImageIO.read(imgfile);
@@ -268,8 +301,13 @@ public class messageDatasController {
 					}
 					
 					msgObj.put("MSG", msg[2].toString());
+					if (msg[3] != null && !msg[3].toString().equals("")) {
+						msgObj.put("FILENAME", msg[3].toString());
+					} else{
+						msgObj.put("FILENAME", "");
+					}					
 					msgObj.put("EXETIME", fulldf.format(exeDate));
-					msgObj.put("MSGID", msg[4].toString());
+					msgObj.put("MSGID", msg[5].toString());
 					
 					msgArr.put(msgObj);
 				}

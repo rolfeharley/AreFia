@@ -316,7 +316,7 @@
     		                } 
                 			
                 			if (currentfollower != null && msgInfo.SOURCERID == currentfollower) {
-                				$('#arefiamessagebody').append(createPushFrame(msgInfo.MSGTYPE, pfcon, msgInfo.EXETIME, msgInfo.MSGID, msgInfo.IMAGEWIDTH, msgInfo.IMAGEHEIGHT, stadw));
+                				$('#arefiamessagebody').append(createPushFrame(msgInfo.MSGTYPE, pfcon, msgInfo.EXETIME, msgInfo.MSGID, msgInfo.IMAGEWIDTH, msgInfo.IMAGEHEIGHT, stadw, msgInfo.FILENAME));
                         		$('#arefiamessagebody').animate({scrollTop: document.getElementById("arefiamessagebody").scrollHeight + 10000}, 500);
                 			}
                     	}
@@ -363,7 +363,7 @@
                             	if (msgArr[m].MSGFROM == 'RECIEVE') {
                                 	$('#arefiamessagebody').append(createRecieveFrame(userId, msgArr[m].MSGTYPE, msgArr[m].MSG, msgArr[m].EXETIME, msgArr[m].MSGID, msgArr[m].IMAGEWIDTH, msgArr[m].IMAGEHEIGHT, stadw));
                             	} else {
-                            		$('#arefiamessagebody').append(createPushFrame(msgArr[m].MSGTYPE, msgArr[m].MSG, msgArr[m].EXETIME, msgArr[m].MSGID, msgArr[m].IMAGEWIDTH, msgArr[m].IMAGEHEIGHT, stadw));
+                            		$('#arefiamessagebody').append(createPushFrame(msgArr[m].MSGTYPE, msgArr[m].MSG, msgArr[m].EXETIME, msgArr[m].MSGID, msgArr[m].IMAGEWIDTH, msgArr[m].IMAGEHEIGHT, stadw, msgArr[m].FILENAME));
                             	}
                             }
                             
@@ -471,20 +471,26 @@
             	var linefile = files[0];
             	var filetype = linefile.type;
             	var filecate = filetype.substring(0, filetype.indexOf('/'));
-            	var fileexts = filetype.substring(filetype.indexOf('/') + 1);
+            	var filename = linefile.name;
+            	var fileexts = filename.substring(filename.lastIndexOf('.') + 1);
             	
             	if (filecate != 'image' && filecate != 'audio' && filecate != 'video' && fileexts != 'xls' &&
             		fileexts != 'xlsx' && fileexts != 'doc' && fileexts != 'docx' && fileexts != 'ppt' && 
             		fileexts != 'pptx' && fileexts != 'pdf' && fileexts != 'zip' && fileexts != 'rar') {
                 	alert('系統目前暫不支援傳輸此格式訊息!');
             	} else {
+            		if (filecate === 'application') {
+            			filecate = 'file';
+            		}
+            		
             		var pushfid = generateGuid();
             		var pushdata = new FormData();
             		
             		pushdata.append('msgtype', type);
             		pushdata.append('pushfid', pushfid);
             		pushdata.append('pushfile', linefile);
-            		pushdata.append('fileeexts', fileexts);
+            		pushdata.append('filename', filename);
+            		pushdata.append('fileexts', fileexts);
             		
             		$.ajax({
             		    url: '/pushfiles',
@@ -494,7 +500,7 @@
             		    processData: false,
             		    contentType: false
             		}).done(function(res) {
-            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'fileexts': fileexts, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
+            			stompClient.send("/app/pushMessage", {}, JSON.stringify({'sourcer': currentfollower, 'messageType': filecate, 'filename': filename, 'message': '', 'pusher': websxUser, 'pushfid': pushfid}));
             		}).fail(function(res) {});
             	}
             }

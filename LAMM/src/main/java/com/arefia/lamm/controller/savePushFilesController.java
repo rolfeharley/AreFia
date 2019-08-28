@@ -26,7 +26,7 @@ public class savePushFilesController {
 	    try {
 	    	String msgtype = request.getParameter("msgtype");
 	    	String pushfid = request.getParameter("pushfid");
-	    	String fileext = request.getParameter("fileeexts");
+	    	String fileexts = request.getParameter("fileexts");
 	    	MultipartFile pushfile = request.getFile("pushfile");
 	    	
 	    	if (pushfile != null) {
@@ -38,11 +38,11 @@ public class savePushFilesController {
 				    	InputStream imgin = pushfile.getInputStream(); 
 				    	BufferedImage imgbuff = ImageIO.read(imgin);
 				    	
-				    	fspath += "static/lineResources/images/" + pushfid;
+				    	fspath += "static/lineResources/images/" + pushfid + '.' + fileexts;
 				    	
 				    	saveFile = new File(fspath);
 				    	
-				    	ImageIO.write(imgbuff, "png", saveFile);
+				    	ImageIO.write(imgbuff, fileexts, saveFile);
 				    	
 				    	imgin.close();
 				    	break;
@@ -51,7 +51,7 @@ public class savePushFilesController {
 				    	byte[] audbuf = new byte[audin.available()];
 				    	audin.read(audbuf);
 				    	
-				    	fspath += "static/lineResources/audios/" + pushfid;
+				    	fspath += "static/lineResources/audios/" + pushfid + '.' + fileexts;
 				    	
 				    	FileOutputStream audot = new FileOutputStream(new File(fspath));				    					    	
 				    	audot.write(audbuf);
@@ -65,7 +65,7 @@ public class savePushFilesController {
 				    	byte[] vidbuf = new byte[vidin.available()];
 				    	vidin.read(vidbuf);
 				    	
-				    	fspath += "static/lineResources/videos/" + pushfid;
+				    	fspath += "static/lineResources/videos/" + pushfid + '.' + fileexts;
 				    	
 				    	FileOutputStream vidot = new FileOutputStream(new File(fspath));
 				    	vidot.write(vidbuf);
@@ -79,7 +79,7 @@ public class savePushFilesController {
 				    	byte[] fisbuf = new byte[fisin.available()];
 				    	fisin.read(fisbuf);
 				    	
-				    	fspath += "static/lineResources/files/" + pushfid + '.' + fileext;
+				    	fspath += "static/lineResources/files/" + pushfid + '.' + fileexts;
 				    	
 				    	FileOutputStream fisot = new FileOutputStream(new File(fspath));
 				    	fisot.write(fisbuf);

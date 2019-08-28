@@ -49,7 +49,7 @@ public class mediaCatcher {
 		    
 		    InputStream mediaInp = wcc.getIns;
 		    String basePathString = getClass().getResource("/").getPath().replaceAll("%20", " ");
-            
+		    log.info("----------------------------------------------------\n" + mediaInp.toString());
 		    switch (mediaType) {
 		        case "image":
 		        	BufferedImage imgbf = ImageIO.read(mediaInp);

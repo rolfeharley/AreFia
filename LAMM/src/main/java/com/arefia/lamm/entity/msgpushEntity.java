@@ -24,12 +24,12 @@ public class msgpushEntity {
     private String sourcerid;
 	@Column(name = "MSGTYPE", nullable = false, columnDefinition = "varchar(50)")
     private String msgtype;
-	@Column(name = "FILEEXTS", nullable = false, columnDefinition = "varchar(20)")
-    private String fileexts;
 	@Column(name = "MSGID", nullable = false, columnDefinition = "varchar(300)")
     private String msgid;
 	@Column(name = "MSG", nullable = true, columnDefinition = "varchar(10000)")
     private String msg;
+	@Column(name = "FILENAME", nullable = true, columnDefinition = "varchar(500)")
+    private String filename;
 	@Column(name = "PUSHUSER", nullable = true, columnDefinition = "varchar(100)")
     private String pushuser;
 	@Column(name = "PUSHTIME", nullable = false, columnDefinition = "datetime")
