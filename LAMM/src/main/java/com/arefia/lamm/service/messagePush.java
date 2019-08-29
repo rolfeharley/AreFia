@@ -125,8 +125,6 @@ public class messagePush {
 	            	File fsfs = new File(fspath);	            	
 	            	long fssize = fsfs.length();
 	            	
-	            	log.info("--------------------------------\n" + fssize);
-	            	
 	            	remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/videos/" + pushfid.toString() + fileexts); 
                     remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.jpg");
 	        	    break;

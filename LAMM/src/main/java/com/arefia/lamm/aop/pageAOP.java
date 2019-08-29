@@ -45,7 +45,8 @@ private static final Logger log = LogManager.getLogger(pageAOP.class);
 		if (!objectName.equals("errorController") && !objectName.equals("denyController") && !objectName.equals("lineCallbackController") && 
 			!objectName.equals("unsupportedController") && !objectName.equals("environmentController") && 
 			!objectName.equals("zohoCallbackController") && !objectName.equals("zohotestcontroller") &&
-			!objectName.equals("websocketConnectionInitial") && !objectName.equals("websocketPushMessage")) {
+			!objectName.equals("websocketConnectionInitial") && !objectName.equals("websocketPushMessage") &&
+			!objectName.equals("newUserInfoController")) {
 			try {
 				if (auth == null || auth.getName() == null || auth.getName().equals("") || auth.getName().equals("anonymousUser")) {
 					response.sendRedirect("/deny");

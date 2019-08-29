@@ -35,7 +35,7 @@ public class securityConfigure extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                    .authorizeRequests()
-                   .antMatchers("/error", "/deny", "/callback", "/envcheck", "/unsupported", "/zohocallback", "/zohotest")
+                   .antMatchers("/error", "/deny", "/callback", "/memberinfo", "/envcheck", "/unsupported", "/zohocallback", "/zohotest")
                    .permitAll()
                    .and()
                    .authorizeRequests()
