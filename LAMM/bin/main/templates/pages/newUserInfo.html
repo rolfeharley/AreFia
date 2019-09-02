@@ -1,10 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-    Hello
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <label>姓名</label>
+                    </td>
+                    <td>
+                        <input type="text" id="nameTxt" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>性別</label>
+                    </td>
+                    <td>
+                        <select id="genderSel">
+                            <option value="1">男</option>
+                            <option value="0">女</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>電子郵件</label>
+                    </td>
+                    <td>
+                        <input type="text" id="mailTxt" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>手機</label>
+                    </td>
+                    <td>
+                        <input type="text" id="mobileTxt" />
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2">
+                        <label>地址</label>
+                    </td>
+                    <td>
+                        <input type="text" id="zipcodetxt" readonly="readonly" />
+                        <select id="countySel"></select>
+                        <select id="areaSel"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="addrTxt" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
 </html>
