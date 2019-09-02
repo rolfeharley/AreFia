@@ -117,7 +117,7 @@ public class messagePush {
                     remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/videos/" + pushfid.toString() + fileexts); 
                     remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.jpg");
 	        	    break;
-	            case "file":
+	            case "flex":
 	                
 	                break;
 	            default:
