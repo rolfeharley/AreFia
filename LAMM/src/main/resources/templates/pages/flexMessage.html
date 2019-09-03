@@ -19,7 +19,13 @@
 
                 for (var m = 0; m < menuList.length; m++) {
                 	if (menuList[m].MenuID != [[${pageid}]]) {
-                		$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'' + menuList[m].MenuURL + '\')">' + menuList[m].MenuName + '</li>');
+                		var urlstr = menuList[m].MenuURL;
+
+                		if (urlstr === '') {
+                			$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'/\')">' + menuList[m].MenuName + '</li>');
+                		} else {
+                			$('#arefiamenuul').append('<li class="unlink" onclick="redirectPage(\'' + menuList[m].MenuURL + '\')">' + menuList[m].MenuName + '</li>');
+                		}
                 	} else {
                 		$('#arefiamenuul').append('<li class="linked">' + menuList[m].MenuName + '</li>');
                 	}

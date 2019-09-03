@@ -16,7 +16,7 @@ public class lineApiMainController {
 	@Autowired
 	getHeaderInformation hinf;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/hiddenindex", method = RequestMethod.GET)
 	public String createMainPage(Model model, HttpSession session) {
 		JSONObject hiobj = hinf.getinformation(session);
 		

@@ -16,7 +16,7 @@ public class messageCenterController {
 	@Autowired
 	getHeaderInformation hinf;
 	
-	@RequestMapping(value = "/messagecenter", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String createMainPage(Model model, HttpSession session) {
         JSONObject hiobj = hinf.getinformation(session);
 		
