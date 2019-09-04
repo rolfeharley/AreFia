@@ -122,10 +122,18 @@ public class messageRecieve {
             			
             			List<Object[]> welObj = aid.getWelcomeMsg();
             			
-            			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
-            			    mps.push(sObj.getString("userId"), "flex", "", welObj.get(0)[0].toString(), auth.getName(), null);
+            			if (zohointe.equals("1")) {
+                			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
+                			    mps.push(sObj.getString("userId"), "carousel", "", welObj.get(0)[0].toString(), auth.getName(), null);
+                			} else {
+                				mps.push(sObj.getString("userId"), "carousel", "", "Welcome!!", auth.getName(), null);
+                			}
             			} else {
-            				mps.push(sObj.getString("userId"), "flex", "", "Welcome!!", auth.getName(), null);
+                			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
+                			    mps.push(sObj.getString("userId"), "text", "", welObj.get(0)[0].toString(), auth.getName(), null);
+                			} else {
+                				mps.push(sObj.getString("userId"), "text", "", "Welcome!!", auth.getName(), null);
+                			}
             			}
             		}
             		
