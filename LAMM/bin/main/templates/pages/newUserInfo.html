@@ -1,63 +1,72 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Insert title here</title>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Basic Information</title>
+        <script src="frameworks/jquery.js"></script>
+        <script src="frameworks/bootstrap/js/bootstrap.min.js"></script>
+        <script src="frameworks/fontawesome/js/all.min.js"></script>
+        <script src="frameworks/jqueryUI/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="frameworks/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="frameworks/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="frameworks/jqueryUI/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="styles/newUserInfo.css" />
+        
+        <script>
+            $(function(){
+            	$('#btsdate').datepicker({
+            		dateFormat: 'yy/mm/dd',
+            		changeMonth: true,
+                    changeYear: true,
+                    yearRange: '-110y:-18y',
+                    defaultDate: '-35y'
+            	});
+            })
+        </script>
     </head>
     <body>
-        <div>
-            <table>
-                <tr>
-                    <td>
-                        <label>姓名</label>
-                    </td>
-                    <td>
-                        <input type="text" id="nameTxt" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>性別</label>
-                    </td>
-                    <td>
-                        <select id="genderSel">
-                            <option value="1">男</option>
-                            <option value="0">女</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>電子郵件</label>
-                    </td>
-                    <td>
-                        <input type="text" id="mailTxt" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>手機</label>
-                    </td>
-                    <td>
-                        <input type="text" id="mobileTxt" />
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2">
-                        <label>地址</label>
-                    </td>
-                    <td>
-                        <input type="text" id="zipcodetxt" readonly="readonly" />
-                        <select id="countySel"></select>
-                        <select id="areaSel"></select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" id="addrTxt" />
-                    </td>
-                </tr>
-            </table>
+        <div class="nuiblock">
+            <div class="nuimaster">
+                <div class="nuiitems">
+                    <label class="titlelab">姓</label>
+                    <input type="text" id="fstnTxt" class="form-control" />
+                    <label class="titlelab">名</label>
+                    <input type="text" id="lstnTxt" class="form-control" />
+                </div>
+                <div class="nuiitems">
+                    <label class="titlelab">性別</label>
+                    <select id="genderSel" class="form-control">
+                        <option value="2">隱藏</option>
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                    <label class="titlelab">生日</label>
+                    <input type="text" id="btsdate" class="form-control datepickerbox"/>
+                </div>
+                <div class="nuiitems">
+                    <label class="titlelab">電子郵件</label>
+                    <input type="text" id="mailTxt" class="form-control"/>
+                </div>
+                <div class="nuiitems">
+                    <label class="titlelab">手機</label>
+                    <input type="text" id="mobileTxt" class="form-control" />
+                </div>
+                <div class="input-group nuiaddritem">
+                    <label class="titlelab">地址</label>
+                    <input type="text" id="zipcodetxt" class="form-control" readonly="readonly" />
+                    <select id="countySel" class="form-control"></select>
+                    <select id="areaSel" class="form-control"></select>
+                    <input type="text" id="addrTxt" class="form-control" />
+                </div>
+                <div class="btn-group nuiitems">
+                    <button type="button" class="btn btn-info" onclick="showhistoryconversation()">
+                        <span><i class="fas fa-bolt"></i>確定</span>
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="clearconditions()">
+                        <span><i class="fas fa-redo-alt" onclick="clearconditions()"></i>清除</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </body>
 </html>

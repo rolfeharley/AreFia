@@ -58,7 +58,7 @@ public class messagePush {
 			int imgw = 0, imgh = 0;
 			sysinfoEntity sysEnt = sido.findAll().get(0);
 			
-			if (filename != null && !filename.equals("")) {
+			if (msgtype != "flex" && filename != null && !filename.equals("")) {
 				fileexts = filename.substring(filename.lastIndexOf("."));
 			}
 		    
@@ -117,8 +117,53 @@ public class messagePush {
                     remObj.put("originalContentUrl", sysEnt.getSecurity_url() + "lineResources/videos/" + pushfid.toString() + fileexts); 
                     remObj.put("previewImageUrl", sysEnt.getSecurity_url() + "lineResources/videos/snapshot.jpg");
 	        	    break;
-	            case "carousel":
-	                
+	            case "flex":
+	            	remObj.put("altText", "Welcome");
+	            	
+	            	JSONObject lv1con = new JSONObject();
+	            	
+	            	lv1con.put("type", "bubble");
+	            	
+	            	JSONObject bodycon = new JSONObject();
+	            	
+	            	bodycon.put("layout", "vertical");
+	            	bodycon.put("type", "box");
+	            	bodycon.put("spacing", "none");
+	            	
+	            	JSONArray lv2con = new JSONArray();
+	            	
+	            	JSONObject txtobj = new JSONObject();
+	            	
+	            	txtobj.put("type", "text");
+	            	txtobj.put("text", msg);
+	            	txtobj.put("wrap", true);
+	            	txtobj.put("gravity", "center");
+	            	txtobj.put("margin", "none");
+	            	
+	            	lv2con.put(txtobj);
+	            	
+	            	JSONObject buttonobj = new JSONObject();
+	            	
+	            	buttonobj.put("type", "button");
+	            	buttonobj.put("style", "primary");
+	            	buttonobj.put("margin", "xl");
+	            	
+	            	JSONObject actobj = new JSONObject();
+	            	
+	            	actobj.put("type", "uri");
+	            	actobj.put("label", filename);
+	            	actobj.put("uri", sysEnt.getSecurity_url() + pushfid);
+	            	
+	            	buttonobj.put("action", actobj);
+	            	
+	            	lv2con.put(buttonobj);
+	            	
+	            	bodycon.put("contents", lv2con);
+	            	
+	            	lv1con.put("body", bodycon);
+	            	
+	            	remObj.put("contents", lv1con);
+	            	
 	                break;
 	            default:
 	            	fspath += "static/lineResources/files/" + pushfid.toString() + fileexts;
@@ -133,7 +178,7 @@ public class messagePush {
 		    remArr.put(remObj);
 		    
 		    repBody.put("messages", remArr);
-		    
+		  
 		    webCommunicationModel repObj = new webCommunicationModel();
 		    
 		    repObj.setConnURL("https://api.line.me/v2/bot/message/push");
@@ -142,7 +187,7 @@ public class messagePush {
 		    
 		    wcc.comWithPost(repObj);
 			
-		    if (wcc.postIns.equals("OK")) {
+		    if (!msgtype.equals("flex") && wcc.postIns.equals("OK")) {
 				msgpushEntity pushObj = new msgpushEntity();
 				Date cdt = new Date();
 				

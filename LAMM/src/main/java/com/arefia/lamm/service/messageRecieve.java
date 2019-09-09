@@ -122,19 +122,7 @@ public class messageRecieve {
             			
             			List<Object[]> welObj = aid.getWelcomeMsg();
             			
-            			if (zohointe.equals("1")) {
-                			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
-                			    mps.push(sObj.getString("userId"), "carousel", "", welObj.get(0)[0].toString(), auth.getName(), null);
-                			} else {
-                				mps.push(sObj.getString("userId"), "carousel", "", "Welcome!!", auth.getName(), null);
-                			}
-            			} else {
-                			if (welObj.size() == 1 && !welObj.get(0)[0].toString().equals("")) {
-                			    mps.push(sObj.getString("userId"), "text", "", welObj.get(0)[0].toString(), auth.getName(), null);
-                			} else {
-                				mps.push(sObj.getString("userId"), "text", "", "Welcome!!", auth.getName(), null);
-                			}
-            			}
+            			mps.push(sObj.getString("userId"), "flex", welObj.get(0)[1].toString(), welObj.get(0)[0].toString(), auth.getName(), welObj.get(0)[2].toString());
             		}
             		
             		if (zohointe.equals("1")) {
@@ -173,6 +161,7 @@ public class messageRecieve {
         		        case "text":
         		    	    recm.setMsg(mObj.getString("text"));
         		    	    recm.setDuration("");
+        		    	    
         		    	    break;
         		        case "sticker":
         		    	    JSONObject stickObj = new JSONObject();

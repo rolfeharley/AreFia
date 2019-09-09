@@ -278,7 +278,7 @@ public class messageDatasController {
 					Date exeDate = fsdf.parse(msg[4].toString());
 					String fileexts = "";
 					
-					if (msg[3] != null && !msg[3].toString().equals("")) {
+					if (msg[3] != null && !msg[3].toString().equals("") && msg[3].toString().indexOf(".") > -1) {
 						fileexts = msg[3].toString().substring(msg[3].toString().lastIndexOf("."));
 					}
 					

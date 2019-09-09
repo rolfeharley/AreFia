@@ -150,7 +150,7 @@ var editstr = '<div class="demoarea">';
 	    		var c4arr = flexinfo.DETAILS;
 	    		
 	    		editstr += '<div class="flexoutter1">';
-	    		editdtr += '<div id="flexcontent1" class="flexblock1" onclick="openlinkwindow(this) "';
+	    		editstr += '<div id="flexcontent1" class="flexblock1" onclick="openlinkwindow(this) "';
 	    		if (c4arr[0].BLOCKLINK != '') {
 		    		editstr += 'data-url="' + c4arr[0].BLOCKLINK + '" ';
 		    	}

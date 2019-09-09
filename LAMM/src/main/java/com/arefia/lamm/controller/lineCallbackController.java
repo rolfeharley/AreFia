@@ -36,8 +36,8 @@ public class lineCallbackController {
         
     	try {
     		getHashSecretToken cmphash = new getHashSecretToken(sysiey.getChannel_secret(), message);
-        	
-    	    if (cmphash.getResultCode().equals(request.getHeader("X-Line-Signature"))) {  		    
+    		
+    	    if (cmphash.getResultCode().equals(request.getHeader("X-Line-Signature"))) {    
     	    	mrec.recieve(message);
     	    	
     		    response.setStatus(HttpServletResponse.SC_OK);

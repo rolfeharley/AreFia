@@ -1,1 +1,111 @@
 @charset "UTF-8";
+
+.nuiblock {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	height: 100vh;
+	width: 100vw;
+}
+
+.nuiitems {
+	display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.titlelab {
+    text-align: right;
+    font-weight: 900;
+}
+
+#zipcodetxt {
+	cursor: default;
+	background: #FFFFFF;
+	border-color: #CED4DA;
+	border-radius: 5px 0 0 0;
+}
+
+#areaSel {
+	border-radius: 0 5px 0 0;
+}
+
+@media screen and (max-width:575.99px) {
+	
+}
+
+@media screen and (min-width:576px) and (max-width:767.99px) {
+    
+}
+
+@media screen and (min-width:768px) and (max-width:991.99px) {
+	
+}
+
+@media screen and (min-width:992px) and (max-width:1199.99px) {
+	
+}
+
+@media screen and (min-width:1200px) {
+	.nuimaster {
+	    box-shadow: 0 0 5px #888888;
+    }
+
+	.nuimaster {
+	    width: 530px;
+	    height: 515px;
+	    border-radius: 10px;
+	}
+	
+	.nuiitems {
+	    height: 80px;
+	    width: 530px;
+	    padding: 0 15px 0 15px;
+	}
+	
+	.nuiaddritem {
+	    height: 50px;
+	    width: 530px;
+	    padding: 0 15px 0 15px;
+	    margin: 20px 0 45px 0;
+	}
+	
+	.titlelab {
+	    width: 80px;
+	    font-size: 18px;
+	}
+	
+	#fstnTxt, #lstnTxt {
+	    width: 170px;
+	}
+	
+	#mobileTxt {
+	    width: 200px;
+	}
+	
+	#genderSel, #btsdate {
+	    width: 170px;
+	}
+	
+	#mailTxt {
+	    width: 420px;
+	}
+	
+	#addrTxt {
+	    width: 420px;
+	    margin-left: 80px;
+	    border-radius: 0 0  5px 5px;
+	    border-top: none;
+	}
+	
+	#zipcodetxt {
+	    width: 120px;
+	}
+	
+	#countySel, #areaSel {
+	    width: 150px;
+	}
+}

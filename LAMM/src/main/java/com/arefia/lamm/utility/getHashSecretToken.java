@@ -17,7 +17,7 @@ public class getHashSecretToken {
     	    SecretKeySpec secret_key = new SecretKeySpec(seccode.getBytes(), "HmacSHA256");
     	    sha256_HMAC.init(secret_key);
 
-    	    hashSecret = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes()));
+    	    hashSecret = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes("UTF-8")));
     	} catch(Exception ex) {
     		log.error(ex.getLocalizedMessage(), ex);
     	}
