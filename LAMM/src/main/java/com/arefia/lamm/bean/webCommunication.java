@@ -2,6 +2,7 @@ package com.arefia.lamm.bean;
 
 import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class webCommunication {
 	private static final Logger log = LogManager.getLogger(webCommunication.class);
 	public InputStream getIns;
 	public InputStream gpsIns;
-	public HttpsURLConnection urlCon;
+	public HttpsURLConnection urlsCon;
 	public String postIns;
 	public String delIns;
 	public String updIns;
@@ -27,11 +28,11 @@ public class webCommunication {
 	public void comWithGet (webCommunicationModel gwco) {
 		try {
 			URL getUrl = new URL(gwco.getConnURL());
-			urlCon = (HttpsURLConnection) getUrl.openConnection();
+			urlsCon = (HttpsURLConnection) getUrl.openConnection();
 			
-			urlCon.setRequestMethod("GET");
+			urlsCon.setRequestMethod("GET");
 			
-			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			urlsCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (gwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> ghi = gwco.getHeaders().entrySet().iterator();
@@ -39,14 +40,14 @@ public class webCommunication {
 				while (ghi.hasNext()) {
 					Map.Entry<String, String> gethead = ghi.next();
 					
-					urlCon.setRequestProperty(gethead.getKey(), gethead.getValue());
+					urlsCon.setRequestProperty(gethead.getKey(), gethead.getValue());
 				}
 			}
 			
-			urlCon.connect();
+			urlsCon.connect();
 			
-			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
-				getIns = urlCon.getInputStream();
+			if (urlsCon.getResponseCode() >= 200 && urlsCon.getResponseCode() < 300) {
+				getIns = urlsCon.getInputStream();
 			} else {
 				getIns = null;
 			}
@@ -59,11 +60,11 @@ public class webCommunication {
     public void comWithPost (webCommunicationModel pwco) {
     	try {
 			URL postUrl = new URL(pwco.getConnURL());
-			urlCon = (HttpsURLConnection) postUrl.openConnection();
+			urlsCon = (HttpsURLConnection) postUrl.openConnection();
 			
-			urlCon.setRequestMethod("POST");		
+			urlsCon.setRequestMethod("POST");		
 			
-			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			urlsCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (pwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> phi = pwco.getHeaders().entrySet().iterator();
@@ -71,13 +72,13 @@ public class webCommunication {
 				while (phi.hasNext()) {
 					Map.Entry<String, String> posthead = phi.next();
 					
-					urlCon.setRequestProperty(posthead.getKey(), posthead.getValue());
+					urlsCon.setRequestProperty(posthead.getKey(), posthead.getValue());
 				}
 			}
 			
-			urlCon.setDoInput(true);
-			urlCon.setDoOutput(true);
-	    	DataOutputStream reqWr = new DataOutputStream(urlCon.getOutputStream());
+			urlsCon.setDoInput(true);
+			urlsCon.setDoOutput(true);
+	    	DataOutputStream reqWr = new DataOutputStream(urlsCon.getOutputStream());
 	    	
 	    	if (pwco.getBodys() != null) {
 		        reqWr.write(pwco.getBodys().toString().getBytes("UTF-8"));
@@ -89,9 +90,9 @@ public class webCommunication {
 	    	
 		    reqWr.close();
 			
-		    urlCon.connect();
+		    urlsCon.connect();
 			
-			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
+			if (urlsCon.getResponseCode() >= 200 && urlsCon.getResponseCode() < 300) {
 				postIns = "OK";
 			} else {
 				postIns= "NG";
@@ -105,11 +106,11 @@ public class webCommunication {
     public void getWithPost (webCommunicationModel swco) {
     	try {
 			URL gpsUrl = new URL(swco.getConnURL());
-			urlCon = (HttpsURLConnection) gpsUrl.openConnection();
+			urlsCon = (HttpsURLConnection) gpsUrl.openConnection();
 			
-			urlCon.setRequestMethod("POST");		
+			urlsCon.setRequestMethod("POST");		
 			
-			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			urlsCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (swco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> shi = swco.getHeaders().entrySet().iterator();
@@ -117,13 +118,13 @@ public class webCommunication {
 				while (shi.hasNext()) {
 					Map.Entry<String, String> gpshead = shi.next();
 					
-					urlCon.setRequestProperty(gpshead.getKey(), gpshead.getValue());
+					urlsCon.setRequestProperty(gpshead.getKey(), gpshead.getValue());
 				}
 			}
 			
-			urlCon.setDoInput(true);
-			urlCon.setDoOutput(true);
-	    	DataOutputStream reqWr = new DataOutputStream(urlCon.getOutputStream());
+			urlsCon.setDoInput(true);
+			urlsCon.setDoOutput(true);
+	    	DataOutputStream reqWr = new DataOutputStream(urlsCon.getOutputStream());
 	    	
 	    	if (swco.getBodys() != null) {
 		        reqWr.write(swco.getBodys().toString().getBytes("UTF-8"));
@@ -135,10 +136,10 @@ public class webCommunication {
 	    	
 		    reqWr.close();
 			
-		    urlCon.connect();
+		    urlsCon.connect();
 			
-			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
-				gpsIns = urlCon.getInputStream();
+			if (urlsCon.getResponseCode() >= 200 && urlsCon.getResponseCode() < 300) {
+				gpsIns = urlsCon.getInputStream();
 			} else {
 				gpsIns = null;
 			}
@@ -151,11 +152,11 @@ public class webCommunication {
     public void comWithDel (webCommunicationModel dwco) {
 		try {
 			URL delUrl = new URL(dwco.getConnURL());
-			urlCon = (HttpsURLConnection) delUrl.openConnection();
+			urlsCon = (HttpsURLConnection) delUrl.openConnection();
 			
-			urlCon.setRequestMethod("DELETE");
+			urlsCon.setRequestMethod("DELETE");
 			
-			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			urlsCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (dwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> dhi = dwco.getHeaders().entrySet().iterator();
@@ -163,13 +164,13 @@ public class webCommunication {
 				while (dhi.hasNext()) {
 					Map.Entry<String, String> delhead = dhi.next();
 					
-					urlCon.setRequestProperty(delhead.getKey(), delhead.getValue());
+					urlsCon.setRequestProperty(delhead.getKey(), delhead.getValue());
 				}
 			}
 			
-			urlCon.connect();
+			urlsCon.connect();
 			
-			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
+			if (urlsCon.getResponseCode() >= 200 && urlsCon.getResponseCode() < 300) {
 				delIns = "OK";
 			} else {
 				delIns = "NG";
@@ -183,11 +184,11 @@ public class webCommunication {
     public void comWithUpd (webCommunicationModel uwco) {
 		try {
 			URL updUrl = new URL(uwco.getConnURL());
-			urlCon = (HttpsURLConnection) updUrl.openConnection();
+			urlsCon = (HttpsURLConnection) updUrl.openConnection();
 			
-			urlCon.setRequestMethod("PUT");			
+			urlsCon.setRequestMethod("PUT");			
 
-			urlCon.setRequestProperty("Accept-Charset", "utf-8");
+			urlsCon.setRequestProperty("Accept-Charset", "utf-8");
 			
 			if (uwco.getHeaders() != null) {
 				Iterator<Map.Entry<String, String>> uhi = uwco.getHeaders().entrySet().iterator();
@@ -195,13 +196,13 @@ public class webCommunication {
 				while (uhi.hasNext()) {
 					Map.Entry<String, String> updhead = uhi.next();
 					
-					urlCon.setRequestProperty(updhead.getKey(), updhead.getValue());
+					urlsCon.setRequestProperty(updhead.getKey(), updhead.getValue());
 				}
 			}
 			
-			urlCon.setDoInput(true);
-			urlCon.setDoOutput(true);
-	    	DataOutputStream reqWr = new DataOutputStream(urlCon.getOutputStream());
+			urlsCon.setDoInput(true);
+			urlsCon.setDoOutput(true);
+	    	DataOutputStream reqWr = new DataOutputStream(urlsCon.getOutputStream());
 	    	
 	    	if (uwco.getBodys() != null) {
 		        reqWr.write(uwco.getBodys().toString().getBytes("UTF-8"));
@@ -213,9 +214,9 @@ public class webCommunication {
 	    	
 		    reqWr.close();
 			
-			urlCon.connect();
+			urlsCon.connect();
 			
-			if (urlCon.getResponseCode() >= 200 && urlCon.getResponseCode() < 300) {
+			if (urlsCon.getResponseCode() >= 200 && urlsCon.getResponseCode() < 300) {
 				updIns = "OK";
 			} else {
 				updIns = "NG";
@@ -227,6 +228,6 @@ public class webCommunication {
 	}
     
     public void disconnectMethod() {
-		urlCon.disconnect();
+		urlsCon.disconnect();
     }
 }

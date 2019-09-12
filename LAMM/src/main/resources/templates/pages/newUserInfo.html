@@ -14,6 +14,23 @@
         
         <script>
             $(function(){
+            	$.get('getroccitys', function(result) {
+                	if (result != null && result != '') {
+                		var cityList = JSON.parse(result);
+
+                		$('#countySel').append('<option value="none">選擇縣市</option>');
+                		$('#areaSel').append('<option value="none">選擇區域</option>');
+                		$('#treeSel').append('<option value="none">選擇街道</option>');
+                		
+                    	for (var c = 0; c < cityList.length; c++) {
+                    		var cityObj = cityList[c];
+                    		var cityopt = '<option value="' + cityObj.CITYID + '">' + cityObj.CITYNAME + '</option>';
+                    		
+                    		$('#countySel').append(cityopt);
+                    	}
+                	}
+                });
+            	
             	$('#btsdate').datepicker({
             		dateFormat: 'yy/mm/dd',
             		changeMonth: true,
@@ -22,6 +39,68 @@
                     defaultDate: '-35y'
             	});
             })
+            
+            function countychanged() {
+            	$.get('getareaofcity',{CITYID: $('#countySel').find(":selected").val()}, function(result) {
+           		    
+            		$('#areaSel').find('option').remove().end().append('<option value="none">選擇區域</option>');
+            		$('#treeSel').find('option').remove().end().append('<option value="none">選擇街道</option>');
+            		$('#zipcodetxt').val('');
+            		
+                	if (result != null && result != '') {
+                		var areaList = JSON.parse(result);
+
+                    	for (var a = 0; a < areaList.length; a++) {
+                    		var areaObj = areaList[a];
+                    		var areaopt = '<option value="' + areaObj.AREAID + '">' + areaObj.AREANAME + '</option>';
+                    		
+                    		$('#areaSel').append(areaopt);
+                    	}
+                	}
+                });
+            }
+            
+            function areachanged() {
+                $.get('gettreeofarea',{AREAID: $('#areaSel').find(":selected").val()}, function(result) {
+           		    
+            		$('#treeSel').find('option').remove().end().append('<option value="none">選擇街道</option>');
+            		$('#zipcodetxt').val('');
+            		
+                	if (result != null && result != '') {
+                		var treeList = JSON.parse(result);
+
+                    	for (var t = 0; t < treeList.length; t++) {
+                    		var treeObj = treeList[t];
+                    		var treeopt = '<option value="' + treeObj.TREEID + '">' + treeObj.TREENAME + '</option>';
+                    		
+                    		$('#treeSel').append(treeopt);
+                    	}
+                	}
+                });
+            }
+            
+            function phonfilter() {
+            	var phoreg = /^09\d{8}$/g;
+            }
+            
+            function mailfilter() {
+            	var malreg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                alert('OK!!');
+            	if ($('#').val().match(malreg) ==null) {
+            		alert('電子郵件的格式錯誤!!');
+            		$(numbertxt).val('');
+            	}
+            }
+            
+            function numberfilter(numbertxt) {
+            	var numstr = $(numbertxt).val();
+            	var numreg = /^[1-9]\d*$/g;
+            	
+            	if (numstr.match(numreg) == null) {
+            		alert('錯誤的數字格式!!');
+            		$(numbertxt).val('');
+            	}
+            }
         </script>
     </head>
     <body>
@@ -41,11 +120,11 @@
                         <option value="0">女</option>
                     </select>
                     <label class="titlelab">生日</label>
-                    <input type="text" id="btsdate" class="form-control datepickerbox"/>
+                    <input type="text" id="btsdate" class="form-control datepickerbox" readonly="readonly"/>
                 </div>
                 <div class="nuiitems">
                     <label class="titlelab">電子郵件</label>
-                    <input type="text" id="mailTxt" class="form-control"/>
+                    <input type="text" id="mailTxt" class="form-control" onblur="mailfilter()" />
                 </div>
                 <div class="nuiitems">
                     <label class="titlelab">手機</label>
@@ -54,9 +133,20 @@
                 <div class="input-group nuiaddritem">
                     <label class="titlelab">地址</label>
                     <input type="text" id="zipcodetxt" class="form-control" readonly="readonly" />
-                    <select id="countySel" class="form-control"></select>
-                    <select id="areaSel" class="form-control"></select>
-                    <input type="text" id="addrTxt" class="form-control" />
+                    <select id="countySel" class="form-control" onchange="countychanged()"></select>
+                    <select id="areaSel" class="form-control" onblur="areachanged()"></select>
+                    <select id="treeSel" class="form-control"></select>
+                    <input type="number" id="laneTxt" onchange="numberfilter(this)" class="form-control" />
+                    <label class="detailLab">巷</label>
+                    <input type="text" id="alleyTxt" class="form-control" />
+                    <label class="detailLab">弄</label>
+                    <input type="text" id="numTxt" class="form-control" />
+                    <label class="detailLab">號之</label>
+                    <input type="text" id="extTxt" class="form-control" />
+                    <input type="text" id="floorTxt" class="form-control" />
+                    <label class="detailLab">樓之</label>
+                    <input type="text" id="roomTxt" class="form-control" />
+                    <label id="lastadrLab" class="detailLab">室</label>
                 </div>
                 <div class="btn-group nuiitems">
                     <button type="button" class="btn btn-info" onclick="showhistoryconversation()">

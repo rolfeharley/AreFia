@@ -26,11 +26,19 @@
 	cursor: default;
 	background: #FFFFFF;
 	border-color: #CED4DA;
-	border-radius: 5px 0 0 0;
+	border-radius: 5px;
 }
 
-#areaSel {
-	border-radius: 0 5px 0 0;
+#treeSel {
+	border-radius: 0 5px 5px 0;
+}
+
+#countySel {
+	border-radius: 5px 0 0 5px;
+}
+
+#btsdate {
+	background: #FFFFFF;
 }
 
 @media screen and (max-width:575.99px) {
@@ -56,21 +64,22 @@
 
 	.nuimaster {
 	    width: 530px;
-	    height: 515px;
+	    height: 492px;
 	    border-radius: 10px;
 	}
 	
 	.nuiitems {
-	    height: 80px;
+	    height: 60px;
 	    width: 530px;
 	    padding: 0 15px 0 15px;
 	}
 	
 	.nuiaddritem {
-	    height: 50px;
+	    height: 180px;
 	    width: 530px;
 	    padding: 0 15px 0 15px;
-	    margin: 20px 0 45px 0;
+	    margin-top: 10px;
+	    margin-bottom: 5px;
 	}
 	
 	.titlelab {
@@ -94,18 +103,37 @@
 	    width: 420px;
 	}
 	
-	#addrTxt {
-	    width: 420px;
-	    margin-left: 80px;
-	    border-radius: 0 0  5px 5px;
-	    border-top: none;
+	#laneTxt, #alleyTxt, #numTxt, #extTxt, #floorTxt, #roomTxt {
+	    width: 75px;
+	    border-radius: 5px;
+	}
+	
+	#laneTxt, #floorTxt {
+        margin-left: 80px;
+	}
+	
+	#lastadrLab {
+	    margin-right: 197px;
 	}
 	
 	#zipcodetxt {
-	    width: 120px;
+	    width: 111px;
+	    margin-right: 309px;
 	}
 	
-	#countySel, #areaSel {
-	    width: 150px;
+	#countySel {
+	    margin-left: 80px;
+	}
+	
+	#countySel {
+	    width: 110px;
+	}
+	
+	#areaSel {
+	    width: 130px;
+	}
+	
+	#treeSel {
+	    width: 180px;
 	}
 }
